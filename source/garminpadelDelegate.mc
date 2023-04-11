@@ -1,14 +1,31 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class garminpadelDelegate extends WatchUi.BehaviorDelegate {
+class garminpadelDelegate extends WatchUi.InputDelegate {
 
     function initialize() {
-        BehaviorDelegate.initialize();
+        InputDelegate.initialize();
     }
 
-    function onMenu() as Boolean {
+/*     function onMenu() as Boolean {
+        System.println("garminpadelDelegate::onMenu");
         WatchUi.pushView(new Rez.Menus.MainMenu(), new garminpadelMenuDelegate(), WatchUi.SLIDE_UP);
+        return true;
+    } */
+
+    function onKey(keyEvent as WatchUi.KeyEvent) as Boolean {
+
+        /*
+         TODO
+            13 KEY_UP -> nothing for now
+            8 KEY_DOWN -> nothing for now
+
+            4 KEY_ENTER -> start (show scores)
+            5 KEY_ESC -> save and leave?
+        */
+
+        WatchUi.pushView(new garminpadelScoreView(), new garminpadelScoreDelegate(), WatchUi.SLIDE_UP);
+        
         return true;
     }
 
