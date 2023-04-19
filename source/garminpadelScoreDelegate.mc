@@ -3,24 +3,22 @@ import Toybox.WatchUi;
 
 class garminpadelScoreDelegate extends WatchUi.InputDelegate {
 
-    private var match;
-
     function initialize() {
         InputDelegate.initialize();
-        
-        match = new padelMatch();
     }
 
     function onKey(keyEvent as WatchUi.KeyEvent) as Boolean {
 //        System.println("garminpadelScoreDelegate::onKey " + keyEvent.getKey());
 
+        var match = Application.getApp().getMatch();
+
         switch (keyEvent.getKey()) {
             case KEY_UP: {
-                self.match.incP1();
+                match.incP1();
                 break;
             }
             case KEY_DOWN: {
-                self.match.incP2();
+                match.incP2();
                 break;
             }
             case KEY_ENTER: {
@@ -37,7 +35,8 @@ class garminpadelScoreDelegate extends WatchUi.InputDelegate {
             }
         }
 
-        self.match.printScore();
+        match.printScore();
+        WatchUi.requestUpdate();
 
         return true;
     }

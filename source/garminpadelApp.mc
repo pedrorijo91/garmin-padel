@@ -4,8 +4,12 @@ import Toybox.WatchUi;
 
 class garminpadelApp extends Application.AppBase {
 
+    private var match;
+
     function initialize() {
         AppBase.initialize();
+
+        match = new padelMatch();
     }
 
     // onStart() is called on application start up
@@ -21,7 +25,12 @@ class garminpadelApp extends Application.AppBase {
         return [ new garminpadelView(), new garminpadelDelegate() ] as Array<Views or InputDelegates>;
     }
 
+    function getMatch() as padelMatch {
+        return self.match;
+    }
 }
+
+
 
 function getApp() as garminpadelApp {
     return Application.getApp() as garminpadelApp;

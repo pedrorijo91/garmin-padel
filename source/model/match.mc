@@ -25,6 +25,7 @@ class padelMatch {
         p2ScoreIdx = 0;
     }
 
+    // FIXME remove debug prints
     function printScore() {
         System.println("score: sets " + self.p1Sets + " - " + self.p2Sets);
         System.println("score: games " + self.p1Games + " - " + self.p2Games);
@@ -81,5 +82,29 @@ class padelMatch {
     }
 
     // TODO revert score
+
+    function getP1Sets() {
+        return self.p1Sets;
+    }
+
+    function getP1Games() {
+        return self.p1Games;
+    }
+
+    function getP1Score() {
+        return AVAILABLE_POINTS[self.p1ScoreIdx];
+    }
+
+    function getP2Sets() {
+        return self.p2Sets;
+    }
+
+    function getP2Games() {
+        return self.p2Games;
+    }
+
+    function getP2Score() {
+        return AVAILABLE_POINTS[self.p2ScoreIdx];
+    }
 
 }
