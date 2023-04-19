@@ -10,6 +10,7 @@ class garminpadelMenuDelegate extends WatchUi.MenuInputDelegate {
     }
 
     function onMenuItem(item as Symbol) as Void {
+        // https://developer.garmin.com/connect-iq/core-topics/native-controls/
         System.println("garminpadelMenuDelegate::onMenuItem");
         if (item == :item_1) {
             System.println("item 1");
