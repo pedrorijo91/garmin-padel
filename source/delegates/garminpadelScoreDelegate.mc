@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.ActivityMonitor;
 
 class garminpadelScoreDelegate extends WatchUi.InputDelegate {
 
@@ -25,7 +26,8 @@ class garminpadelScoreDelegate extends WatchUi.InputDelegate {
                 break;
             }
             case KEY_ESC: {
-                break;
+                Application.getApp().saveSession();
+                System.exit();
             }
             case KEY_MENU: {
                 break;
