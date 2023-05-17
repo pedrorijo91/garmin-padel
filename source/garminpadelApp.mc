@@ -11,7 +11,7 @@ class garminpadelApp extends Application.AppBase {
         AppBase.initialize();
 
         match = new padelMatch();
-        session = ActivityRecording.createSession({:sport => ActivityRecording.SPORT_PADDLING, :subSport => ActivityRecording.SUB_SPORT_MATCH, :name => "Padel match"});
+        session = ActivityRecording.createSession({:sport => Activity.SPORT_RACKET, :subSport => Activity.SUB_SPORT_PADEL, :name => "Padel match"});
         session.start();
     }
 
