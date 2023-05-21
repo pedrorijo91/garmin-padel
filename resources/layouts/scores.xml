@@ -1,8 +1,4 @@
 <layout id="ScoreLayout">
-<!-- FIXME DELETE-->
-    <label x="55" y="25" text="" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_LEFT" />
-    <label x="185" y="25" text="" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_RIGHT" />
-
-    <label x="55" y="155" text="" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_LEFT" />
-    <label x="185" y="155" text="" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+    <!-- no clue why i need this here to render anything -->
+    <label x="0" y="0" text="" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_LEFT" />
 </layout>

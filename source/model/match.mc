@@ -2,8 +2,6 @@ class padelMatch {
 
     static const AVAILABLE_POINTS = [0, 15, 30, 40];
 
-    // TODO save previous sets score
-
     private var p1Sets;
     private var p2Sets;
 
@@ -12,6 +10,9 @@ class padelMatch {
 
     private var p1ScoreIdx;
     private var p2ScoreIdx;
+
+    private var p1TieBreakScore;
+    private var p2TieBreakScore;
 
 
     function initialize() {
@@ -23,6 +24,10 @@ class padelMatch {
         
         p1ScoreIdx = 0;
         p2ScoreIdx = 0;
+
+        p1TieBreakScore = 0;
+        p2TieBreakScore = 0;
+        
     }
 
     // FIXME remove debug prints
@@ -30,58 +35,65 @@ class padelMatch {
         System.println("score: sets " + self.p1Sets + " - " + self.p2Sets);
         System.println("score: games " + self.p1Games + " - " + self.p2Games);
         System.println("score: " + AVAILABLE_POINTS[self.p1ScoreIdx] + " - " + AVAILABLE_POINTS[self.p2ScoreIdx]);
+        System.println("tie break: " + self.p1TieBreakScore + " - " + self.p2TieBreakScore);
     }
 
     function incP1() {
-        if (AVAILABLE_POINTS[self.p1ScoreIdx] == 40) {
-            // player won game  
-            self.p1Games++;
+        if (self.isInTieBreak()) {
+            self.p1TieBreakScore++;
 
-            if (self.p1Games == 6) {
+            if (self.p1TieBreakScore >= 7 && self.p1TieBreakScore - self.p2TieBreakScore >= 2) {
                 self.p1Sets++;
-
-                self.p1Games = 0;
-                self.p2Games = 0;
+                self.resetAfterSetFinish();
             }
 
-            self.p1ScoreIdx = 0;
-            self.p2ScoreIdx = 0;
+            return;
+        }
 
-            // TODO tie break
-            // TODO super tie
-            // TODO limit number of sets
-        } else {
-            // TODO add ADV case
+        // normal (not end of game) case
+        if (AVAILABLE_POINTS[self.p1ScoreIdx] != 40) {
             self.p1ScoreIdx++;
+            return;
+        }
+
+        self.p1Games++;
+        self.resetAfterGameFinish();
+
+        // end of set
+        if (self.p1Games >= 6 && self.p1Games - self.p2Games >= 2) {
+            self.p1Sets++;
+            self.resetAfterSetFinish();
         }
     }
 
 
     function incP2() {
-        if (AVAILABLE_POINTS[self.p2ScoreIdx] == 40) {
-            // player won game  
-            self.p2Games++;
+        if (self.isInTieBreak()) {
+            self.p2TieBreakScore++;
 
-            if (self.p2Games == 6) {
+            if (self.p2TieBreakScore >= 7 && self.p2TieBreakScore - self.p1TieBreakScore >= 2) {
                 self.p2Sets++;
-
-                self.p1Games = 0;
-                self.p2Games = 0;
+                self.resetAfterSetFinish();
             }
 
-            self.p1ScoreIdx = 0;
-            self.p2ScoreIdx = 0;
+            return;
+        }
 
-            // TODO tie break
-            // TODO super tie
-            // TODO limit number of sets
-        } else {
-            // TODO add ADV case
+        // normal (not end of game) case
+        if (AVAILABLE_POINTS[self.p2ScoreIdx] != 40) {
             self.p2ScoreIdx++;
+            return;
+        }
+
+        self.p2Games++;
+        self.resetAfterGameFinish();
+
+        // end of set
+        if (self.p2Games >= 6 && self.p2Games - self.p1Games >= 2) {
+            self.p2Sets++;
+            self.resetAfterSetFinish();
         }
     }
-
-    // TODO revert score
 
     function getP1Sets() {
         return self.p1Sets;
@@ -95,6 +107,10 @@ class padelMatch {
         return AVAILABLE_POINTS[self.p1ScoreIdx];
     }
 
+    function getP1TieScore() {
+        return self.p1TieBreakScore;
+    }
+
     function getP2Sets() {
         return self.p2Sets;
     }
@@ -105,6 +121,29 @@ class padelMatch {
 
     function getP2Score() {
         return AVAILABLE_POINTS[self.p2ScoreIdx];
+    }
+
+    function getP2TieScore() {
+        return self.p2TieBreakScore;
+    }
+
+    function isInTieBreak() {
+        return self.p1Games == 6 && self.p2Games == 6;
+    }
+
+    function resetAfterSetFinish() {
+        self.p1Games = 0;
+        self.p2Games = 0;
+
+        self.resetAfterGameFinish();
+    }
+
+    function resetAfterGameFinish() {
+        self.p1ScoreIdx = 0;
+        self.p2ScoreIdx = 0;
+
+        self.p1TieBreakScore = 0;
+        self.p2TieBreakScore = 0;
     }
 
 }
