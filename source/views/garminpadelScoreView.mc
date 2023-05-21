@@ -31,7 +31,12 @@ class garminpadelScoreView extends WatchUi.View {
 
         dc.drawText(100, 20, Graphics.FONT_SMALL, "Sets: " + match.getP1Sets() + " - " + match.getP2Sets(), Graphics.TEXT_JUSTIFY_CENTER);
         dc.drawText(100, 70, Graphics.FONT_MEDIUM, "Games: " + match.getP1Games() + " - " + match.getP2Games(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(100, 120, Graphics.FONT_LARGE, "Score: " + match.getP1Score() + " - " + match.getP2Score(), Graphics.TEXT_JUSTIFY_CENTER);
+
+        if (match.isInTieBreak()) {
+            dc.drawText(100, 120, Graphics.FONT_LARGE, "Tie: " + match.getP1TieScore() + " - " + match.getP2TieScore(), Graphics.TEXT_JUSTIFY_CENTER);
+        } else {
+            dc.drawText(100, 120, Graphics.FONT_LARGE, "Score: " + match.getP1Score() + " - " + match.getP2Score(), Graphics.TEXT_JUSTIFY_CENTER);
+        }
     }
 
     // Called when this View is removed from the screen. Save the
