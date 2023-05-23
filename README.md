@@ -9,11 +9,11 @@ Keeps track of padel match score.
 * golden point 
 * Tie break
 * Unlimited sets
+* Save game score in activity details
 
 Not yet supported:
 
 * advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
-* Save game score in activity details - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/4)
 * Super tie break - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/3)
 * Configure number of sets - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/17)
 * Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/6)
@@ -37,6 +37,8 @@ Now you can control the score by clicking the `Up` and `Down` buttons on your de
 <p align="center"><img src="screenshots/scoreMid.png" width="300"></p>
 
 To finish the activity, just click the `Back` button.
+
+After syncing with your Garmin Connect accountm you'll be able to see some custom information about the match.
 
 ## List of supported devices
 
