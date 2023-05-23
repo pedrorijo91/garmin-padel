@@ -1,0 +1,11 @@
+<resources>
+    <fitContributions>
+            <fitField id="0" 
+                displayInActivitySummary="true" 
+                sortOrder = "0" 
+                precision="0"
+                dataLabel="@Strings.fit_score_label"
+                unitLabel="@Strings.fit_score_units"
+            />
+    </fitContributions>
+</resources>
