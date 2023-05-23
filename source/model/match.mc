@@ -14,6 +14,7 @@ class padelMatch {
     private var p1TieBreakScore;
     private var p2TieBreakScore;
 
+    private var historicalScores;
 
     function initialize() {
         p1Sets = 0;
@@ -27,6 +28,8 @@ class padelMatch {
 
         p1TieBreakScore = 0;
         p2TieBreakScore = 0;
+
+        historicalScores = [];
         
     }
 
@@ -36,6 +39,7 @@ class padelMatch {
         System.println("score: games " + self.p1Games + " - " + self.p2Games);
         System.println("score: " + AVAILABLE_POINTS[self.p1ScoreIdx] + " - " + AVAILABLE_POINTS[self.p2ScoreIdx]);
         System.println("tie break: " + self.p1TieBreakScore + " - " + self.p2TieBreakScore);
+        System.println("historicalScores: " + self.historicalScores);
     }
 
     function incP1() {
@@ -43,6 +47,7 @@ class padelMatch {
             self.p1TieBreakScore++;
 
             if (self.p1TieBreakScore >= 7 && self.p1TieBreakScore - self.p2TieBreakScore >= 2) {
+                self.p1Games++;
                 self.p1Sets++;
                 self.resetAfterSetFinish();
             }
@@ -72,6 +77,7 @@ class padelMatch {
             self.p2TieBreakScore++;
 
             if (self.p2TieBreakScore >= 7 && self.p2TieBreakScore - self.p1TieBreakScore >= 2) {
+                self.p2Games++;
                 self.p2Sets++;
                 self.resetAfterSetFinish();
             }
@@ -127,11 +133,22 @@ class padelMatch {
         return self.p2TieBreakScore;
     }
 
+    function getHistoricalScores() {
+        return self.historicalScores;
+    }
+
     function isInTieBreak() {
-        return self.p1Games == 6 && self.p2Games == 6;
+        return self.p1Games >= 6 && self.p2Games >= 6;
     }
 
     function resetAfterSetFinish() {
+        var result = "" + self.p1Games + "-" + self.p2Games;
+        if (self.isInTieBreak()) {
+            result += " (" + self.min(self.p1TieBreakScore, self.p2TieBreakScore) + ")";
+        }
+
+        self.historicalScores.add(result);
+
         self.p1Games = 0;
         self.p2Games = 0;
 
@@ -144,6 +161,15 @@ class padelMatch {
 
         self.p1TieBreakScore = 0;
         self.p2TieBreakScore = 0;
+    }
+
+    // TODO move out of here
+    function min(x, y) {
+        if (x > y) {
+            return y;
+        } else {
+            return x;
+        }
     }
 
 }
