@@ -46,6 +46,8 @@ While there's nothing preventing other devides to be supported, due to limited a
 
 * garmin forerunner 945
 
+Feel free to raise an issue asking support for any specific device.
+
 ## Garmin Connect app link
 
 See [https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f](https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f)
