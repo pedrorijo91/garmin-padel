@@ -33,8 +33,9 @@ class garminpadelApp extends Application.AppBase {
     }
 
     function saveSession() as Void {
-        //var field = session.createField("p1_score", 0, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "points", :count => 50});
-        //field.setData("rd_data_p1");
+        var field = session.createField("game_score", 0, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "points", :count => 50});
+        var score = "Sets: " + self.match.getP1Sets() + " - " + self.match.getP2Sets();
+        field.setData(score);
         self.session.stop();
         self.session.save();
     }
