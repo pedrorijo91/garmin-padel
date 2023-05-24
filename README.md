@@ -30,11 +30,13 @@ After starting the application, the initial screen will show up:
 
 Just click any button and the score screen will display:
 
-<p align="center"><img src="screenshots/score0.jpeg" width="300"></p>
+<p align="center"><img src="screenshots/score0.png" width="300"></p>
 
 Now you can control the score by clicking the `Up` and `Down` buttons on your device. By clicking `Up`, you'll increment your team score, and by clicking `Down` you'll increment opponent score:
 
 <p align="center"><img src="screenshots/scoreMid.png" width="300"></p>
+
+<p align="center"><img src="screenshots/scoreTie.png" width="300"></p>
 
 To finish the activity, just click the `Back` button.
 
