@@ -45,8 +45,6 @@ class garminpadelApp extends Application.AppBase {
         }
         field.setData(score);
         
-        System.println("will save score field as: " + score);
-
         self.session.stop();
         self.session.save();
     }

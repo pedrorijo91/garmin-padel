@@ -9,7 +9,6 @@ class garminpadelScoreDelegate extends WatchUi.InputDelegate {
     }
 
     function onKey(keyEvent as WatchUi.KeyEvent) as Boolean {
-//        System.println("garminpadelScoreDelegate::onKey " + keyEvent.getKey());
 
         var match = Application.getApp().getMatch();
 
@@ -37,7 +36,7 @@ class garminpadelScoreDelegate extends WatchUi.InputDelegate {
             }
         }
 
-        match.printScore();
+        //match.printScore();
         WatchUi.requestUpdate();
 
         return true;
