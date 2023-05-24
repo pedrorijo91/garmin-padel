@@ -43,9 +43,12 @@ class garminpadelScoreView extends WatchUi.View {
             dc.drawText(110, 90, Graphics.FONT_MEDIUM, "Score: " + match.getP1Score() + " - " + match.getP2Score(), Graphics.TEXT_JUSTIFY_CENTER);
         }
 
-        // TODO replace label by steps icon
         var steps = ActivityMonitor.getInfo().steps;
-        dc.drawText(120, 160, Graphics.FONT_TINY, "Steps: " + steps, Graphics.TEXT_JUSTIFY_CENTER);
+
+        var heartRateIterator = ActivityMonitor.getHeartRateHistory(1, true);
+        var sample = heartRateIterator.next();
+
+        dc.drawText(120, 160, Graphics.FONT_TINY, "" + steps + " / " + sample.heartRate, Graphics.TEXT_JUSTIFY_CENTER);
 
         var info = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var timeString = Lang.format("$1$:$2$:$3$", [
