@@ -10,6 +10,7 @@ Keeps track of padel match score.
 * Tie break
 * Unlimited sets
 * Save game score in activity details
+* display current hearth rate
 
 Not yet supported:
 
@@ -18,7 +19,6 @@ Not yet supported:
 * Configure number of sets - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/17)
 * Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/6)
 * Revert scores - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/5)
-* more info on UI (heart rate, steps, calories, distance, etc)
 
 Other work to be done listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
 
