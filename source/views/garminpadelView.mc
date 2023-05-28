@@ -20,7 +20,6 @@ class garminpadelView extends WatchUi.View {
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
-        Application.Storage.clearValues();
         var appVersion = Application.Properties.getValue("AppVersion");
         
         var view = View.findDrawableById("versionLabel") as Text;
