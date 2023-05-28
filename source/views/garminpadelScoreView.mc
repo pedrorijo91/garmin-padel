@@ -27,20 +27,21 @@ class garminpadelScoreView extends WatchUi.View {
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
-        // Call the parent onUpdate function to redraw the layout
-        View.onUpdate(dc);
-
         // Include anything that needs to be updated here
         // e.g. score
         var match = Application.getApp().getMatch();
 
-        dc.drawText(110, 20, Graphics.FONT_SMALL, "Sets: " + match.getP1Sets() + " - " + match.getP2Sets(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(110, 50, Graphics.FONT_SMALL, "Games: " + match.getP1Games() + " - " + match.getP2Games(), Graphics.TEXT_JUSTIFY_CENTER);
+        var setsLabel = View.findDrawableById("setsLabel") as Text;
+        setsLabel.setText("Sets: " + match.getP1Sets() + " - " + match.getP2Sets());
 
+        var gamesLabel = View.findDrawableById("gamesLabel") as Text;
+        gamesLabel.setText("Games: " + match.getP1Games() + " - " + match.getP2Games());
+
+        var scoreLabel = View.findDrawableById("scoreLabel") as Text;
         if (match.isInTieBreak()) {
-            dc.drawText(110, 90, Graphics.FONT_MEDIUM, "Tie: " + match.getP1TieScore() + " - " + match.getP2TieScore(), Graphics.TEXT_JUSTIFY_CENTER);
+            scoreLabel.setText("Tie: " + match.getP1TieScore() + " - " + match.getP2TieScore());
         } else {
-            dc.drawText(110, 90, Graphics.FONT_MEDIUM, "Score: " + match.getP1Score() + " - " + match.getP2Score(), Graphics.TEXT_JUSTIFY_CENTER);
+            scoreLabel.setText("Score: " + match.getP1Score() + " - " + match.getP2Score());
         }
 
         var steps = ActivityMonitor.getInfo().steps;
@@ -48,7 +49,8 @@ class garminpadelScoreView extends WatchUi.View {
         var heartRateIterator = ActivityMonitor.getHeartRateHistory(1, true);
         var sample = heartRateIterator.next();
 
-        dc.drawText(120, 160, Graphics.FONT_TINY, "" + steps + " / " + sample.heartRate, Graphics.TEXT_JUSTIFY_CENTER);
+        var stepsAndHeartLabel = View.findDrawableById("stepsAndHeartLabel") as Text;
+        stepsAndHeartLabel.setText("" + steps + " / " + sample.heartRate);
 
         var info = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var timeString = Lang.format("$1$:$2$:$3$", [
@@ -56,7 +58,10 @@ class garminpadelScoreView extends WatchUi.View {
             info.min.format("%02u"),
             info.sec.format("%02u"),
         ]);
-        dc.drawText(120, 190, Graphics.FONT_TINY, timeString, Graphics.TEXT_JUSTIFY_CENTER);
+        var clockLabel = View.findDrawableById("clockLabel") as Text;
+        clockLabel.setText(timeString);
+
+        View.onUpdate(dc);
     }
 
     // Called when this View is removed from the screen. Save the
@@ -66,7 +71,7 @@ class garminpadelScoreView extends WatchUi.View {
     }
 
     public function requestUpdate() as Void {
-          WatchUi.requestUpdate();
+        WatchUi.requestUpdate();
     }
 
 }
