@@ -125,7 +125,14 @@ class padelMatch {
     }
 
     function getHistoricalScores() {
-        return self.historicalScores;
+        var res = [];
+        res.addAll(self.historicalScores);
+
+        if (self.p1Games != 0 || self.p2Games != 0) {
+            res.add("" + self.p1Games + "-" + self.p2Games);
+        }
+
+        return res;
     }
 
     function isInTieBreak() {
