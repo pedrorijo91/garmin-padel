@@ -36,7 +36,6 @@ class garminpadelScoreDelegate extends WatchUi.InputDelegate {
             }
         }
 
-        //match.printScore();
         WatchUi.requestUpdate();
 
         return true;

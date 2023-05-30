@@ -33,15 +33,6 @@ class padelMatch {
         
     }
 
-    // FIXME remove debug prints
-    function printScore() {
-        System.println("score: sets " + self.p1Sets + " - " + self.p2Sets);
-        System.println("score: games " + self.p1Games + " - " + self.p2Games);
-        System.println("score: " + AVAILABLE_POINTS[self.p1ScoreIdx] + " - " + AVAILABLE_POINTS[self.p2ScoreIdx]);
-        System.println("tie break: " + self.p1TieBreakScore + " - " + self.p2TieBreakScore);
-        System.println("historicalScores: " + self.historicalScores);
-    }
-
     function incP1() {
         if (self.isInTieBreak()) {
             self.p1TieBreakScore++;
@@ -171,5 +162,4 @@ class padelMatch {
             return x;
         }
     }
-
 }

@@ -7,12 +7,6 @@ class garminpadelDelegate extends WatchUi.InputDelegate {
         InputDelegate.initialize();
     }
 
-/*     function onMenu() as Boolean {
-        System.println("garminpadelDelegate::onMenu");
-        WatchUi.pushView(new Rez.Menus.MainMenu(), new garminpadelMenuDelegate(), WatchUi.SLIDE_UP);
-        return true;
-    } */
-
     function onKey(keyEvent as WatchUi.KeyEvent) as Boolean {
 
         /*
