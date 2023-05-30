@@ -52,6 +52,8 @@ While there's nothing preventing other devides to be supported, due to limited a
 
 Feel free to raise an issue asking support for any specific device.
 
+Note: api level by device listed in [garmin dev docs](https://developer.garmin.com/connect-iq/compatible-devices/)
+
 ## Garmin Connect app link
 
 See [https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f](https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f)
