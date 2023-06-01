@@ -5,4 +5,8 @@
 
     <label id="stepsAndHeartLabel" x="120" y="160" color="Graphics.COLOR_WHITE" font="Graphics.FONT_TINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
     <label id="clockLabel" x="120" y="190" color="Graphics.COLOR_WHITE" font="Graphics.FONT_TINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+
+    <bitmap id="steps_icon" x="45" y="165" filename="steps_white24.png"/>
+    <bitmap id="heart_icon" x="175" y="165" filename="heart_white16.png"/>
+
 </layout>
