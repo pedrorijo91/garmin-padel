@@ -25,8 +25,13 @@ class garminpadelScoreDelegate extends WatchUi.InputDelegate {
                 break;
             }
             case KEY_ESC: {
-                Application.getApp().saveSession();
-                System.exit();
+                var message = "Finish Activity?";
+                var dialog = new WatchUi.Confirmation(message);
+                WatchUi.pushView(
+                    dialog,
+                    new FinishConfirmationDelegate(),
+                    WatchUi.SLIDE_IMMEDIATE
+                );
             }
             case KEY_MENU: {
                 break;
