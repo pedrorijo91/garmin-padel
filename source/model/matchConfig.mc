@@ -2,12 +2,14 @@ import Toybox.Lang;
 
 class matchConfig {
 
-static const AVAILABLE_POINTS = [0, 15, 30, 40];
+    public static const UNLIMITED_SETS = 10;
 
     private var superTie;
+    private var numberOfSets;
 
     function initialize() {
-        superTie = false;       
+        superTie = false; 
+        numberOfSets =  UNLIMITED_SETS;    
     }
 
     function setSuperTie(enabled as Boolean) as Void {
@@ -18,8 +20,16 @@ static const AVAILABLE_POINTS = [0, 15, 30, 40];
         return self.superTie;
     }
 
+    function setNumberOfSets(sets as Number) as Void {
+        self.numberOfSets = sets;
+    }
+
+    function getNumberOfSets() as Number {
+        return self.numberOfSets;
+    }
+
     function toString() as Lang.String  {
-        return "matchConfig: " + "superTie: " + self.superTie;
+        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets;
     }
 
 }

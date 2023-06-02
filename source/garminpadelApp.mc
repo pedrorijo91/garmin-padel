@@ -30,9 +30,9 @@ class garminpadelApp extends Application.AppBase {
     function initMatch() as Void {
         System.println("init match: " + self.matchConfig);
 
-        // FIXME use superTie config
-
+        // FIXME use match configs
         self.match = new padelMatch();
+        
         self.session = ActivityRecording.createSession({:sport => Activity.SPORT_RACKET, :subSport => Activity.SUB_SPORT_PADEL, :name => "Padel match"});
         self.session.start();
     }

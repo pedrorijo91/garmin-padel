@@ -12,7 +12,7 @@ class initialScreenDelegate extends WatchUi.InputDelegate {
         switch (keyEvent.getKey()) {
             case KEY_ESC: {}
             case KEY_ENTER: {
-                WatchUi.pushView(new Rez.Menus.SuperTieMenu(), new menuSuperTieDelegate(), WatchUi.SLIDE_BLINK);
+                WatchUi.pushView(new Rez.Menus.SetsMenu(), new menuNumberSetsDelegate(), WatchUi.SLIDE_BLINK);
                 break;
             }
         }
