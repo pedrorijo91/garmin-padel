@@ -11,7 +11,6 @@ class scoreView extends WatchUi.View {
         View.initialize();
     }
 
-    // Load your resources here
     function onLayout(dc as Dc) as Void {
         setLayout(Rez.Layouts.ScoreLayout(dc));
 
@@ -19,16 +18,10 @@ class scoreView extends WatchUi.View {
         myTimer.start(method(:requestUpdate), 1000, true);
     }
 
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
     function onShow() as Void {
     }
 
-    // Update the view
     function onUpdate(dc as Dc) as Void {
-        // Include anything that needs to be updated here
-        // e.g. score
         var match = Application.getApp().getMatch();
 
         var setsLabel = View.findDrawableById("setsLabel") as Text;
@@ -64,9 +57,6 @@ class scoreView extends WatchUi.View {
         View.onUpdate(dc);
     }
 
-    // Called when this View is removed from the screen. Save the
-    // state of this View here. This includes freeing resources from
-    // memory.
     function onHide() as Void {
     }
 

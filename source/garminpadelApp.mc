@@ -28,8 +28,6 @@ class garminpadelApp extends Application.AppBase {
 
     // TODO kinda meh that we allow everyone to update the matchConfig and we realy it's on a valid state at this moment
     function initMatch() as Void {
-        System.println("init match: " + self.matchConfig);
-
         self.match = new padelMatch(self.matchConfig);
 
         self.session = ActivityRecording.createSession({:sport => Activity.SPORT_RACKET, :subSport => Activity.SUB_SPORT_PADEL, :name => "Padel match"});
