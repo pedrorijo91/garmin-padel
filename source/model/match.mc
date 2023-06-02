@@ -18,9 +18,9 @@ class padelMatch {
 
     private var historicalScores;
 
-    function initialize() {
+    function initialize(config as matchConfig) {
 
-        numberOfSets = matchConfig.UNLIMITED_SETS;
+        numberOfSets = config.getNumberOfSets();
 
         p1Sets = 0;
         p2Sets = 0;
