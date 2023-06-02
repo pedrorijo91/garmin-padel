@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.ActivityMonitor;
 
-class garminpadelScoreDelegate extends WatchUi.InputDelegate {
+class scoreDelegate extends WatchUi.InputDelegate {
 
     function initialize() {
         InputDelegate.initialize();

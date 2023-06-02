@@ -1,13 +1,6 @@
 <strings>
     <string id="AppName">Padel Score</string>
 
-    <string id="prompt">Padel app</string>
-    <string id="prompt2">Scores</string>
-
-    <string id="menu_label_1">Item 1</string>
-    <string id="menu_label_2">Item 2</string>
-
     <string id="fit_score_label">Game Score</string>
-    <string id="namaste_graph_label">Namastes</string>
     <string id="fit_score_units">points</string>
 </strings>

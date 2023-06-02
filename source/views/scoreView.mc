@@ -5,7 +5,7 @@ import Toybox.Graphics;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
 
-class garminpadelScoreView extends WatchUi.View {
+class scoreView extends WatchUi.View {
 
     function initialize() {
         View.initialize();

@@ -1,7 +1,7 @@
 import Toybox.Graphics;
 import Toybox.WatchUi;
 
-class garminpadelView extends WatchUi.View {
+class initialView extends WatchUi.View {
 
     function initialize() {
         View.initialize();
@@ -9,7 +9,7 @@ class garminpadelView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
-        setLayout(Rez.Layouts.MainLayout(dc));
+        setLayout(Rez.Layouts.InitialLayout(dc));
     }
 
     // Called when this View is brought to the foreground. Restore
