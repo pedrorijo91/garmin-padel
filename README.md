@@ -62,7 +62,7 @@ See [https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f](ht
 
 app links
 * App link: https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
-* Beta link: https://apps.garmin.com/en-US/apps/5bf8f979-52ea-4124-be63-e9ff9ba81026
+* Beta link: https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f
 
 icons
 * https://www.iconfinder.com/search?q=&iconset=octicons
@@ -75,3 +75,4 @@ other apps
 * from https://github.com/search?l=Monkey+C&q=garmin&type=Repositories:
 * https://github.com/matco/badminton
 * https://github.com/viorelyo/ChairUmpire
+* https://apps.garmin.com/en-US/apps/5bf8f979-52ea-4124-be63-e9ff9ba81026
