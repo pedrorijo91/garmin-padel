@@ -56,7 +56,7 @@ Note: api level by device listed in [garmin dev docs](https://developer.garmin.c
 
 ## Garmin Connect app link
 
-See [https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f](https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f)
+See https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
 
 ### Resources
 
