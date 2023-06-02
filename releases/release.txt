@@ -5,5 +5,5 @@ mv garminpadel.iq garminpadel-v0_4_0.iq
 git add releases
 git cmsg "add v0.4.0 exported app"
 git tag -a v0.4.0 -m "version 0.4.0"
-git po && git ptag
+git po && git ptags
 
