@@ -1,4 +1,5 @@
 update resources/properties.xml 
+update app id in manifest.xml
 export app
 mv garminpadel.iq garminpadel-v0_4_0.iq
 git add releases
