@@ -2,6 +2,8 @@ class padelMatch {
 
     static const AVAILABLE_POINTS = [0, 15, 30, 40];
 
+    private var numberOfSets;
+
     private var p1Sets;
     private var p2Sets;
 
@@ -17,6 +19,9 @@ class padelMatch {
     private var historicalScores;
 
     function initialize() {
+
+        numberOfSets = matchConfig.UNLIMITED_SETS;
+
         p1Sets = 0;
         p2Sets = 0;
 
@@ -151,6 +156,17 @@ class padelMatch {
         self.p2Games = 0;
 
         self.resetAfterGameFinish();
+
+        // check if game is over
+        var totalPlayedSets = self.p1Sets + self.p2Sets;
+        if (
+            totalPlayedSets == self.numberOfSets || 
+            abs(self.p1Sets - self.p2Sets) > self.numberOfSets - totalPlayedSets
+        ) {
+            System.println("GAME IS OVER");
+            // FIXME show end of match screen (summary?)
+        }
+
     }
 
     function resetAfterGameFinish() {
@@ -159,14 +175,5 @@ class padelMatch {
 
         self.p1TieBreakScore = 0;
         self.p2TieBreakScore = 0;
-    }
-
-    // TODO move out of here
-    function min(x, y) {
-        if (x > y) {
-            return y;
-        } else {
-            return x;
-        }
     }
 }
