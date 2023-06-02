@@ -11,12 +11,12 @@ Keeps track of padel match score.
 * Unlimited sets
 * Save game score in activity details
 * display current hearth rate
+* Configure number of sets
 
 Not yet supported:
 
-* advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
 * Super tie break - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/3)
-* Configure number of sets - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/17)
+* advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
 * Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/6)
 * Revert scores - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/5)
 
@@ -28,7 +28,13 @@ After starting the application, the initial screen will show up:
 
 <p align="center"><img src="screenshots/initial.jpeg" width="300"></p>
 
-Just click any button and the score screen will display:
+Just click the `Enter` button to enter the menu where you can select a few options:
+
+// FIXME insert screenshot
+
+Use the `Up` and `Down` buttons on your device to scroll on each configuration, and use the `Enter`button to select.
+
+After selecting all the options the score screen will display:
 
 <p align="center"><img src="screenshots/score0.jpeg" width="300"></p>
 
@@ -38,7 +44,13 @@ Now you can control the score by clicking the `Up` and `Down` buttons on your de
 
 <p align="center"><img src="screenshots/scoreTie.jpeg" width="300"></p>
 
-To finish the activity, just click the `Back` button.
+If you selected a limited amount of sets (current options are 3, 5, or unlimited sets), when the game is over you'll see a final screen with the game summary:
+
+// FIXME add screenshot
+
+If you select unlimited sets, to finish the activity, just click the `Back` button and confirm you wish to finish it:
+
+// FIXME add screenshot
 
 After syncing with your Garmin Connect accountm you'll be able to see some custom information about the match.
 
