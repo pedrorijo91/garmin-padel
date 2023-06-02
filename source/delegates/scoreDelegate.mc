@@ -14,11 +14,21 @@ class scoreDelegate extends WatchUi.InputDelegate {
 
         switch (keyEvent.getKey()) {
             case KEY_UP: {
-                match.incP1();
+                var endOfMatch = match.incP1();
+
+                if (endOfMatch) {
+                    WatchUi.pushView(new endView(), new endOfMatchDelegate(), WatchUi.SLIDE_UP);
+                }
+                
                 break;
             }
             case KEY_DOWN: {
-                match.incP2();
+                var endOfMatch = match.incP2();
+
+                if (endOfMatch) {
+                    WatchUi.pushView(new endView(), new endOfMatchDelegate(), WatchUi.SLIDE_UP);
+                }
+
                 break;
             }
             case KEY_ENTER: {

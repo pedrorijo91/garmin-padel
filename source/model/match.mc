@@ -1,3 +1,5 @@
+import Toybox.Lang;
+
 class padelMatch {
 
     static const AVAILABLE_POINTS = [0, 15, 30, 40];
@@ -38,23 +40,24 @@ class padelMatch {
         
     }
 
-    function incP1() {
+    function incP1() as Boolean {
         if (self.isInTieBreak()) {
             self.p1TieBreakScore++;
 
             if (self.p1TieBreakScore >= 7 && self.p1TieBreakScore - self.p2TieBreakScore >= 2) {
                 self.p1Games++;
                 self.p1Sets++;
-                self.resetAfterSetFinish();
+                var endOfMatch = self.finishSet();
+                return endOfMatch;
             }
 
-            return;
+            return false;
         }
 
         // normal (not end of game) case
         if (AVAILABLE_POINTS[self.p1ScoreIdx] != 40) {
             self.p1ScoreIdx++;
-            return;
+            return false;
         }
 
         self.p1Games++;
@@ -63,28 +66,32 @@ class padelMatch {
         // end of set
         if (self.p1Games >= 6 && self.p1Games - self.p2Games >= 2) {
             self.p1Sets++;
-            self.resetAfterSetFinish();
+            var endOfMatch = self.finishSet();
+            return endOfMatch;
         }
+
+        return false;
     }
 
 
-    function incP2() {
+    function incP2() as Boolean {
         if (self.isInTieBreak()) {
             self.p2TieBreakScore++;
 
             if (self.p2TieBreakScore >= 7 && self.p2TieBreakScore - self.p1TieBreakScore >= 2) {
                 self.p2Games++;
                 self.p2Sets++;
-                self.resetAfterSetFinish();
+                var endOfMatch = self.finishSet();
+                return endOfMatch;
             }
 
-            return;
+            return false;
         }
 
         // normal (not end of game) case
         if (AVAILABLE_POINTS[self.p2ScoreIdx] != 40) {
             self.p2ScoreIdx++;
-            return;
+            return false;
         }
 
         self.p2Games++;
@@ -93,8 +100,11 @@ class padelMatch {
         // end of set
         if (self.p2Games >= 6 && self.p2Games - self.p1Games >= 2) {
             self.p2Sets++;
-            self.resetAfterSetFinish();
+            var endOfMatch = self.finishSet();
+            return endOfMatch;
         }
+
+        return false;
     }
 
     function getP1Sets() {
@@ -144,6 +154,21 @@ class padelMatch {
         return self.p1Games >= 6 && self.p2Games >= 6;
     }
 
+    function finishSet() as Boolean {
+        resetAfterSetFinish();
+
+        // check if game is over
+        var totalPlayedSets = self.p1Sets + self.p2Sets;
+        if (
+            totalPlayedSets == self.numberOfSets || 
+            abs(self.p1Sets - self.p2Sets) > self.numberOfSets - totalPlayedSets
+        ) {
+            return true;
+        }
+
+        return false;
+    }    
+
     function resetAfterSetFinish() {
         var result = "" + self.p1Games + "-" + self.p2Games;
         if (self.isInTieBreak()) {
@@ -156,17 +181,6 @@ class padelMatch {
         self.p2Games = 0;
 
         self.resetAfterGameFinish();
-
-        // check if game is over
-        var totalPlayedSets = self.p1Sets + self.p2Sets;
-        if (
-            totalPlayedSets == self.numberOfSets || 
-            abs(self.p1Sets - self.p2Sets) > self.numberOfSets - totalPlayedSets
-        ) {
-            System.println("GAME IS OVER");
-            // FIXME show end of match screen (summary?)
-        }
-
     }
 
     function resetAfterGameFinish() {
