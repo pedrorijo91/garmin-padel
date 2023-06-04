@@ -28,9 +28,7 @@ After starting the application, the initial screen will show up:
 
 <p align="center"><img src="screenshots/initial.jpeg" width="300"></p>
 
-Just click the `Enter` button to enter the menu where you can select a few options:
-
-// FIXME insert screenshot
+Just click the `Enter` button to enter the menu where you can configure the match settings. See the corresponding section for more details on available game options. // FIXME add link
 
 Use the `Up` and `Down` buttons on your device to scroll on each configuration, and use the `Enter`button to select.
 
@@ -46,13 +44,25 @@ Now you can control the score by clicking the `Up` and `Down` buttons on your de
 
 If you selected a limited amount of sets (current options are 3, 5, or unlimited sets), when the game is over you'll see a final screen with the game summary:
 
-// FIXME add screenshot
+<p align="center"><img src="screenshots/end.jpeg" width="300"></p>
 
-If you select unlimited sets, to finish the activity, just click the `Back` button and confirm you wish to finish it:
+If you select unlimited sets, to finish the activity at any moment, just click the `Back` button and confirm you wish to finish it:
 
-// FIXME add screenshot
+<p align="center"><img src="screenshots/exit_confirmation.jpeg" width="300"></p>
 
-After syncing with your Garmin Connect accountm you'll be able to see some custom information about the match.
+After syncing with your Garmin Connect account, you'll be able to see some custom information about the match, such as game result.
+
+## Available Game Configurations
+
+### number of sets
+
+This app allows to configure the number of sets for your game:
+
+* 3 sets
+* 5 sets
+* unlimited sets, useful for friendly matches that don't have a limited number of sets.
+
+<p align="center"><img src="screenshots/menu_sets.jpeg" width="300"></p>
 
 ## List of supported devices
 
