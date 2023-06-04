@@ -11,12 +11,12 @@ Keeps track of padel match score.
 * Unlimited sets
 * Save game score in activity details
 * display current hearth rate
+* Configure number of sets
 
 Not yet supported:
 
-* advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
 * Super tie break - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/3)
-* Configure number of sets - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/17)
+* advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
 * Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/6)
 * Revert scores - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/5)
 
@@ -28,7 +28,11 @@ After starting the application, the initial screen will show up:
 
 <p align="center"><img src="screenshots/initial.jpeg" width="300"></p>
 
-Just click any button and the score screen will display:
+Just click the `Enter` button to enter the menu where you can configure the match settings. See the corresponding section for more details on available game options. // FIXME add link
+
+Use the `Up` and `Down` buttons on your device to scroll on each configuration, and use the `Enter`button to select.
+
+After selecting all the options the score screen will display:
 
 <p align="center"><img src="screenshots/score0.jpeg" width="300"></p>
 
@@ -38,9 +42,27 @@ Now you can control the score by clicking the `Up` and `Down` buttons on your de
 
 <p align="center"><img src="screenshots/scoreTie.jpeg" width="300"></p>
 
-To finish the activity, just click the `Back` button.
+If you selected a limited amount of sets (current options are 3, 5, or unlimited sets), when the game is over you'll see a final screen with the game summary:
 
-After syncing with your Garmin Connect accountm you'll be able to see some custom information about the match.
+<p align="center"><img src="screenshots/end.jpeg" width="300"></p>
+
+If you select unlimited sets, to finish the activity at any moment, just click the `Back` button and confirm you wish to finish it:
+
+<p align="center"><img src="screenshots/exit_confirmation.jpeg" width="300"></p>
+
+After syncing with your Garmin Connect account, you'll be able to see some custom information about the match, such as game result.
+
+## Available Game Configurations
+
+### number of sets
+
+This app allows to configure the number of sets for your game:
+
+* 3 sets
+* 5 sets
+* unlimited sets, useful for friendly matches that don't have a limited number of sets.
+
+<p align="center"><img src="screenshots/menu_sets.jpeg" width="300"></p>
 
 ## List of supported devices
 

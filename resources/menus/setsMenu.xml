@@ -1,0 +1,5 @@
+<menu id="SetsMenu" title="Sets">
+    <menu-item id="sets_unlimited" label="Unlimited" />
+    <menu-item id="sets_3" label="3" />
+    <menu-item id="sets_5" label="5" />
+</menu>
