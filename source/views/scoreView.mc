@@ -23,18 +23,19 @@ class scoreView extends WatchUi.View {
 
     function onUpdate(dc as Dc) as Void {
         var match = Application.getApp().getMatch();
+        var matchStatus = match.getMatchStatus();
 
         var setsLabel = View.findDrawableById("setsLabel") as Text;
-        setsLabel.setText("Sets: " + match.getP1Sets() + " - " + match.getP2Sets());
+        setsLabel.setText("Sets: " + matchStatus.getP1Sets() + " - " + matchStatus.getP2Sets());
 
         var gamesLabel = View.findDrawableById("gamesLabel") as Text;
-        gamesLabel.setText("Games: " + match.getP1Games() + " - " + match.getP2Games());
+        gamesLabel.setText("Games: " + matchStatus.getP1Games() + " - " + matchStatus.getP2Games());
 
         var scoreLabel = View.findDrawableById("scoreLabel") as Text;
         if (match.isInTieBreak()) {
-            scoreLabel.setText("Tie: " + match.getP1TieScore() + " - " + match.getP2TieScore());
+            scoreLabel.setText("Tie: " + matchStatus.getP1TieScore() + " - " + matchStatus.getP2TieScore());
         } else {
-            scoreLabel.setText("Score: " + match.getP1Score() + " - " + match.getP2Score());
+            scoreLabel.setText("Score: " + matchStatus.getP1Score() + " - " + matchStatus.getP2Score());
         }
 
         var steps = ActivityMonitor.getInfo().steps;

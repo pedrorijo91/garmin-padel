@@ -2,51 +2,28 @@ import Toybox.Lang;
 
 class padelMatch {
 
-    static const AVAILABLE_POINTS = [0, 15, 30, 40];
-
     private var numberOfSets;
 
-    private var p1Sets;
-    private var p2Sets;
-
-    private var p1Games;
-    private var p2Games;
-
-    private var p1ScoreIdx;
-    private var p2ScoreIdx;
-
-    private var p1TieBreakScore;
-    private var p2TieBreakScore;
-
     private var historicalScores;
+
+    private var matchStatus;
 
     function initialize(config as matchConfig) {
 
         numberOfSets = config.getNumberOfSets();
 
-        p1Sets = 0;
-        p2Sets = 0;
-
-        p1Games = 0;
-        p2Games = 0;
-        
-        p1ScoreIdx = 0;
-        p2ScoreIdx = 0;
-
-        p1TieBreakScore = 0;
-        p2TieBreakScore = 0;
+        matchStatus = new matchStatus();
 
         historicalScores = [];
-        
     }
 
     function incP1() as Boolean {
         if (self.isInTieBreak()) {
-            self.p1TieBreakScore++;
+            self.matchStatus.incP1TieScore();
 
-            if (self.p1TieBreakScore >= 7 && self.p1TieBreakScore - self.p2TieBreakScore >= 2) {
-                self.p1Games++;
-                self.p1Sets++;
+            if (self.matchStatus.getP1TieScore() >= 7 && self.matchStatus.getP1TieScore() - self.matchStatus.getP2TieScore() >= 2) {
+                self.matchStatus.incP1Games();
+                self.matchStatus.incP1Sets();
                 var endOfMatch = self.finishSet();
                 return endOfMatch;
             }
@@ -55,17 +32,17 @@ class padelMatch {
         }
 
         // normal (not end of game) case
-        if (AVAILABLE_POINTS[self.p1ScoreIdx] != 40) {
-            self.p1ScoreIdx++;
+        if (self.matchStatus.getP1Score() != 40) {
+            self.matchStatus.incP1Score();
             return false;
         }
 
-        self.p1Games++;
+        self.matchStatus.incP1Games();
         self.resetAfterGameFinish();
 
         // end of set
-        if (self.p1Games >= 6 && self.p1Games - self.p2Games >= 2) {
-            self.p1Sets++;
+        if (self.matchStatus.getP1Games() >= 6 && self.matchStatus.getP1Games() - self.matchStatus.getP2Games() >= 2) {
+            self.matchStatus.incP1Sets();
             var endOfMatch = self.finishSet();
             return endOfMatch;
         }
@@ -76,11 +53,11 @@ class padelMatch {
 
     function incP2() as Boolean {
         if (self.isInTieBreak()) {
-            self.p2TieBreakScore++;
+            self.matchStatus.incP2TieScore();
 
-            if (self.p2TieBreakScore >= 7 && self.p2TieBreakScore - self.p1TieBreakScore >= 2) {
-                self.p2Games++;
-                self.p2Sets++;
+            if (self.matchStatus.getP2TieScore() >= 7 && self.matchStatus.getP2TieScore() - self.matchStatus.getP1TieScore() >= 2) {
+                self.matchStatus.incP2Games();
+                self.matchStatus.incP2Sets();
                 var endOfMatch = self.finishSet();
                 return endOfMatch;
             }
@@ -89,17 +66,17 @@ class padelMatch {
         }
 
         // normal (not end of game) case
-        if (AVAILABLE_POINTS[self.p2ScoreIdx] != 40) {
-            self.p2ScoreIdx++;
+        if (self.matchStatus.getP2Score() != 40) {
+            self.matchStatus.incP2Score();
             return false;
         }
 
-        self.p2Games++;
+        self.matchStatus.incP2Games();
         self.resetAfterGameFinish();
 
         // end of set
-        if (self.p2Games >= 6 && self.p2Games - self.p1Games >= 2) {
-            self.p2Sets++;
+        if (self.matchStatus.getP2Games() >= 6 && self.matchStatus.getP2Games() - self.matchStatus.getP1Games() >= 2) {
+            self.matchStatus.incP2Sets();
             var endOfMatch = self.finishSet();
             return endOfMatch;
         }
@@ -107,61 +84,33 @@ class padelMatch {
         return false;
     }
 
-    function getP1Sets() {
-        return self.p1Sets;
-    }
-
-    function getP1Games() {
-        return self.p1Games;
-    }
-
-    function getP1Score() {
-        return AVAILABLE_POINTS[self.p1ScoreIdx];
-    }
-
-    function getP1TieScore() {
-        return self.p1TieBreakScore;
-    }
-
-    function getP2Sets() {
-        return self.p2Sets;
-    }
-
-    function getP2Games() {
-        return self.p2Games;
-    }
-
-    function getP2Score() {
-        return AVAILABLE_POINTS[self.p2ScoreIdx];
-    }
-
-    function getP2TieScore() {
-        return self.p2TieBreakScore;
+    function getMatchStatus() {
+        return self.matchStatus;
     }
 
     function getHistoricalScores() {
         var res = [];
         res.addAll(self.historicalScores);
 
-        if (self.p1Games != 0 || self.p2Games != 0) {
-            res.add("" + self.p1Games + "-" + self.p2Games);
+        if (self.matchStatus.getP1Games() != 0 || self.matchStatus.getP2Games() != 0) {
+            res.add("" + self.matchStatus.getP1Games() + "-" + self.matchStatus.getP2Games());
         }
 
         return res;
     }
 
     function isInTieBreak() {
-        return self.p1Games >= 6 && self.p2Games >= 6;
+        return self.matchStatus.getP1Games() >= 6 && self.matchStatus.getP2Games() >= 6;
     }
 
     function finishSet() as Boolean {
         resetAfterSetFinish();
 
         // check if game is over
-        var totalPlayedSets = self.p1Sets + self.p2Sets;
+        var totalPlayedSets = self.matchStatus.getP1Sets() + self.matchStatus.getP2Sets();
         if (
             totalPlayedSets == self.numberOfSets || 
-            abs(self.p1Sets - self.p2Sets) > self.numberOfSets - totalPlayedSets
+            abs(self.matchStatus.getP1Sets() - self.matchStatus.getP2Sets()) > self.numberOfSets - totalPlayedSets
         ) {
             return true;
         }
@@ -170,24 +119,19 @@ class padelMatch {
     }    
 
     function resetAfterSetFinish() {
-        var result = "" + self.p1Games + "-" + self.p2Games;
+        var result = "" + self.matchStatus.getP1Games() + "-" + self.matchStatus.getP2Games();
         if (self.isInTieBreak()) {
-            result += " (" + self.min(self.p1TieBreakScore, self.p2TieBreakScore) + ")";
+            result += " (" + self.min(self.matchStatus.getP1TieScore(), self.matchStatus.getP2TieScore()) + ")";
         }
 
         self.historicalScores.add(result);
 
-        self.p1Games = 0;
-        self.p2Games = 0;
+        self.matchStatus.resetGames();
 
         self.resetAfterGameFinish();
     }
 
     function resetAfterGameFinish() {
-        self.p1ScoreIdx = 0;
-        self.p2ScoreIdx = 0;
-
-        self.p1TieBreakScore = 0;
-        self.p2TieBreakScore = 0;
+        self.matchStatus.resetScores();
     }
 }
