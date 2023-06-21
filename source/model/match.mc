@@ -3,6 +3,7 @@ import Toybox.Lang;
 class padelMatch {
 
     private var numberOfSets;
+    private var superTie;
 
     private var historicalScores;
 
@@ -11,6 +12,7 @@ class padelMatch {
     function initialize(config as matchConfig) {
 
         numberOfSets = config.getNumberOfSets();
+        superTie = config.getSuperTie();
 
         matchStatus = new matchStatus();
 
@@ -18,6 +20,18 @@ class padelMatch {
     }
 
     function incP1() as Boolean {
+        if (self.isInSuperTieBreak()) {
+            self.matchStatus.incP1TieScore();
+
+            if (self.matchStatus.getP1TieScore() >= 10 && self.matchStatus.getP1TieScore() - self.matchStatus.getP2TieScore() >= 2) {
+                self.matchStatus.incP1Sets();
+                var endOfMatch = self.finishSuperTie();
+                return endOfMatch;
+            }
+
+            return false;
+        }
+
         if (self.isInTieBreak()) {
             self.matchStatus.incP1TieScore();
 
@@ -50,8 +64,19 @@ class padelMatch {
         return false;
     }
 
-
     function incP2() as Boolean {
+        if (self.isInSuperTieBreak()) {
+            self.matchStatus.incP2TieScore();
+
+            if (self.matchStatus.getP2TieScore() >= 10 && self.matchStatus.getP2TieScore() - self.matchStatus.getP1TieScore() >= 2) {
+                self.matchStatus.incP2Sets();
+                var endOfMatch = self.finishSuperTie();
+                return endOfMatch;
+            }
+
+            return false;
+        }
+
         if (self.isInTieBreak()) {
             self.matchStatus.incP2TieScore();
 
@@ -99,6 +124,11 @@ class padelMatch {
         return res;
     }
 
+    function isInSuperTieBreak() {
+        var totalPlayedSets = self.matchStatus.getP1Sets() + self.matchStatus.getP2Sets();
+        return self.superTie && self.numberOfSets - totalPlayedSets == 1 && self.matchStatus.getP1Sets() == self.matchStatus.getP2Sets();
+    }
+
     function isInTieBreak() {
         return self.matchStatus.getP1Games() >= 6 && self.matchStatus.getP2Games() >= 6;
     }
@@ -117,6 +147,12 @@ class padelMatch {
 
         return false;
     }    
+
+    function finishSuperTie() as Boolean {
+        var result = "" + self.matchStatus.getP1TieScore() + "-" + self.matchStatus.getP2TieScore();
+        self.historicalScores.add(result);
+        return true;
+    } 
 
     function resetAfterSetFinish() {
         var result = "" + self.matchStatus.getP1Games() + "-" + self.matchStatus.getP2Games();
