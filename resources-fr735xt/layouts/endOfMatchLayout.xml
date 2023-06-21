@@ -1,5 +1,5 @@
 <layout id="EndOfMatchLayout">
     <label x="center" y="45" text="Game Ended" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-    <label id="resultLabel" x="center" y="105" color="Graphics.COLOR_WHITE" font="Graphics.FONT_SMALL" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+    <label id="resultLabel" x="center" y="center" color="Graphics.COLOR_WHITE" font="Graphics.FONT_SMALL" justification="Graphics.TEXT_JUSTIFY_CENTER" />
     <label x="center" y="145" text="\@pedrorijo91" color="Graphics.COLOR_WHITE" font="Graphics.FONT_XTINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
 </layout>
