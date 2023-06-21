@@ -1,7 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class initialScreenDelegate extends WatchUi.InputDelegate {
+class InitialScreenDelegate extends WatchUi.InputDelegate {
 
     function initialize() {
         InputDelegate.initialize();
@@ -12,7 +12,7 @@ class initialScreenDelegate extends WatchUi.InputDelegate {
         switch (keyEvent.getKey()) {
             case KEY_ESC: {}
             case KEY_ENTER: {
-                WatchUi.pushView(new Rez.Menus.SetsMenu(), new menuNumberSetsDelegate(), WatchUi.SLIDE_BLINK);
+                WatchUi.pushView(new Rez.Menus.SetsMenu(), new MenuNumberSetsDelegate(), WatchUi.SLIDE_BLINK);
                 break;
             }
         }

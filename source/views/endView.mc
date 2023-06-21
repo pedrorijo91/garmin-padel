@@ -1,7 +1,7 @@
 import Toybox.Graphics;
 import Toybox.WatchUi;
 
-class endView extends WatchUi.View {
+class EndView extends WatchUi.View {
 
     function initialize() {
         View.initialize();

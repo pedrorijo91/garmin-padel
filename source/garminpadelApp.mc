@@ -10,7 +10,7 @@ class garminpadelApp extends Application.AppBase {
 
     function initialize() {
         AppBase.initialize();
-        matchConfig = new matchConfig();
+        matchConfig = new MatchConfig();
     }
 
     function onStart(state as Dictionary?) as Void {
@@ -20,22 +20,22 @@ class garminpadelApp extends Application.AppBase {
     }
 
     function getInitialView() as Array<Views or InputDelegates>? {
-        return [ new initialView(), new initialScreenDelegate() ] as Array<Views or InputDelegates>;
+        return [ new InitialView(), new InitialScreenDelegate() ] as Array<Views or InputDelegates>;
     }
 
     // TODO kinda meh that we allow everyone to update the matchConfig and we rely it's on a valid state at this moment
     function initMatch() as Void {
-        self.match = new padelMatch(self.matchConfig);
+        self.match = new PadelMatch(self.matchConfig);
 
         self.session = ActivityRecording.createSession({:sport => Activity.SPORT_RACKET, :subSport => Activity.SUB_SPORT_PADEL, :name => "Padel match"});
         self.session.start();
     }
 
-    function getMatch() as padelMatch {
+    function getMatch() as PadelMatch {
         return self.match;
     }
 
-    function getMatchConfig() as matchConfig {
+    function getMatchConfig() as MatchConfig {
         return self.matchConfig;
     }
 
