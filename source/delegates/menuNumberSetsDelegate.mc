@@ -28,9 +28,13 @@ class menuNumberSetsDelegate extends WatchUi.MenuInputDelegate {
 
         Application.getApp().getMatchConfig().setNumberOfSets(nbrSets);
 
-
-        Application.getApp().initMatch();
-        WatchUi.pushView(new scoreView(), new scoreDelegate(), WatchUi.SLIDE_UP);
+        // if not unlimited sets, lets ask about super tie config
+        if (nbrSets != matchConfig.UNLIMITED_SETS) {
+            WatchUi.pushView(new Rez.Menus.SuperTieMenu(), new menuSuperTieDelegate(), WatchUi.SLIDE_BLINK);
+        } else {
+            Application.getApp().initMatch();
+            WatchUi.pushView(new scoreView(), new scoreDelegate(), WatchUi.SLIDE_UP);
+        }
     }
 
 }

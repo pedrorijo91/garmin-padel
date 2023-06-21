@@ -1,0 +1,4 @@
+<menu id="SuperTieMenu" title="Super Tie">
+    <menu-item id="super_tie_yes" label="Yes" />
+    <menu-item id="super_tie_no" label="No" />
+</menu>
