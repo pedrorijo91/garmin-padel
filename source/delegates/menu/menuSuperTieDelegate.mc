@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
 
-class menuSuperTieDelegate extends WatchUi.MenuInputDelegate {
+class MenuSuperTieDelegate extends WatchUi.MenuInputDelegate {
 
     function initialize() {
         MenuInputDelegate.initialize();
@@ -19,7 +19,7 @@ class menuSuperTieDelegate extends WatchUi.MenuInputDelegate {
 
         Application.getApp().getMatchConfig().setSuperTie(superTie);
         Application.getApp().initMatch();
-        WatchUi.pushView(new scoreView(), new scoreDelegate(), WatchUi.SLIDE_UP);
+        WatchUi.pushView(new ScoreView(), new ScoreDelegate(), WatchUi.SLIDE_UP);
     }
 
 }

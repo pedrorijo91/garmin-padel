@@ -1,6 +1,6 @@
 import Toybox.Lang;
 
-class padelMatch {
+class PadelMatch {
 
     private var numberOfSets;
     private var superTie;
@@ -9,12 +9,12 @@ class padelMatch {
 
     private var matchStatus;
 
-    function initialize(config as matchConfig) {
+    function initialize(config as MatchConfig) {
 
         numberOfSets = config.getNumberOfSets();
         superTie = config.getSuperTie();
 
-        matchStatus = new matchStatus();
+        matchStatus = new MatchStatus();
 
         historicalScores = [];
     }

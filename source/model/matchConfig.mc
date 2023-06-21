@@ -1,6 +1,6 @@
 import Toybox.Lang;
 
-class matchConfig {
+class MatchConfig {
 
     public static const UNLIMITED_SETS = 10;
 

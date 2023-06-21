@@ -1,4 +1,4 @@
-class matchStatus {
+class MatchStatus {
 
     static const AVAILABLE_POINTS = [0, 15, 30, 40];
 

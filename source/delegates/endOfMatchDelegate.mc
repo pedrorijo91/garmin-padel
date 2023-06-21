@@ -1,7 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class endOfMatchDelegate extends WatchUi.InputDelegate {
+class EndOfMatchDelegate extends WatchUi.InputDelegate {
 
     function initialize() {
         InputDelegate.initialize();

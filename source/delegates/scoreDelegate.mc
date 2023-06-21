@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.ActivityMonitor;
 
-class scoreDelegate extends WatchUi.InputDelegate {
+class ScoreDelegate extends WatchUi.InputDelegate {
 
     function initialize() {
         InputDelegate.initialize();
@@ -17,7 +17,7 @@ class scoreDelegate extends WatchUi.InputDelegate {
                 var endOfMatch = match.incP1();
 
                 if (endOfMatch) {
-                    WatchUi.pushView(new endView(), new endOfMatchDelegate(), WatchUi.SLIDE_UP);
+                    WatchUi.pushView(new EndView(), new EndOfMatchDelegate(), WatchUi.SLIDE_UP);
                 }
                 
                 break;
@@ -26,7 +26,7 @@ class scoreDelegate extends WatchUi.InputDelegate {
                 var endOfMatch = match.incP2();
 
                 if (endOfMatch) {
-                    WatchUi.pushView(new endView(), new endOfMatchDelegate(), WatchUi.SLIDE_UP);
+                    WatchUi.pushView(new EndView(), new EndOfMatchDelegate(), WatchUi.SLIDE_UP);
                 }
 
                 break;

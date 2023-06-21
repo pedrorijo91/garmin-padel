@@ -5,7 +5,7 @@ import Toybox.Graphics;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
 
-class scoreView extends WatchUi.View {
+class ScoreView extends WatchUi.View {
 
     function initialize() {
         View.initialize();
