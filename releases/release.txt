@@ -1,3 +1,4 @@
+update screenshots and README
 update resources/properties.xml 
 update app id in manifest.xml
 export app
@@ -6,4 +7,4 @@ git add releases
 git cmsg "add v0.4.0 exported app"
 git tag -a v0.4.0 -m "version 0.4.0"
 git po && git ptags
-
+upload https://apps.garmin.com/en-US/developer/dashboard
