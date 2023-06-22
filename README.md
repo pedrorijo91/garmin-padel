@@ -42,7 +42,7 @@ Now you can control the score by clicking the `Up` and `Down` buttons on your de
 
 <p align="center"><img src="screenshots/scoreTie.jpeg" width="300"></p>
 
-// FIXME super tie screen
+<p align="center"><img src="screenshots/scoreSuperTie.jpeg" width="300"></p>
 
 If you selected a limited amount of sets (current options are 3, 5, or unlimited sets), when the game is over you'll see a final screen with the game summary:
 
@@ -72,7 +72,7 @@ You can also configure if the game should have super tie break in case of tie in
 
 If you choose to have super tie break, then in case of a tie, the last set will be a super tie (like a tie break, but until 10 and difference of 2 points). This means that if you select best of 3 sets, the third will be tie if it reaches 1-1 in sets. Similarly, if you select best of 5 sets, the fifth set will be a super tie if the score is 2-2 in sets.
 
-// FIXME image
+<p align="center"><img src="screenshots/menu_super.jpeg" width="300"></p>
 
 ## List of supported devices
 
