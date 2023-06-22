@@ -1,23 +1,22 @@
 # garmin-padel
 
-padel scorekeeper garmin watch app, available in [garmin connect](https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f)
+padel scorekeeper garmin watch app, available in [garmin connect](https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993)
 
 ## Functionalities
 
 Keeps track of padel match score.
 
+* display current hearth rate and steps
+* Configure number of sets (or unlimited)
+* Configure Super tie break
 * golden point 
 * Tie break
-* Unlimited sets
 * Save game score in activity details
-* display current hearth rate
-* Configure number of sets
-* Super tie break
 
 Not yet supported:
 
 * advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
-* Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/6)
+* Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/11)
 * Revert scores - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/5)
 
 Other work to be done listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
@@ -41,8 +40,6 @@ Now you can control the score by clicking the `Up` and `Down` buttons on your de
 <p align="center"><img src="screenshots/scoreMid.jpeg" width="300"></p>
 
 <p align="center"><img src="screenshots/scoreTie.jpeg" width="300"></p>
-
-<p align="center"><img src="screenshots/scoreSuperTie.jpeg" width="300"></p>
 
 If you selected a limited amount of sets (current options are 3, 5, or unlimited sets), when the game is over you'll see a final screen with the game summary:
 
@@ -74,11 +71,13 @@ If you choose to have super tie break, then in case of a tie, the last set will 
 
 <p align="center"><img src="screenshots/menu_super.jpeg" width="300"></p>
 
+<p align="center"><img src="screenshots/scoreSuperTie.jpeg" width="300"></p>
+
 ## List of supported devices
 
 See `<iq:products>` element in [manifest.xml](https://github.com/pedrorijo91/garmin-padel/blob/main/manifest.xml#L16) file.
 
-While there's nothing preventing other devides to be supported, due to limited access to test on other devices, support is only for the following:
+While there's nothing preventing other devides to be supported, due to limited access to test on other devices, support is only for the following at this moment:
 
 * garmin forerunner 945
 * garmin forerunner 935
@@ -90,13 +89,10 @@ Note: api level by device listed in [garmin dev docs](https://developer.garmin.c
 
 ## Garmin Connect app link
 
-See https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
+* Public app link: https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
+* Beta link: https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f
 
 ### Resources
-
-app links
-* App link: https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
-* Beta link: https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f
 
 icons
 * https://www.iconfinder.com/search?q=&iconset=octicons
