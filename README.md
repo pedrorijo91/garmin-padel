@@ -1,23 +1,22 @@
 # garmin-padel
 
-padel scorekeeper garmin watch app, available in [garmin connect](https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f)
+padel scorekeeper garmin watch app, available in [garmin connect](https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993)
 
 ## Functionalities
 
 Keeps track of padel match score.
 
+* display current hearth rate and steps
+* Configure number of sets (or unlimited)
+* Configure Super tie break
 * golden point 
 * Tie break
-* Unlimited sets
 * Save game score in activity details
-* display current hearth rate
-* Configure number of sets
 
 Not yet supported:
 
-* Super tie break - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/3)
 * advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
-* Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/6)
+* Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/11)
 * Revert scores - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/5)
 
 Other work to be done listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
@@ -28,7 +27,7 @@ After starting the application, the initial screen will show up:
 
 <p align="center"><img src="screenshots/initial.jpeg" width="300"></p>
 
-Just click the `Enter` button to enter the menu where you can configure the match settings. See the corresponding section for more details on available game options. // FIXME add link
+Just click the `Enter` button to enter the menu where you can configure the match settings. See the corresponding [section](https://github.com/pedrorijo91/garmin-padel#available-game-configurations) for more details on available game options.
 
 Use the `Up` and `Down` buttons on your device to scroll on each configuration, and use the `Enter`button to select.
 
@@ -64,13 +63,27 @@ This app allows to configure the number of sets for your game:
 
 <p align="center"><img src="screenshots/menu_sets.jpeg" width="300"></p>
 
+### super tie break
+
+You can also configure if the game should have super tie break in case of tie in sets. This option is only available if you select a limited number of sets in the previous step
+
+If you choose to have super tie break, then in case of a tie, the last set will be a super tie (like a tie break, but until 10 and difference of 2 points). This means that if you select best of 3 sets, the third will be tie if it reaches 1-1 in sets. Similarly, if you select best of 5 sets, the fifth set will be a super tie if the score is 2-2 in sets.
+
+<p align="center"><img src="screenshots/menu_super.jpeg" width="300"></p>
+
+<p align="center"><img src="screenshots/scoreSuperTie.jpeg" width="300"></p>
+
 ## List of supported devices
 
 See `<iq:products>` element in [manifest.xml](https://github.com/pedrorijo91/garmin-padel/blob/main/manifest.xml#L16) file.
 
-While there's nothing preventing other devides to be supported, due to limited access to test on other devices, support is only for the following:
+While there's nothing preventing other devides to be supported, due to limited access to test on other devices, support is only for the following at this moment:
 
 * garmin forerunner 945
+* garmin forerunner 935
+* garmin forerunner 735xt
+* garmin forerunner 645
+* garmin forerunner 645 music
 
 Feel free to raise an issue asking support for any specific device.
 
@@ -78,13 +91,10 @@ Note: api level by device listed in [garmin dev docs](https://developer.garmin.c
 
 ## Garmin Connect app link
 
-See https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
+* Public app link: https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
+* Beta link: https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f
 
 ### Resources
-
-app links
-* App link: https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
-* Beta link: https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f
 
 icons
 * https://www.iconfinder.com/search?q=&iconset=octicons
