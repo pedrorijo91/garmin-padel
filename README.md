@@ -82,6 +82,8 @@ While there's nothing preventing other devides to be supported, due to limited a
 * garmin forerunner 945
 * garmin forerunner 935
 * garmin forerunner 735xt
+* garmin forerunner 645
+* garmin forerunner 645 music
 
 Feel free to raise an issue asking support for any specific device.
 
