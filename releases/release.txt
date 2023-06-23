@@ -1,6 +1,10 @@
 update screenshots and README
 update resources/properties.xml 
 update app id in manifest.xml
+	PROD
+	68e60626-4a63-4319-a173-4c183df2f08d
+	BETA
+	5f8b9dfa-9467-4f61-a9ef-8885509d81cf
 export app
 mv garminpadel.iq garminpadel-v0_4_0.iq
 git add releases
