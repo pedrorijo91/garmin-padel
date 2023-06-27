@@ -79,11 +79,14 @@ See `<iq:products>` element in [manifest.xml](https://github.com/pedrorijo91/gar
 
 While there's nothing preventing other devides to be supported, due to limited access to test on other devices, support is only for the following at this moment:
 
-* garmin forerunner 945
-* garmin forerunner 935
-* garmin forerunner 735xt
+* garmin forerunner 245
+* garmin forerunner 255
 * garmin forerunner 645
-* garmin forerunner 645 music
+* garmin forerunner 735
+* garmin forerunner 745
+* garmin forerunner 935
+* garmin forerunner 945
+* garmin forerunner 955
 
 Feel free to raise an issue asking support for any specific device.
 
