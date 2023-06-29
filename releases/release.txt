@@ -1,5 +1,5 @@
 update screenshots and README
-update resources/properties.xml 
+update resources/properties.xml to final release 
 update app id in manifest.xml
 	PROD
 	68e60626-4a63-4319-a173-4c183df2f08d
@@ -12,3 +12,4 @@ git cmsg "add v0.4.0 exported app"
 git tag -a v0.4.0 -m "version 0.4.0"
 git po && git ptags
 upload https://apps.garmin.com/en-US/developer/dashboard
+update resources/properties.xml to new beta version 

@@ -77,16 +77,11 @@ If you choose to have super tie break, then in case of a tie, the last set will 
 
 See `<iq:products>` element in [manifest.xml](https://github.com/pedrorijo91/garmin-padel/blob/main/manifest.xml#L16) file.
 
-While there's nothing preventing other devides to be supported, due to limited access to test on other devices, support is only for the following at this moment:
+While there's nothing preventing other devides to be supported, due to limited access to test on other devices, support is only focused on the following ranges at this moment:
 
-* garmin forerunner 245
-* garmin forerunner 255
-* garmin forerunner 645
-* garmin forerunner 735
-* garmin forerunner 745
-* garmin forerunner 935
-* garmin forerunner 945
-* garmin forerunner 955
+* garmin forerunner (245, 266, 645, 735, 745, 935, 945, 955)
+* garmin fenix 5, 6, 7 (s/X/pro)
+* garmin descent mk2i/mk2s
 
 Feel free to raise an issue asking support for any specific device.
 
