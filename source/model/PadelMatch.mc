@@ -9,6 +9,8 @@ class PadelMatch {
 
     private var matchStatus;
 
+    private var lastPlayer;
+
     function initialize(config as MatchConfig) {
 
         numberOfSets = config.getNumberOfSets();
@@ -20,6 +22,7 @@ class PadelMatch {
     }
 
     function incP1() as Boolean {
+        lastPlayer = :P1;
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP1TieScore();
 
@@ -65,6 +68,7 @@ class PadelMatch {
     }
 
     function incP2() as Boolean {
+        lastPlayer = :P2;
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP2TieScore();
 
@@ -107,6 +111,12 @@ class PadelMatch {
         }
 
         return false;
+    }
+
+    function undo() {
+        // TODO implement
+        // should we keep lastPlayer or lastStatus?
+        System.println( "SHOULD UNDO " + self.lastPlayer);
     }
 
     function getMatchStatus() {
