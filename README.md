@@ -12,12 +12,12 @@ Keeps track of padel match score.
 * golden point 
 * Tie break
 * Save game score in activity details
+* Undo scores
 
 Not yet supported:
 
 * advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
 * Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/11)
-* Revert scores - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/5)
 
 Other work to be done listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
 
@@ -40,6 +40,9 @@ Now you can control the score by clicking the `Up` and `Down` buttons on your de
 <p align="center"><img src="screenshots/scoreMid.jpeg" width="300"></p>
 
 <p align="center"><img src="screenshots/scoreTie.jpeg" width="300"></p>
+
+If you clicked in the wrong player, you can revert the last score by pressing.....
+// FIXME
 
 If you selected a limited amount of sets (current options are 3, 5, or unlimited sets), when the game is over you'll see a final screen with the game summary:
 
