@@ -9,20 +9,24 @@ class PadelMatch {
 
     private var matchStatus;
 
-    private var lastPlayer;
+    private var prevMatchStatus;
 
     function initialize(config as MatchConfig) {
 
         numberOfSets = config.getNumberOfSets();
         superTie = config.getSuperTie();
 
-        matchStatus = new MatchStatus();
+        matchStatus = MatchStatus.New();
 
         historicalScores = [];
     }
 
+    function copyStatus(status as MatchStatus) as MatchStatus {
+        return status;
+    }
+
     function incP1() as Boolean {
-        lastPlayer = :P1;
+        prevMatchStatus = matchStatus.copy();
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP1TieScore();
 
@@ -68,7 +72,7 @@ class PadelMatch {
     }
 
     function incP2() as Boolean {
-        lastPlayer = :P2;
+        prevMatchStatus = matchStatus.copy();
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP2TieScore();
 
@@ -114,9 +118,7 @@ class PadelMatch {
     }
 
     function undo() {
-        // TODO implement
-        // should we keep lastPlayer or lastStatus?
-        System.println( "SHOULD UNDO " + self.lastPlayer);
+        self.matchStatus = self.prevMatchStatus;
     }
 
     function getMatchStatus() {

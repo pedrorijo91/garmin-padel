@@ -14,19 +14,24 @@ class MatchStatus {
     private var p1TieBreakScore;
     private var p2TieBreakScore;
 
-    function initialize() {
-        self.p1Sets = 0;
-        self.p2Sets = 0;
+    static function New() {
+        return new MatchStatus(0,0,0,0,0,0,0,0);
+    }
 
-        self.p1Games = 0;
-        self.p2Games = 0;
+    function initialize(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore) {
+        self.p1Sets = p1Sets;
+        self.p2Sets = p2Sets;
+
+        self.p1Games = p1Games;
+        self.p2Games = p2Games;
         
-        self.p1ScoreIdx = 0;
-        self.p2ScoreIdx = 0;
+        self.p1ScoreIdx = p1ScoreIdx;
+        self.p2ScoreIdx = p2ScoreIdx;
 
-        self.p1TieBreakScore = 0;
-        self.p2TieBreakScore = 0;
+        self.p1TieBreakScore = p1TieBreakScore;
+        self.p2TieBreakScore = p2TieBreakScore;
      }
+
 
     function getP1Sets() {
         return self.p1Sets;
@@ -103,5 +108,9 @@ class MatchStatus {
 
         self.p2ScoreIdx = 0;
         self.p2TieBreakScore = 0;
+    }
+
+    function copy() as MatchStatus {
+        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore);
     }
 }
