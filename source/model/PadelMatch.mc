@@ -22,10 +22,6 @@ class PadelMatch {
         historicalScores = [];
     }
 
-    function copyStatus(status as MatchStatus) as MatchStatus {
-        return status;
-    }
-
     function incP1() as Boolean {
         prevMatchStatus = matchStatus.copy();
         if (self.isInSuperTieBreak()) {
