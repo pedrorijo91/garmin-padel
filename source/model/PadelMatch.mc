@@ -17,6 +17,7 @@ class PadelMatch {
         superTie = config.getSuperTie();
 
         matchStatus = MatchStatus.New();
+        prevMatchStatus = MatchStatus.New();
 
         historicalScores = [];
     }
