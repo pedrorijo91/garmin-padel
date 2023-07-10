@@ -32,6 +32,13 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 break;
             }
             case KEY_ENTER: {
+                var message = "Undo?";
+                var dialog = new WatchUi.Confirmation(message);
+                WatchUi.pushView(
+                    dialog,
+                    new UndoConfirmationDelegate(),
+                    WatchUi.SLIDE_IMMEDIATE
+                );
                 break;
             }
             case KEY_ESC: {

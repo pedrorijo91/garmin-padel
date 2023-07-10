@@ -9,17 +9,21 @@ class PadelMatch {
 
     private var matchStatus;
 
+    private var prevMatchStatus;
+
     function initialize(config as MatchConfig) {
 
         numberOfSets = config.getNumberOfSets();
         superTie = config.getSuperTie();
 
-        matchStatus = new MatchStatus();
+        matchStatus = MatchStatus.New();
+        prevMatchStatus = MatchStatus.New();
 
         historicalScores = [];
     }
 
     function incP1() as Boolean {
+        prevMatchStatus = matchStatus.copy();
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP1TieScore();
 
@@ -65,6 +69,7 @@ class PadelMatch {
     }
 
     function incP2() as Boolean {
+        prevMatchStatus = matchStatus.copy();
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP2TieScore();
 
@@ -107,6 +112,10 @@ class PadelMatch {
         }
 
         return false;
+    }
+
+    function undo() {
+        self.matchStatus = self.prevMatchStatus;
     }
 
     function getMatchStatus() {
