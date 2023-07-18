@@ -7,5 +7,12 @@
                 dataLabel="@Strings.fit_score_label"
                 unitLabel="@Strings.fit_score_units"
             />
+             <fitField id="1" 
+                displayInActivitySummary="true" 
+                sortOrder = "1" 
+                precision="0"
+                dataLabel="@Strings.fit_steps_label"
+                unitLabel="@Strings.fit_steps_units"
+            />
     </fitContributions>
 </resources>
