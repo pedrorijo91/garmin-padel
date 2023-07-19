@@ -12,6 +12,7 @@ Keeps track of padel match score.
 * golden point 
 * Tie break
 * Save game score in activity details
+* Save steps in activity details
 * Undo scores
 
 Not yet supported:
