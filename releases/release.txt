@@ -6,7 +6,7 @@ update app id in manifest.xml
 	BETA
 	5f8b9dfa-9467-4f61-a9ef-8885509d81cf
 export app
-mv garminpadel.iq garminpadel-v0_4_0.iq
+mv garminpadel.iq garminpadel-v1_5_0.iq
 git add resources/properties.xml releases/
 git cmsg "add v1.5.0 exported app"
 git tag -a 1.5.0 -m "version 1.5.0"
