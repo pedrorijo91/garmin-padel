@@ -9,8 +9,8 @@ export app
 mv garminpadel.iq garminpadel-v1_5_0.iq
 git add resources/properties.xml releases/
 git cmsg "add v1.5.0 exported app"
+git tag -a 1.5.0 -m "version 1.5.0"
 update resources/properties.xml to new beta version 
 git cmsg "bump version for next development cycle"
-git tag -a 1.5.0 -m "version 1.5.0"
 git po && git ptags
 upload https://apps.garmin.com/en-US/developer/dashboard
