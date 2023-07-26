@@ -13,4 +13,6 @@ git tag -a 1.5.0 -m "version 1.5.0"
 update resources/properties.xml to new beta version 
 git cmsg "bump version for next development cycle"
 git po && git ptags
+close milestone
+create github release
 upload https://apps.garmin.com/en-US/developer/dashboard
