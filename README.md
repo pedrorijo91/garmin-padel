@@ -112,3 +112,6 @@ other apps
 * https://github.com/matco/badminton
 * https://github.com/viorelyo/ChairUmpire
 * https://apps.garmin.com/en-US/apps/5bf8f979-52ea-4124-be63-e9ff9ba81026
+
+FIT file viewer:
+* https://www.fitfileviewer.com/
