@@ -14,5 +14,12 @@
                 dataLabel="@Strings.fit_steps_label"
                 unitLabel="@Strings.fit_steps_units"
             />
+            <fitField id="2" 
+                displayInActivitySummary="true" 
+                sortOrder = "2" 
+                precision="0"
+                dataLabel="@Strings.app_version_label"
+                unitLabel="@Strings.app_version_units"
+            />
     </fitContributions>
 </resources>

@@ -63,7 +63,11 @@ class garminpadelApp extends Application.AppBase {
         var finalSteps = ActivityMonitor.getInfo().steps;
         var totalSteps = finalSteps - self.initialSetps;
         stepsField.setData(totalSteps);
-        
+
+        var versionField = session.createField("app_version", 2, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "v", :count => 50});
+        var appVersion = Application.Properties.getValue("AppVersion");
+        versionField.setData(appVersion);
+
         self.session.stop();
         self.session.save();
     }
