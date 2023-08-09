@@ -6,10 +6,20 @@ class MatchConfig {
 
     private var superTie;
     private var numberOfSets;
+    private var goldenPoint;
 
     function initialize() {
         superTie = false; 
-        numberOfSets =  UNLIMITED_SETS;    
+        numberOfSets =  UNLIMITED_SETS;   
+        goldenPoint = true; 
+    }
+
+    function setGoldenPoint(goldenPoint as Boolean) as Void {
+        self.goldenPoint = goldenPoint;
+    }
+
+    function getGoldenPoint() as Boolean {
+        return self.goldenPoint;
     }
 
     function setSuperTie(enabled as Boolean) as Void {
@@ -29,7 +39,7 @@ class MatchConfig {
     }
 
     function toString() as Lang.String  {
-        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets;
+        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets + ", golden: " + self.goldenPoint;
     }
 
 }
