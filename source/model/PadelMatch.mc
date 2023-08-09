@@ -4,6 +4,7 @@ class PadelMatch {
 
     private var numberOfSets;
     private var superTie;
+    private var goldenPoint;
 
     private var historicalScores;
 
@@ -15,6 +16,7 @@ class PadelMatch {
 
         numberOfSets = config.getNumberOfSets();
         superTie = config.getSuperTie();
+        goldenPoint = config.getGoldenPoint();
 
         matchStatus = MatchStatus.New();
         prevMatchStatus = MatchStatus.New();
@@ -22,6 +24,7 @@ class PadelMatch {
         historicalScores = [];
     }
 
+    // returns a boolean indicating wether the match has ended.
     function incP1() as Boolean {
         prevMatchStatus = matchStatus.copy();
         if (self.isInSuperTieBreak()) {
@@ -49,12 +52,45 @@ class PadelMatch {
             return false;
         }
 
-        // normal (not end of game) case
-        if (self.matchStatus.getP1Score() != 40) {
+        // G:
+            // P1 == 40 (end game)
+            // P1 != 40 (mid game)
+        // A:
+            // (end game)
+                // P1 == A 
+                // P1 == 40 && P2 != A && P2 < 40
+            // P2 == A (deuce)
+            // (mid game)
+
+        if (self.goldenPoint) {
+            // mid game
+            if (self.matchStatus.getP1Score() != 40) {
+                self.matchStatus.incP1Score();
+                return false;
+            } else {
+                return incP1Game();
+            }
+        } else {
+            // P2 was in Adv, revert to deuce
+            if (self.matchStatus.getP2Score() == 'A') {
+                self.matchStatus.setDeuce();
+                return false;
+            }
+
+            // P1 will win game
+            if (
+                self.matchStatus.getP1Score() == 'A' || 
+                (self.matchStatus.getP1Score() == 40 && self.matchStatus.getP2Score() != 40)) {
+                    return incP1Game();
+            }
+
+            // mid game
             self.matchStatus.incP1Score();
             return false;
         }
+    }
 
+    function incP1Game() as Boolean {
         self.matchStatus.incP1Games();
         self.resetAfterGameFinish();
 
@@ -68,6 +104,7 @@ class PadelMatch {
         return false;
     }
 
+    // returns a boolean indicating wether the match has ended.
     function incP2() as Boolean {
         prevMatchStatus = matchStatus.copy();
         if (self.isInSuperTieBreak()) {
@@ -95,12 +132,45 @@ class PadelMatch {
             return false;
         }
 
-        // normal (not end of game) case
-        if (self.matchStatus.getP2Score() != 40) {
+        // G:
+            // P1 == 40 (end game)
+            // P1 != 40 (mid game)
+        // A:
+            // (end game)
+                // P1 == A 
+                // P1 == 40 && P2 != A && P2 < 40
+            // P2 == A (deuce)
+            // (mid game)
+
+        if (self.goldenPoint) {
+            // mid game
+            if (self.matchStatus.getP2Score() != 40) {
+                self.matchStatus.incP2Score();
+                return false;
+            } else {
+                return incP2Game();
+            }
+        } else {
+            // P1 was in Adv, revert to deuce
+            if (self.matchStatus.getP1Score() == 'A') {
+                self.matchStatus.setDeuce();
+                return false;
+            }
+
+            // P2 will win game
+            if (
+                self.matchStatus.getP2Score() == 'A' || 
+                (self.matchStatus.getP2Score() == 40 && self.matchStatus.getP1Score() != 40)) {
+                    return incP2Game();
+            }
+
+            // mid game
             self.matchStatus.incP2Score();
             return false;
         }
+    }
 
+    function incP2Game() as Boolean {
         self.matchStatus.incP2Games();
         self.resetAfterGameFinish();
 
@@ -147,14 +217,10 @@ class PadelMatch {
 
         // check if game is over
         var totalPlayedSets = self.matchStatus.getP1Sets() + self.matchStatus.getP2Sets();
-        if (
+        return 
             totalPlayedSets == self.numberOfSets || 
-            abs(self.matchStatus.getP1Sets() - self.matchStatus.getP2Sets()) > self.numberOfSets - totalPlayedSets
-        ) {
-            return true;
-        }
+            abs(self.matchStatus.getP1Sets() - self.matchStatus.getP2Sets()) > self.numberOfSets - totalPlayedSets;
 
-        return false;
     }    
 
     function finishSuperTie() as Boolean {

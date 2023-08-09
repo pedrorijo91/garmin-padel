@@ -9,16 +9,11 @@ Keeps track of padel match score.
 * display current hearth rate and steps
 * Configure number of sets (or unlimited)
 * Configure Super tie break
-* golden point 
+* Configure between Advantages and Golden Point scores.
 * Tie break
 * Save game score in activity details
 * Save steps in activity details
 * Undo scores
-
-Not yet supported:
-
-* advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
-* Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/11)
 
 Other work to be done listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
 
@@ -57,6 +52,11 @@ If you select unlimited sets, to finish the activity at any moment, just click t
 After syncing with your Garmin Connect account, you'll be able to see some custom information about the match, such as game result.
 
 ## Available Game Configurations
+
+### golden point
+
+// FIXME score with advantages
+// image
 
 ### number of sets
 
