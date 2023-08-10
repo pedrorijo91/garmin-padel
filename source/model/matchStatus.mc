@@ -1,6 +1,6 @@
 class MatchStatus {
 
-    static const AVAILABLE_POINTS = [0, 15, 30, 40];
+    static const AVAILABLE_POINTS = [0, 15, 30, 40, 'A'];
 
     private var p1Sets;
     private var p2Sets;
@@ -95,6 +95,11 @@ class MatchStatus {
 
     function incP2TieScore() {
         self.p2TieBreakScore++;
+    }
+
+    function setDeuce() {
+        self.p1ScoreIdx = 3;
+        self.p2ScoreIdx = 3;
     }
 
     function resetGames() {

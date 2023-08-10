@@ -9,16 +9,11 @@ Keeps track of padel match score.
 * display current hearth rate and steps
 * Configure number of sets (or unlimited)
 * Configure Super tie break
-* golden point 
+* Configure between Advantages and Golden Point scores.
 * Tie break
 * Save game score in activity details
 * Save steps in activity details
 * Undo scores
-
-Not yet supported:
-
-* advantages support - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/1)
-* Display who should be serving - [github issue](https://github.com/pedrorijo91/garmin-padel/issues/11)
 
 Other work to be done listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
 
@@ -58,9 +53,20 @@ After syncing with your Garmin Connect account, you'll be able to see some custo
 
 ## Available Game Configurations
 
+### golden point
+
+This app allows to configure the score rules with either:
+
+* Golden Point: if 40-40, the first to win a point, wins the game
+* Advantages: if 40-40, the first point becomes advantage, and only if the same team wins another point it will win the game. How we usually see in tennis matches. 
+
+<p align="center"><img src="screenshots/menu_golden.jpeg" width="300"></p>
+
+<p align="center"><img src="screenshots/score_advantage.jpeg" width="300"></p>
+
 ### number of sets
 
-This app allows to configure the number of sets for your game:
+It is possible to configure the maximum number of sets for your game:
 
 * 3 sets
 * 5 sets
