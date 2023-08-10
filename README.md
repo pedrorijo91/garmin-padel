@@ -55,12 +55,18 @@ After syncing with your Garmin Connect account, you'll be able to see some custo
 
 ### golden point
 
-// FIXME score with advantages
-// image
+This app allows to configure the score rules with either:
+
+* Golden Point: if 40-40, the first to win a point, wins the game
+* Advantages: if 40-40, the first point becomes advantage, and only if the same team wins another point it will win the game. How we usually see in tennis matches. 
+
+<p align="center"><img src="screenshots/menu_golden.jpeg" width="300"></p>
+
+<p align="center"><img src="screenshots/score_advantage.jpeg" width="300"></p>
 
 ### number of sets
 
-This app allows to configure the number of sets for your game:
+It is possible to configure the maximum number of sets for your game:
 
 * 3 sets
 * 5 sets

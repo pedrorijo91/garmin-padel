@@ -1,4 +1,4 @@
-<menu id="GoldenPointMenu" title="Golden Point">
-    <menu-item id="golden_point_yes" label="Yes" />
-    <menu-item id="golden_point_no" label="No" />
+<menu id="GoldenPointMenu" title="Score">
+    <menu-item id="golden_point_yes" label="Golden Point" />
+    <menu-item id="golden_point_no" label="Advantages" />
 </menu>
