@@ -11,6 +11,7 @@ git add resources/strings/strings.xml releases/
 git cmsg "add v1.5.0 exported app"
 git tag -a 1.5.0 -m "version 1.5.0"
 update resources/properties.xml to new beta version 
+git add resources/strings/strings.xml
 git cmsg "bump version for next development cycle"
 git po && git ptags
 close milestone
