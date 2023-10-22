@@ -1,6 +1,7 @@
 import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
+using Toybox.Time.Gregorian;
 
 class garminpadelApp extends Application.AppBase {
 
@@ -8,11 +9,15 @@ class garminpadelApp extends Application.AppBase {
     private var match;
     private var session;
     private var initialSetps;
+    private var initialDay; // we need to check if the activity crossed the day to correctly compute steps
+
 
     function initialize() {
         AppBase.initialize();
         matchConfig = new MatchConfig();
-        initialSetps = 0;
+
+        initialSetps = 0; 
+        initialDay = Gregorian.info(Time.now(), Time.FORMAT_SHORT).day;
     }
 
     function onStart(state as Dictionary?) as Void {
@@ -60,8 +65,7 @@ class garminpadelApp extends Application.AppBase {
         scoreField.setData(score);
 
         var stepsField = session.createField("steps", 1, FitContributor.DATA_TYPE_UINT32, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "steps"});
-        var finalSteps = ActivityMonitor.getInfo().steps;
-        var totalSteps = finalSteps - self.initialSetps;
+        var totalSteps = computeTotalSteps();
         stepsField.setData(totalSteps);
 
         var versionField = session.createField("app_version", 2, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "v", :count => 50});
@@ -70,5 +74,26 @@ class garminpadelApp extends Application.AppBase {
 
         self.session.stop();
         self.session.save();
+    }
+
+    function computeTotalSteps() as Number {
+        var currentDay = Gregorian.info(Time.now(), Time.FORMAT_SHORT).day;
+        
+        if (currentDay == self.initialDay) {
+            var finalSteps = ActivityMonitor.getInfo().steps;
+            return finalSteps - self.initialSetps;
+        } else {
+            var history = ActivityMonitor.getHistory();
+
+            if (history.size() < 2) {
+                // if for some reason we dont have today and yesterday info
+                return -1;
+            }
+
+            var finalSteps = history[0].steps + history[1].steps - self.initialSetps;
+            return finalSteps;
+        }
+
+        
     }
 }
