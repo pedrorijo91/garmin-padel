@@ -18,7 +18,13 @@ class MenuGoldenPointDelegate extends WatchUi.MenuInputDelegate {
         }
 
         Application.getApp().getMatchConfig().setGoldenPoint(goldenPoint);
-        WatchUi.pushView(new Rez.Menus.SetsMenu(), new MenuNumberSetsDelegate(), WatchUi.SLIDE_BLINK);
+
+        if (goldenPoint == false) {
+            WatchUi.pushView(new Rez.Menus.SetsMenu(), new MenuNumberSetsDelegate(), WatchUi.SLIDE_BLINK);
+        } else {
+            WatchUi.pushView(new Rez.Menus.DeucesMenu(), new MenuGoldenPointDeuceSettingsDelegate(), WatchUi.SLIDE_BLINK);
+        }
+
     }
 
 }
