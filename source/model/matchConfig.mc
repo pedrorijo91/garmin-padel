@@ -7,11 +7,13 @@ class MatchConfig {
     private var superTie;
     private var numberOfSets;
     private var goldenPoint;
+    private var numberOfDeuces;
 
     function initialize() {
         superTie = false; 
         numberOfSets =  UNLIMITED_SETS;   
-        goldenPoint = true; 
+        goldenPoint = true;
+        //numberOfDeuces = 1;
     }
 
     function setGoldenPoint(goldenPoint as Boolean) as Void {
@@ -34,12 +36,20 @@ class MatchConfig {
         self.numberOfSets = sets;
     }
 
+    function setNumberOfDeuces(deuces as Number) as Void {
+        self.numberOfDeuces = deuces;
+    }
+
+    function getNumberOfDeuces() as Number {
+        return self.numberOfDeuces;
+    }
+
     function getNumberOfSets() as Number {
         return self.numberOfSets;
     }
 
     function toString() as Lang.String  {
-        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets + ", golden: " + self.goldenPoint;
+        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets + ", golden: " + self.goldenPoint + ", deuces: " + self.numberOfDeuces;
     }
 
 }
