@@ -5,6 +5,7 @@ class PadelMatch {
     private var numberOfSets;
     private var superTie;
     private var goldenPoint;
+    private var numberOfDeuces;
 
     private var historicalScores;
 
@@ -17,11 +18,13 @@ class PadelMatch {
         numberOfSets = config.getNumberOfSets();
         superTie = config.getSuperTie();
         goldenPoint = config.getGoldenPoint();
+        numberOfDeuces = config.getNumberOfDeuces();
 
         matchStatus = MatchStatus.New();
         prevMatchStatus = MatchStatus.New();
 
         historicalScores = [];
+
     }
 
     // returns a boolean indicating wether the match has ended.
@@ -65,10 +68,24 @@ class PadelMatch {
         if (self.goldenPoint) {
             // mid game
             if (self.matchStatus.getP1Score() != 40) {
+                if (self.matchStatus.getP1Score() == 'A') {
+                    return incP1Game();
+                }
                 self.matchStatus.incP1Score();
                 return false;
             } else {
-                return incP1Game();
+                if (self.matchStatus.getP2Score() == 40) {
+                    self.matchStatus.incTotalOfDeuces();
+
+                    if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
+                        return incP1Game();
+                    } else {
+                        self.matchStatus.incP1Score();
+                        return false;
+                    }
+                } else {
+                    return incP1Game();
+                }
             }
         } else {
             // P2 was in Adv, revert to deuce
@@ -145,10 +162,27 @@ class PadelMatch {
         if (self.goldenPoint) {
             // mid game
             if (self.matchStatus.getP2Score() != 40) {
+                if (self.matchStatus.getP2Score() == 'A') {
+                    return incP2Game();
+                }
                 self.matchStatus.incP2Score();
                 return false;
             } else {
-                return incP2Game();
+                if (self.matchStatus.getP1Score() == 40) {
+                    self.matchStatus.incTotalOfDeuces();
+
+                    if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
+                        return incP2Game();
+                    } else {
+                        self.matchStatus.incP2Score();
+                        return false;
+                    }
+                } else if (self.matchStatus.getP1Score() == 'A') {
+                    self.matchStatus.setDeuce();
+                    return false;
+                } else {
+                    return incP2Game();
+                }
             }
         } else {
             // P1 was in Adv, revert to deuce
