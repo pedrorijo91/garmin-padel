@@ -14,13 +14,13 @@ class MatchStatus {
     private var p1TieBreakScore;
     private var p2TieBreakScore;
 
-    private var TotalDeuces;
+    private var totalDeuces;
 
     static function New() {
         return new MatchStatus(0,0,0,0,0,0,0,0,0);
     }
 
-    function initialize(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, TotalDeuces) {
+    function initialize(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, totalDeuces) {
         self.p1Sets = p1Sets;
         self.p2Sets = p2Sets;
 
@@ -33,7 +33,7 @@ class MatchStatus {
         self.p1TieBreakScore = p1TieBreakScore;
         self.p2TieBreakScore = p2TieBreakScore;
 
-        self.TotalDeuces = TotalDeuces;
+        self.totalDeuces = totalDeuces;
      }
 
 
@@ -102,11 +102,11 @@ class MatchStatus {
     }
 
     function getTotalOfDeuces() {
-        return self.TotalDeuces;
+        return self.totalDeuces;
     }
 
     function incTotalOfDeuces() {
-        self.TotalDeuces++;
+        self.totalDeuces++;
     }
 
     function setDeuce() {
@@ -126,10 +126,10 @@ class MatchStatus {
         self.p2ScoreIdx = 0;
         self.p2TieBreakScore = 0;
 
-        self.TotalDeuces = 0;
+        self.totalDeuces = 0;
     }
 
     function copy() as MatchStatus {
-        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, TotalDeuces);
+        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, totalDeuces);
     }
 }
