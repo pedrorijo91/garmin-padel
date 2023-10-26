@@ -83,6 +83,9 @@ class PadelMatch {
                         self.matchStatus.incP1Score();
                         return false;
                     }
+                } else if (self.matchStatus.getP2Score() == 'A') {
+                    self.matchStatus.setDeuce();
+                    return false;
                 } else {
                     return incP1Game();
                 }
