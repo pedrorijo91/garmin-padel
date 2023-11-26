@@ -24,7 +24,6 @@ class PadelMatch {
         prevMatchStatus = MatchStatus.New();
 
         historicalScores = [];
-
     }
 
     // returns a boolean indicating wether the match has ended.
@@ -66,29 +65,42 @@ class PadelMatch {
             // (mid game)
 
         if (self.goldenPoint) {
-            // mid game
-            if (self.matchStatus.getP1Score() != 40) {
-                if (self.matchStatus.getP1Score() == 'A') {
-                    return incP1Game();
-                }
+            if (self.matchStatus.getP1Idx() > 3) { // winning phase
+                return incP1Game();
+            }
+
+            if (self.matchStatus.getP1Idx() < 3) { // less than 40
                 self.matchStatus.incP1Score();
-                return false;
-            } else {
-                if (self.matchStatus.getP2Score() == 40) {
+
+                if (self.matchStatus.getP1Score() == 40 && self.matchStatus.getP2Score() == 40) {
                     self.matchStatus.incTotalOfDeuces();
 
                     if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
-                        return incP1Game();
-                    } else {
-                        self.matchStatus.incP1Score();
-                        return false;
+                        self.matchStatus.setGolden();
                     }
-                } else if (self.matchStatus.getP2Score() == 'A') {
-                    self.matchStatus.setDeuce();
-                    return false;
-                } else {
+                }
+                return false;
+            } else { // we are 40
+                if (self.matchStatus.getP2Idx() < 3) { // less than 40
                     return incP1Game();
                 }
+
+                if (self.matchStatus.getP2Idx() == 3) { // 40
+                    self.matchStatus.incP1Score();
+                    return false;
+                }
+
+                if (self.matchStatus.getP2Idx() > 3) { // Advantage
+                    self.matchStatus.incTotalOfDeuces();
+
+                    if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
+                        self.matchStatus.setGolden();
+                    } else {
+                        self.matchStatus.setDeuce();
+                    }
+                    return false;
+                }
+                return incP1Game();
             }
         } else {
             // P2 was in Adv, revert to deuce
@@ -163,29 +175,42 @@ class PadelMatch {
             // (mid game)
 
         if (self.goldenPoint) {
-            // mid game
-            if (self.matchStatus.getP2Score() != 40) {
-                if (self.matchStatus.getP2Score() == 'A') {
-                    return incP2Game();
-                }
+            if (self.matchStatus.getP2Idx() > 3) { // winning phase
+                return incP2Game();
+            }
+
+            if (self.matchStatus.getP2Idx() < 3) { // less than 40
                 self.matchStatus.incP2Score();
-                return false;
-            } else {
-                if (self.matchStatus.getP1Score() == 40) {
+
+                if (self.matchStatus.getP2Score() == 40 && self.matchStatus.getP1Score() == 40) {
                     self.matchStatus.incTotalOfDeuces();
 
                     if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
-                        return incP2Game();
-                    } else {
-                        self.matchStatus.incP2Score();
-                        return false;
+                        self.matchStatus.setGolden();
                     }
-                } else if (self.matchStatus.getP1Score() == 'A') {
-                    self.matchStatus.setDeuce();
-                    return false;
-                } else {
+                }
+                return false;
+            } else { // we are 40
+                if (self.matchStatus.getP1Idx() < 3) { // less than 40
                     return incP2Game();
                 }
+
+                if (self.matchStatus.getP1Idx() == 3) { // 40
+                    self.matchStatus.incP2Score();
+                    return false;
+                }
+
+                if (self.matchStatus.getP1Idx() > 3) { // Advantage
+                    self.matchStatus.incTotalOfDeuces();
+
+                    if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
+                        self.matchStatus.setGolden();
+                    } else {
+                        self.matchStatus.setDeuce();
+                    }
+                    return false;
+                }
+                return incP2Game();
             }
         } else {
             // P1 was in Adv, revert to deuce
@@ -258,7 +283,7 @@ class PadelMatch {
             totalPlayedSets == self.numberOfSets || 
             abs(self.matchStatus.getP1Sets() - self.matchStatus.getP2Sets()) > self.numberOfSets - totalPlayedSets;
 
-    }    
+    }
 
     function finishSuperTie() as Boolean {
         var result = "" + self.matchStatus.getP1TieScore() + "-" + self.matchStatus.getP2TieScore();
