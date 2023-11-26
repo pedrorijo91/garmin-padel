@@ -1,6 +1,6 @@
 class MatchStatus {
 
-    static const AVAILABLE_POINTS = [0, 15, 30, 40, 'A'];
+    static const AVAILABLE_POINTS = [0, 15, 30, 40, 'A', 'G'];
 
     private var p1Sets;
     private var p2Sets;
@@ -61,6 +61,10 @@ class MatchStatus {
         self.p1ScoreIdx++;
     }
 
+    function getP1Idx() {
+        return self.p1ScoreIdx;
+    }
+
     function getP1TieScore() {
         return self.p1TieBreakScore;
     }
@@ -93,6 +97,10 @@ class MatchStatus {
         self.p2ScoreIdx++;
     }
 
+    function getP2Idx() {
+        return self.p2ScoreIdx;
+    }
+
     function getP2TieScore() {
         return self.p2TieBreakScore;
     }
@@ -112,6 +120,11 @@ class MatchStatus {
     function setDeuce() {
         self.p1ScoreIdx = 3;
         self.p2ScoreIdx = 3;
+    }
+
+    function setGolden() {
+        self.p1ScoreIdx = 5;
+        self.p2ScoreIdx = 5;
     }
 
     function resetGames() {
