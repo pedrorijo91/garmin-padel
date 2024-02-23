@@ -63,4 +63,9 @@ class ScoreDelegate extends WatchUi.InputDelegate {
         return true;
     }
 
+    function onSwipe(swipeEvent) {
+        // ignoring swipe events, so just returning handled=true to avoid other actions
+        return true;
+    }
+
 }
