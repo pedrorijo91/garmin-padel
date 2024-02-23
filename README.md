@@ -112,6 +112,7 @@ docs
 * Garmin connect API docs: https://developer.garmin.com/connect-iq/api-docs/
 * Garmin SDK docs: https://developer.garmin.com/connect-iq/core-topics/
 * Garmin dev forum: https://forums.garmin.com/developer/
+* devices capabilities: https://developer.garmin.com/connect-iq/reference-guides/devices-reference/#devicereference
 
 other apps
 * from https://github.com/search?l=Monkey+C&q=garmin&type=Repositories:
