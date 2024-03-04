@@ -1,16 +1,14 @@
 update screenshots and README
-update resources/strings/strings.xml to final release 
-update app id in manifest.xml
-	PROD
-	68e60626-4a63-4319-a173-4c183df2f08d
-	BETA
-	5f8b9dfa-9467-4f61-a9ef-8885509d81cf
+update resources/strings/strings.xml to final release
+	python replace_version.py drop_beta
 export app
+	sh releases/scripts/export.sh
 mv garminpadel.iq garminpadel-v1_5_0.iq
 git add resources/strings/strings.xml releases/
 git cmsg "add v1.5.0 exported app"
 git tag -a 1.5.0 -m "version 1.5.0"
 update resources/strings/strings.xml to new beta version 
+	python replace_version.py next_beta
 git add resources/strings/strings.xml
 git cmsg "bump version for next development cycle"
 git po && git ptags
