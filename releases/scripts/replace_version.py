@@ -9,8 +9,7 @@ def increment_version(current_version, version_type):
         major, minor, patch = map(int, (major, minor, patch))
         beta = 1 if beta else 0
     else:
-        print("Error: Invalid version format.")
-        return
+        sys.exit("Error: Invalid version format.")
 
     # Increment the version according to the specified type
     if version_type == 'major':
@@ -53,8 +52,7 @@ def replace_version(version_type):
         current_version = match.group(1)
         is_beta = bool(match.group(2))
     else:
-        print("Error: No version found in the file.")
-        return
+        sys.exit("Error: No version found in the file.")
 
     if version_type == 'drop_beta' and not is_beta:
             sys.exit("Error: The current version is not a beta version.")
@@ -72,7 +70,8 @@ def replace_version(version_type):
     with open(filename, 'w') as file:
         file.write(new_content)
 
-    print(f"Successfully updated from version {current_version} to {new_version}")
+    sys.stderr.write(f"Successfully updated from version {current_version} to {new_version}\n")
+    return new_version
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -84,4 +83,5 @@ if __name__ == "__main__":
         print("Error: Invalid version type. Use 'major', 'minor', 'patch', 'drop_beta', or 'next_beta'.")
         sys.exit(1)
 
-    replace_version(version_type)
+    new_version = replace_version(version_type)
+    sys.stdout.write(new_version)
