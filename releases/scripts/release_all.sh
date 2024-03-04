@@ -17,7 +17,7 @@ git add resources/strings/strings.xml releases/
 git cmsg "add v$new_version exported app"
 git tag -a $new_version -m "version $new_version"
 
-python replace_version.py next_beta
+python releases/scripts/replace_version.py next_beta
 git add resources/strings/strings.xml
 git cmsg "bump version for next development cycle"
 
