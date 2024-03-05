@@ -33,8 +33,9 @@ git cmsg "bump version for next development cycle"
 
 git po && git ptags
 
+echo "\n\n----------------\n\n"
 echo "Missing steps:"
 echo "close milestone https://github.com/pedrorijo91/garmin-padel/milestones"
-echo "create github release"
+echo "create github release https://github.com/pedrorijo91/garmin-padel/tags"
 echo "add exported app to release"
 echo "upload https://apps.garmin.com/en-US/developer/dashboard"
