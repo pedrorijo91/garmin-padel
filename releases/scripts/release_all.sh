@@ -1,5 +1,15 @@
 #!/bin/bash
 
+echo "have you updated README and screenshots already?"
+read ans
+
+if [ "$ans" == "y" ]; then
+    echo "Continuing"
+else
+    echo "---- Aborting ----"
+    exit 1
+fi
+
 new_version=$(python releases/scripts/replace_version.py drop_beta)
 exit_code=$?
 if [ $exit_code -ne 0 ]; then
