@@ -9,8 +9,7 @@
             "request": "launch",
             "name": "Run App",
             "stopAtLaunch": false,
-            "device": "fr945"
-          //  "device": "${command:GetTargetDevice}"
+            "device": "${command:GetTargetDevice}"
 
         },
         {
