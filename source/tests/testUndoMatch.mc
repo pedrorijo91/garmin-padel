@@ -1,36 +1,24 @@
 import Toybox.Lang;
 import Toybox.Test;
 
-/*
-    normal: super + 3
-        * undo when advantages
-        * undo when golden
-        * check set won
-        * check goes into tie
-        * check tie score
-        * check tie finish
-        * check 2 sets over
-        * check 1-1 set goes into super
-        * check super scores work
-        * checks super finishes correctly
-        * check score history
-
-    normal without super:
-        * check last set is normal
-    
-    unlimited
-        * check it finishes after X sets
-*/
-
 (:test)
-function initMatchTest(logger as Logger) as Boolean {
+function undoOnceTest(logger as Logger) as Boolean {
     
     var matchConfig = new MatchConfig();
     matchConfig.setGoldenPoint(true);
     matchConfig.setNumberOfSets(3);
     matchConfig.setSuperTie(true);
 
+    // match 30-30 and then 40-30  
     var match = new PadelMatch(matchConfig);
+    match.incP1();
+    match.incP1();
+    match.incP2();
+    match.incP2();
+    match.incP1();
+
+    match.undo();
+
     var status = match.getMatchStatus();
 
     return 
@@ -38,115 +26,143 @@ function initMatchTest(logger as Logger) as Boolean {
         status.getP2Sets() == 0 &&
         status.getP1Games() == 0 &&
         status.getP2Games() == 0 &&
-        status.getP1Score() == 0 &&
-        status.getP2Score() == 0 &&
+        status.getP1Score() == 30 &&
+        status.getP2Score() == 30 &&
         status.getP1TieScore() == 0 &&
         status.getP2TieScore() == 0;
-  }
-
+}
 
 (:test)
-function firstIncP1Test(logger as Logger) as Boolean {
+function multipleUndoTest(logger as Logger) as Boolean {
     
     var matchConfig = new MatchConfig();
     matchConfig.setGoldenPoint(true);
     matchConfig.setNumberOfSets(3);
     matchConfig.setSuperTie(true);
 
+    // match 30-30 and then 40-30  
     var match = new PadelMatch(matchConfig);
-    var res = match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP2();
+    match.incP2();
+    match.incP1();
+
+    match.undo();
+    match.undo();
+    match.undo();
+
     var status = match.getMatchStatus();
 
     return 
-        res == false && // false means it's not match end
         status.getP1Sets() == 0 &&
         status.getP2Sets() == 0 &&
         status.getP1Games() == 0 &&
         status.getP2Games() == 0 &&
-        status.getP1Score() == 15 &&
-        status.getP2Score() == 0 &&
+        status.getP1Score() == 30 &&
+        status.getP2Score() == 30 &&
         status.getP1TieScore() == 0 &&
         status.getP2TieScore() == 0;
-  }
+}
 
 (:test)
-function multiIncP1Test(logger as Logger) as Boolean {
+function undoAfterGameTest(logger as Logger) as Boolean {
     
     var matchConfig = new MatchConfig();
     matchConfig.setGoldenPoint(true);
     matchConfig.setNumberOfSets(3);
     matchConfig.setSuperTie(true);
 
-    var match = new PadelMatch(matchConfig);
-    match.incP1();
-    match.incP1();
-    var res = match.incP1();
-    var status = match.getMatchStatus();
-
-    return 
-        res == false && // false means it's not match end
-        status.getP1Sets() == 0 &&
-        status.getP2Sets() == 0 &&
-        status.getP1Games() == 0 &&
-        status.getP2Games() == 0 &&
-        status.getP1Score() == 40 &&
-        status.getP2Score() == 0 &&
-        status.getP1TieScore() == 0 &&
-        status.getP2TieScore() == 0;
-  }
-
-(:test)
-function incGameP1Test(logger as Logger) as Boolean {
-    
-    var matchConfig = new MatchConfig();
-    matchConfig.setGoldenPoint(true);
-    matchConfig.setNumberOfSets(3);
-    matchConfig.setSuperTie(true);
-
-    var match = new PadelMatch(matchConfig);
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    var res = match.incP1();
-    var status = match.getMatchStatus();
-
-    return 
-        res == false && // false means it's not match end
-        status.getP1Sets() == 0 &&
-        status.getP2Sets() == 0 &&
-        status.getP1Games() == 1 &&
-        status.getP2Games() == 0 &&
-        status.getP1Score() == 0 &&
-        status.getP2Score() == 0 &&
-        status.getP1TieScore() == 0 &&
-        status.getP2TieScore() == 0;
-  }
-
-(:test)
-function incP2ToDeuceTest(logger as Logger) as Boolean {
-    
-    var matchConfig = new MatchConfig();
-    matchConfig.setGoldenPoint(true);
-    matchConfig.setNumberOfSets(3);
-    matchConfig.setSuperTie(true);
-
+    // match 40-30 and then P1  
     var match = new PadelMatch(matchConfig);
     match.incP1();
     match.incP1();
     match.incP1();
     match.incP2();
     match.incP2();
-    var res = match.incP2();
+
+    match.incP1();
+
+    match.undo();
+
     var status = match.getMatchStatus();
 
     return 
-        res == false && // false means it's not match end
         status.getP1Sets() == 0 &&
         status.getP2Sets() == 0 &&
         status.getP1Games() == 0 &&
         status.getP2Games() == 0 &&
         status.getP1Score() == 40 &&
-        status.getP2Score() == 40 &&
+        status.getP2Score() == 30 &&
+        status.getP1TieScore() == 0 &&
+        status.getP2TieScore() == 0;
+}
+
+(:test)
+function undoAfterSetTest(logger as Logger) as Boolean {
+    
+    var matchConfig = new MatchConfig();
+    matchConfig.setGoldenPoint(true);
+    matchConfig.setNumberOfSets(3);
+    matchConfig.setSuperTie(true);
+
+    // match was (5-2) 40-15 and then P1 
+    var match = new PadelMatch(matchConfig);
+
+    // 1-0
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 2-0
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 3-0
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 3-1
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    // 3-2
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    // 4-2
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 5-2
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 40-15
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP2();
+
+    match.incP1();
+
+    match.undo();
+
+    var status = match.getMatchStatus();
+
+    return 
+        status.getP1Sets() == 0 &&
+        status.getP2Sets() == 0 &&
+        status.getP1Games() == 5 &&
+        status.getP2Games() == 2 &&
+        status.getP1Score() == 40 &&
+        status.getP2Score() == 15 &&
         status.getP1TieScore() == 0 &&
         status.getP2TieScore() == 0;
 }
