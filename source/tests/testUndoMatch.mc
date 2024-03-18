@@ -166,3 +166,72 @@ function undoAfterSetTest(logger as Logger) as Boolean {
         status.getP1TieScore() == 0 &&
         status.getP2TieScore() == 0;
 }
+
+(:test)
+function undoAdvantagesTest(logger as Logger) as Boolean {
+    
+    var matchConfig = new MatchConfig();
+    matchConfig.setGoldenPoint(false);
+    matchConfig.setNumberOfSets(3);
+    matchConfig.setSuperTie(true);
+
+    // match 40-40 and then A-40  
+    var match = new PadelMatch(matchConfig);
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP1();
+
+    match.undo();
+
+    var status = match.getMatchStatus();
+
+    return 
+        status.getP1Sets() == 0 &&
+        status.getP2Sets() == 0 &&
+        status.getP1Games() == 0 &&
+        status.getP2Games() == 0 &&
+        status.getP1Score() == 40 &&
+        status.getP2Score() == 40 &&
+        status.getP1TieScore() == 0 &&
+        status.getP2TieScore() == 0;
+}
+
+(:test)
+function undoAdvAfterGameTest(logger as Logger) as Boolean {
+    
+    var matchConfig = new MatchConfig();
+    matchConfig.setGoldenPoint(false);
+    matchConfig.setNumberOfSets(3);
+    matchConfig.setSuperTie(true);
+
+    // match A-40 and then P1  
+    var match = new PadelMatch(matchConfig);
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP1();
+
+    match.incP1();
+
+    match.undo();
+
+    var status = match.getMatchStatus();
+
+    return 
+        status.getP1Sets() == 0 &&
+        status.getP2Sets() == 0 &&
+        status.getP1Games() == 0 &&
+        status.getP2Games() == 0 &&
+        status.getP1Score() == 'A' &&
+        status.getP2Score() == 40 &&
+        status.getP1TieScore() == 0 &&
+        status.getP2TieScore() == 0;
+}
+
