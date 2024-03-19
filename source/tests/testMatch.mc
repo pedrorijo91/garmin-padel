@@ -3,9 +3,6 @@ import Toybox.Test;
 
 /*
     normal (super + 3):
-        * check goes into tie
-        * check tie score
-        * check tie finish
 
         * check 2 sets over
         * check 1-1 set goes into super
