@@ -13,6 +13,7 @@ class MatchConfig {
         superTie = false; 
         numberOfSets =  UNLIMITED_SETS;   
         goldenPoint = true;
+        numberOfDeuces = 1;
     }
 
     function setGoldenPoint(goldenPoint as Boolean) as Void {
