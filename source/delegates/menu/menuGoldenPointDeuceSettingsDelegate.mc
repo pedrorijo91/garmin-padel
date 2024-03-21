@@ -13,11 +13,11 @@ class MenuGoldenPointDeuceSettingsDelegate extends WatchUi.MenuInputDelegate {
         var nbrDeuces = 1;
 
          switch (item) {
-            case :deuces_1: {
+            case :deuces_default: {
                 nbrDeuces = 1;
                 break;
             }
-            case :deuces_2: {
+            case :deuces_amateur: {
                 nbrDeuces = 2;
                 break;
             }
