@@ -1,0 +1,4 @@
+<menu id="DeucesMenu" title="Deuces">
+    <menu-item id="deuces_default" label="1st (default)" />
+    <menu-item id="deuces_amateur" label="2nd (amateur)" />
+</menu>

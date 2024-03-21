@@ -5,6 +5,7 @@ class PadelMatch {
     private var numberOfSets;
     private var superTie;
     private var goldenPoint;
+    private var numberOfDeuces;
 
     private var historicalScores;
 
@@ -17,6 +18,7 @@ class PadelMatch {
         numberOfSets = config.getNumberOfSets();
         superTie = config.getSuperTie();
         goldenPoint = config.getGoldenPoint();
+        numberOfDeuces = config.getNumberOfDeuces();
 
         matchStatus = MatchStatus.New();
         prevMatchStatus = MatchStatus.New();
@@ -63,11 +65,41 @@ class PadelMatch {
             // (mid game)
 
         if (self.goldenPoint) {
-            // mid game
-            if (self.matchStatus.getP1Score() != 40) {
+            if (self.matchStatus.getP1Idx() > 3) { // winning phase
+                return incP1Game();
+            }
+
+            if (self.matchStatus.getP1Idx() < 3) { // less than 40
                 self.matchStatus.incP1Score();
+
+                if (self.matchStatus.getP1Score() == 40 && self.matchStatus.getP2Score() == 40) {
+                    self.matchStatus.incTotalOfDeuces();
+
+                    if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
+                        self.matchStatus.setGolden();
+                    }
+                }
                 return false;
-            } else {
+            } else { // we are 40
+                if (self.matchStatus.getP2Idx() < 3) { // less than 40
+                    return incP1Game();
+                }
+
+                if (self.matchStatus.getP2Idx() == 3) { // 40
+                    self.matchStatus.incP1Score();
+                    return false;
+                }
+
+                if (self.matchStatus.getP2Idx() > 3) { // Advantage
+                    self.matchStatus.incTotalOfDeuces();
+
+                    if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
+                        self.matchStatus.setGolden();
+                    } else {
+                        self.matchStatus.setDeuce();
+                    }
+                    return false;
+                }
                 return incP1Game();
             }
         } else {
@@ -143,11 +175,41 @@ class PadelMatch {
             // (mid game)
 
         if (self.goldenPoint) {
-            // mid game
-            if (self.matchStatus.getP2Score() != 40) {
+            if (self.matchStatus.getP2Idx() > 3) { // winning phase
+                return incP2Game();
+            }
+
+            if (self.matchStatus.getP2Idx() < 3) { // less than 40
                 self.matchStatus.incP2Score();
+
+                if (self.matchStatus.getP2Score() == 40 && self.matchStatus.getP1Score() == 40) {
+                    self.matchStatus.incTotalOfDeuces();
+
+                    if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
+                        self.matchStatus.setGolden();
+                    }
+                }
                 return false;
-            } else {
+            } else { // we are 40
+                if (self.matchStatus.getP1Idx() < 3) { // less than 40
+                    return incP2Game();
+                }
+
+                if (self.matchStatus.getP1Idx() == 3) { // 40
+                    self.matchStatus.incP2Score();
+                    return false;
+                }
+
+                if (self.matchStatus.getP1Idx() > 3) { // Advantage
+                    self.matchStatus.incTotalOfDeuces();
+
+                    if (self.matchStatus.getTotalOfDeuces() == self.numberOfDeuces) {
+                        self.matchStatus.setGolden();
+                    } else {
+                        self.matchStatus.setDeuce();
+                    }
+                    return false;
+                }
                 return incP2Game();
             }
         } else {
@@ -221,7 +283,7 @@ class PadelMatch {
             totalPlayedSets == self.numberOfSets || 
             abs(self.matchStatus.getP1Sets() - self.matchStatus.getP2Sets()) > self.numberOfSets - totalPlayedSets;
 
-    }    
+    }
 
     function finishSuperTie() as Boolean {
         var result = "" + self.matchStatus.getP1TieScore() + "-" + self.matchStatus.getP2TieScore();

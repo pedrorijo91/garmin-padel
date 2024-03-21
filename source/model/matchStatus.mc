@@ -1,6 +1,6 @@
 class MatchStatus {
 
-    static const AVAILABLE_POINTS = [0, 15, 30, 40, 'A'];
+    static const AVAILABLE_POINTS = [0, 15, 30, 40, 'A', 'G'];
 
     private var p1Sets;
     private var p2Sets;
@@ -14,11 +14,13 @@ class MatchStatus {
     private var p1TieBreakScore;
     private var p2TieBreakScore;
 
+    private var totalDeuces;
+
     static function New() {
-        return new MatchStatus(0,0,0,0,0,0,0,0);
+        return new MatchStatus(0,0,0,0,0,0,0,0,0);
     }
 
-    function initialize(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore) {
+    function initialize(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, totalDeuces) {
         self.p1Sets = p1Sets;
         self.p2Sets = p2Sets;
 
@@ -30,6 +32,8 @@ class MatchStatus {
 
         self.p1TieBreakScore = p1TieBreakScore;
         self.p2TieBreakScore = p2TieBreakScore;
+
+        self.totalDeuces = totalDeuces;
      }
 
 
@@ -55,6 +59,10 @@ class MatchStatus {
 
     function incP1Score() {
         self.p1ScoreIdx++;
+    }
+
+    function getP1Idx() {
+        return self.p1ScoreIdx;
     }
 
     function getP1TieScore() {
@@ -89,6 +97,10 @@ class MatchStatus {
         self.p2ScoreIdx++;
     }
 
+    function getP2Idx() {
+        return self.p2ScoreIdx;
+    }
+
     function getP2TieScore() {
         return self.p2TieBreakScore;
     }
@@ -97,9 +109,22 @@ class MatchStatus {
         self.p2TieBreakScore++;
     }
 
+    function getTotalOfDeuces() {
+        return self.totalDeuces;
+    }
+
+    function incTotalOfDeuces() {
+        self.totalDeuces++;
+    }
+
     function setDeuce() {
         self.p1ScoreIdx = 3;
         self.p2ScoreIdx = 3;
+    }
+
+    function setGolden() {
+        self.p1ScoreIdx = 5;
+        self.p2ScoreIdx = 5;
     }
 
     function resetGames() {
@@ -113,9 +138,11 @@ class MatchStatus {
 
         self.p2ScoreIdx = 0;
         self.p2TieBreakScore = 0;
+
+        self.totalDeuces = 0;
     }
 
     function copy() as MatchStatus {
-        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore);
+        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, totalDeuces);
     }
 }
