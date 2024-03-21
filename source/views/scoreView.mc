@@ -47,10 +47,10 @@ class ScoreView extends WatchUi.View {
         var steps = ActivityMonitor.getInfo().steps;
 
         var heartRateIterator = ActivityMonitor.getHeartRateHistory(1, true);
-        var sample = heartRateIterator.next();
+        var heartRate = heartRateIterator.next().heartRate;
 
         var stepsAndHeartLabel = View.findDrawableById("stepsAndHeartLabel") as Text;
-        stepsAndHeartLabel.setText("" + steps + " / " + sample.heartRate);
+        stepsAndHeartLabel.setText("" + steps + " / " + heartRate);
 
         var info = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var timeString = Lang.format("$1$:$2$:$3$", [

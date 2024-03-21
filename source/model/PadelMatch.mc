@@ -251,7 +251,7 @@ class PadelMatch {
     }
 
     function getMatchStatus() {
-        return self.matchStatus;
+        return self.matchStatus.copy();
     }
 
     function getHistoricalScores() {
