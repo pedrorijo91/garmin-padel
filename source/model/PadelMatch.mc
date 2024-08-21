@@ -6,8 +6,6 @@ class PadelMatch {
     private var superTie;
     private var goldenPoint;
 
-    private var historicalScores;
-
     private var matchStatus;
 
     private var prevMatchStatus;
@@ -20,8 +18,6 @@ class PadelMatch {
 
         matchStatus = MatchStatus.New();
         prevMatchStatus = MatchStatus.New();
-
-        historicalScores = [];
     }
 
     // returns a boolean indicating wether the match has ended.
@@ -192,11 +188,10 @@ class PadelMatch {
         return self.matchStatus.copy();
     }
 
-    function getHistoricalScores() {
-        var res = [];
-        res.addAll(self.historicalScores);
+    function getHistoricalScores() as Lang.Array<Lang.String> {
+        var res = self.matchStatus.getHistoricalScores();
 
-        if (self.matchStatus.getP1Games() != 0 || self.matchStatus.getP2Games() != 0) {
+         if (self.matchStatus.getP1Games() != 0 || self.matchStatus.getP2Games() != 0) {
             res.add("" + self.matchStatus.getP1Games() + "-" + self.matchStatus.getP2Games());
         }
 
@@ -225,7 +220,7 @@ class PadelMatch {
 
     function finishSuperTie() as Boolean {
         var result = "" + self.matchStatus.getP1TieScore() + "-" + self.matchStatus.getP2TieScore();
-        self.historicalScores.add(result);
+        self.matchStatus.addHistoricalScore(result);
         return true;
     } 
 
@@ -235,7 +230,7 @@ class PadelMatch {
             result += " (" + self.min(self.matchStatus.getP1TieScore(), self.matchStatus.getP2TieScore()) + ")";
         }
 
-        self.historicalScores.add(result);
+        self.matchStatus.addHistoricalScore(result);
 
         self.matchStatus.resetGames();
 
