@@ -156,7 +156,14 @@ function undoAfterSetTest(logger as Logger) as Boolean {
 
     var status = match.getMatchStatus();
 
+    var history = match.getHistoricalScores();
+    logger.debug(history);
+
+    Test.assert(history.size == 2);
+
     return 
+        history.size == 1 &&
+        history[0] == "5-2" &&
         status.getP1Sets() == 0 &&
         status.getP2Sets() == 0 &&
         status.getP1Games() == 5 &&

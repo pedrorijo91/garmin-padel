@@ -26,8 +26,6 @@ function incMatch(
         // FIXME implement and add better API methods
 }
 
-
-
 function printMatchStatus(status as MatchStatus) as String {
 
     return 
