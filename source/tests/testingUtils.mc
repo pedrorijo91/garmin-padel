@@ -26,8 +26,6 @@ function incMatch(
         // FIXME implement and add better API methods
 }
 
-
-
 function printMatchStatus(status as MatchStatus) as String {
 
     return 
@@ -38,5 +36,6 @@ function printMatchStatus(status as MatchStatus) as String {
     ",P1Score=" + status.getP1Score() + 
     ",P2Score=" + status.getP2Score() + 
     ",P1TieScore=" + status.getP1TieScore() + 
-    ",P2TieScore=" + status.getP2TieScore();
+    ",P2TieScore=" + status.getP2TieScore() +
+    ",history=" + status.getHistoricalScores();
 }

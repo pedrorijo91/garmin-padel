@@ -175,8 +175,6 @@ function superTieFinishTest(logger as Logger) as Boolean {
 
     var status = match.getMatchStatus();
         
-    logger.debug(printMatchStatus(status));
-
     return 
         res == true && // true means game over
         status.getP1Sets() == 2 &&

@@ -1,3 +1,5 @@
+import Toybox.Lang;
+
 class MatchStatus {
 
     static const AVAILABLE_POINTS = [0, 15, 30, 40, 'A'];
@@ -14,11 +16,14 @@ class MatchStatus {
     private var p1TieBreakScore;
     private var p2TieBreakScore;
 
+    private var historicalScores;
+
+
     static function New() {
-        return new MatchStatus(0,0,0,0,0,0,0,0);
+        return new MatchStatus(0,0,0,0,0,0,0,0, []);
     }
 
-    function initialize(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore) {
+    function initialize(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, historicalScores) {
         self.p1Sets = p1Sets;
         self.p2Sets = p2Sets;
 
@@ -30,6 +35,8 @@ class MatchStatus {
 
         self.p1TieBreakScore = p1TieBreakScore;
         self.p2TieBreakScore = p2TieBreakScore;
+
+        self.historicalScores = historicalScores;
      }
 
 
@@ -97,6 +104,16 @@ class MatchStatus {
         self.p2TieBreakScore++;
     }
 
+    function getHistoricalScores() as Lang.Array<Lang.String> {
+        var res = [];
+        res.addAll(self.historicalScores);
+        return res;
+    }
+
+    function addHistoricalScore(result) {
+        self.historicalScores.add(result);
+    }
+
     function setDeuce() {
         self.p1ScoreIdx = 3;
         self.p2ScoreIdx = 3;
@@ -116,6 +133,8 @@ class MatchStatus {
     }
 
     function copy() as MatchStatus {
-        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore);
+        var newHistory = [];
+        newHistory.addAll(self.historicalScores);
+        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, newHistory);
     }
 }
