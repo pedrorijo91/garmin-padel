@@ -26,8 +26,8 @@ class garminpadelApp extends Application.AppBase {
     function onStop(state as Dictionary?) as Void {
     }
 
-    function getInitialView() as Array<Views or InputDelegates>? {
-        return [ new InitialView(), new InitialScreenDelegate() ] as Array<Views or InputDelegates>;
+    function getInitialView() as [Views] or [Views, InputDelegates]  {
+        return [ new InitialView(), new InitialScreenDelegate() ];
     }
 
     // TODO kinda meh that we allow everyone to update the matchConfig and we rely it's on a valid state at this moment
