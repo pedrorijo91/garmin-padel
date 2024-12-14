@@ -104,6 +104,16 @@ Note: api level by device listed in [garmin dev docs](https://developer.garmin.c
 * Public app link: https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
 * Beta link: https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f
 
+## Releasing
+
+From the repository root just run:
+
+```
+$ sh releases/scripts/release_all.sh
+```
+
+and follow the instructions displayed after finishing building the binary
+
 ### Resources
 
 icons
