@@ -15,7 +15,9 @@ Keeps track of padel match score.
 * Save steps in activity details
 * Undo scores
 
-Other work to be done listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
+Other work to be done is listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
+
+<a href="https://www.buymeacoffee.com/pedrorijo91" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## How to use
 
