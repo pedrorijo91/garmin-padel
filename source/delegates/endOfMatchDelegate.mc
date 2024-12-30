@@ -12,11 +12,12 @@ class EndOfMatchDelegate extends WatchUi.InputDelegate {
         switch (keyEvent.getKey()) {
             case KEY_ESC: {}
             case KEY_ENTER: {
-                var message = "Finish Activity?";
+                var score = Application.getApp().getScoreString();
+                var message = "Finish Activity?\n" + score;
                 var dialog = new WatchUi.Confirmation(message);
                 WatchUi.pushView(
                     dialog,
-                    new FinishConfirmationDelegate(),
+                    new ExitConfirmationDelegate(),
                     WatchUi.SLIDE_IMMEDIATE
                 );
             }

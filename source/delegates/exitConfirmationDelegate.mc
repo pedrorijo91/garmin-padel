@@ -1,7 +1,7 @@
 using Toybox.WatchUi;
 using Toybox.System;
 
-class FinishConfirmationDelegate extends WatchUi.ConfirmationDelegate {
+class ExitConfirmationDelegate extends WatchUi.ConfirmationDelegate {
     function initialize() {
         ConfirmationDelegate.initialize();
     }

@@ -14,11 +14,15 @@ class ScoreView extends WatchUi.View {
     function onLayout(dc as Dc) as Void {
         setLayout(Rez.Layouts.ScoreLayout(dc));
 
+        // this ensures view gets updated every second instead of waiting for key press
         var myTimer = new Timer.Timer();
         myTimer.start(method(:requestUpdate), 1000, true);
     }
 
     function onShow() as Void {
+    }
+
+    function onHide() as Void {
     }
 
     function onUpdate(dc as Dc) as Void {
@@ -62,9 +66,6 @@ class ScoreView extends WatchUi.View {
         clockLabel.setText(timeString);
 
         View.onUpdate(dc);
-    }
-
-    function onHide() as Void {
     }
 
     public function requestUpdate() as Void {

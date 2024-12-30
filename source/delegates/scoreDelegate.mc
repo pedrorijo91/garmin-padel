@@ -47,7 +47,7 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 var dialog = new WatchUi.Confirmation(message);
                 WatchUi.pushView(
                     dialog,
-                    new FinishConfirmationDelegate(),
+                    new ExitConfirmationDelegate(),
                     WatchUi.SLIDE_IMMEDIATE
                 );
             }
@@ -59,6 +59,7 @@ class ScoreDelegate extends WatchUi.InputDelegate {
             }
         }
 
+        // this ensures score gets updated as soon as key is processed
         WatchUi.requestUpdate();
 
         return true;
