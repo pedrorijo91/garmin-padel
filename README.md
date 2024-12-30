@@ -2,6 +2,8 @@
 
 padel scorekeeper garmin watch app, available in [garmin connect](https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993)
 
+<a href="https://www.buymeacoffee.com/pedrorijo91" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 ## Functionalities
 
 Keeps track of padel match score.
@@ -16,8 +18,6 @@ Keeps track of padel match score.
 * Undo scores
 
 Other work to be done is listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
-
-<a href="https://www.buymeacoffee.com/pedrorijo91" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## How to use
 
