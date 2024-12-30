@@ -13,4 +13,8 @@ class UndoConfirmationDelegate extends WatchUi.ConfirmationDelegate {
 
 		return true;
     }
+
+    function onBack() {
+		return true;
+    }
 }
