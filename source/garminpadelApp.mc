@@ -59,6 +59,11 @@ class garminpadelApp extends Application.AppBase {
         return score;
     }
 
+    function lapSession() as Void {
+        session.addLap();
+    }
+
+
     function saveSession() as Void {
         var scoreField = session.createField("game_score", 0, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "points", :count => 50});
         var score = self.getScoreString();
