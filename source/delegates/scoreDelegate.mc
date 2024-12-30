@@ -42,7 +42,8 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 break;
             }
             case KEY_ESC: {
-                var message = "Finish Activity?";
+                var score = Application.getApp().getScoreString();
+                var message = "Finish Activity?\n" + score;
                 var dialog = new WatchUi.Confirmation(message);
                 WatchUi.pushView(
                     dialog,
