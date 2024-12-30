@@ -42,13 +42,8 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 break;
             }
             case KEY_ESC: {
-<<<<<<< HEAD
                 var score = Application.getApp().getScoreString();
                 var message = "Finish Activity?\n" + score;
-=======
-                // FIXME add score
-                var message = "Finish Activity?";
->>>>>>> 6a301ff (rename delegate)
                 var dialog = new WatchUi.Confirmation(message);
                 WatchUi.pushView(
                     dialog,
