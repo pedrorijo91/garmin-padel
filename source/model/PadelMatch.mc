@@ -209,6 +209,7 @@ class PadelMatch {
 
     function finishSet() as Boolean {
         resetAfterSetFinish();
+        Application.getApp().lapSession();
 
         // check if game is over
         var totalPlayedSets = self.matchStatus.getP1Sets() + self.matchStatus.getP2Sets();
