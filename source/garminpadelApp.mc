@@ -11,7 +11,6 @@ class GarminpadelApp extends Application.AppBase {
     private var initialSetps;
     private var initialDay; // we need to check if the activity crossed the day to correctly compute steps
 
-
     function initialize() {
         AppBase.initialize();
         matchConfig = new MatchConfig();

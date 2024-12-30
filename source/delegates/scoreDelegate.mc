@@ -59,6 +59,7 @@ class ScoreDelegate extends WatchUi.InputDelegate {
             }
         }
 
+        // this ensures score gets updated as soon as key is processed
         WatchUi.requestUpdate();
 
         return true;
