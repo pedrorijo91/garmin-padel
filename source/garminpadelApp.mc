@@ -3,7 +3,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 using Toybox.Time.Gregorian;
 
-class garminpadelApp extends Application.AppBase {
+class GarminpadelApp extends Application.AppBase {
 
     private var matchConfig;
     private var match;
