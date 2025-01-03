@@ -1,0 +1,13 @@
+<strings>
+    <string id="AppName">Padel Score</string>
+    <string id="AppVersion">1.16.0.beta</string>
+
+    <string id="fit_score_label">Game Score</string>
+    <string id="fit_score_units">points</string>
+
+    <string id="fit_steps_label">Steps</string>
+    <string id="fit_steps_units">steps</string>
+
+    <string id="app_version_label">App Version</string>
+    <string id="app_version_units">v</string>
+</strings>
