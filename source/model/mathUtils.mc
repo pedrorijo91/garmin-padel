@@ -1,4 +1,6 @@
-function min(x, y) {
+import Toybox.Lang;
+
+function min(x as Number, y as Number) as Number {
     if (x > y) {
         return y;
     } else {
@@ -6,7 +8,7 @@ function min(x, y) {
     }
 }
 
-function abs(x) {
+function abs(x as Number) as Number {
     if (x > 0) {
         return x;
     } else {
