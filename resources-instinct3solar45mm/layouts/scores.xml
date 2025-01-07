@@ -1,0 +1,11 @@
+<layout id="ScoreLayout">
+    <label id="setsLabel" x="center" y="center" color="Graphics.COLOR_WHITE" font="Graphics.FONT_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+    <label id="gamesLabel" x="center" y="55%" color="Graphics.COLOR_WHITE" font="Graphics.FONT_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+    <label id="scoreLabel" x="center" y="70%" color="Graphics.COLOR_WHITE" font="Graphics.FONT_LARGE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+
+    <label id="stepsAndHeartLabel" x="100%" y="100%" color="Graphics.COLOR_WHITE" font="Graphics.FONT_TINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+    <label id="clockLabel" x="center" y="100%" color="Graphics.COLOR_WHITE" font="Graphics.FONT_TINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+    <bitmap id="steps_icon" x="100%" y="100%" filename="steps_white32.png"/>
+    <bitmap id="heart_icon" x="100%" y="100%" filename="heart_white32.png"/>
+
+</layout>
