@@ -4,26 +4,37 @@ class MatchStatus {
 
     static const AVAILABLE_POINTS = [0, 15, 30, 40, 'A'];
 
-    private var p1Sets;
-    private var p2Sets;
+    private var p1Sets as Number;
+    private var p2Sets as Number;
 
-    private var p1Games;
-    private var p2Games;
+    private var p1Games as Number;
+    private var p2Games as Number;
 
-    private var p1ScoreIdx;
-    private var p2ScoreIdx;
+    private var p1ScoreIdx as Number;
+    private var p2ScoreIdx as Number;
 
-    private var p1TieBreakScore;
-    private var p2TieBreakScore;
+    private var p1TieBreakScore as Number;
+    private var p2TieBreakScore as Number;
 
-    private var historicalScores;
+    private var historicalScores as Array<String>;
 
 
-    static function New() {
+    static function New() as MatchStatus {
         return new MatchStatus(0,0,0,0,0,0,0,0, []);
     }
 
-    function initialize(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, historicalScores) {
+    function initialize(
+        p1Sets  as Number, 
+        p2Sets as Number, 
+        p1Games as Number, 
+        p2Games as Number, 
+        p1ScoreIdx as Number, 
+        p2ScoreIdx as Number, 
+        p1TieBreakScore as Number, 
+        p2TieBreakScore as Number, 
+        historicalScores as Array<String>
+    ) {
+
         self.p1Sets = p1Sets;
         self.p2Sets = p2Sets;
 
@@ -40,67 +51,67 @@ class MatchStatus {
      }
 
 
-    function getP1Sets() {
+    function getP1Sets() as Number {
         return self.p1Sets;
     }
 
-    function incP1Sets() {
+    function incP1Sets() as Void {
         self.p1Sets++;
     }
 
-    function getP1Games() {
+    function getP1Games() as Number {
         return self.p1Games;
     }
 
-    function incP1Games() {
+    function incP1Games() as Void {
         self.p1Games++;
     }
 
-    function getP1Score() {
+    function getP1Score() as Object {
         return AVAILABLE_POINTS[self.p1ScoreIdx];
     }
 
-    function incP1Score() {
+    function incP1Score() as Void {
         self.p1ScoreIdx++;
     }
 
-    function getP1TieScore() {
+    function getP1TieScore() as Number {
         return self.p1TieBreakScore;
     }
 
-    function incP1TieScore() {
+    function incP1TieScore() as Void {
         self.p1TieBreakScore++;
     }
 
-    function getP2Sets() {
+    function getP2Sets() as Number {
         return self.p2Sets;
     }
 
-    function incP2Sets() {
+    function incP2Sets() as Void {
         self.p2Sets++;
     }
 
-    function getP2Games() {
+    function getP2Games() as Number {
         return self.p2Games;
     }
 
-    function incP2Games() {
+    function incP2Games() as Void {
         self.p2Games++;
     }
 
-    function getP2Score() {
+    function getP2Score() as Object {
         return AVAILABLE_POINTS[self.p2ScoreIdx];
     }
 
-    function incP2Score() {
+    function incP2Score() as Void {
         self.p2ScoreIdx++;
     }
 
-    function getP2TieScore() {
+    function getP2TieScore() as Number {
         return self.p2TieBreakScore;
     }
 
-    function incP2TieScore() {
+    function incP2TieScore() as Void {
         self.p2TieBreakScore++;
     }
 
@@ -110,21 +121,21 @@ class MatchStatus {
         return res;
     }
 
-    function addHistoricalScore(result) {
+    function addHistoricalScore(result as String) as Void {
         self.historicalScores.add(result);
     }
 
-    function setDeuce() {
+    function setDeuce() as Void {
         self.p1ScoreIdx = 3;
         self.p2ScoreIdx = 3;
     }
 
-    function resetGames() {
+    function resetGames() as Void {
         self.p1Games = 0;
         self.p2Games = 0;
     }
 
-    function resetScores() {
+    function resetScores() as Void {
         self.p1ScoreIdx = 0;
         self.p1TieBreakScore = 0;
 

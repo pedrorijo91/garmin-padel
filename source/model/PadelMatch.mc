@@ -2,13 +2,13 @@ import Toybox.Lang;
 
 class PadelMatch {
 
-    private var numberOfSets;
-    private var superTie;
-    private var goldenPoint;
+    private var numberOfSets as Number;
+    private var superTie as Boolean;
+    private var goldenPoint as Boolean;
 
-    private var matchStatus;
+    private var matchStatus as MatchStatus;
 
-    private var prevMatchStatus;
+    private var prevMatchStatus as MatchStatus;
 
     function initialize(config as MatchConfig) {
 
@@ -180,11 +180,11 @@ class PadelMatch {
         return false;
     }
 
-    function undo() {
+    function undo() as Void {
         self.matchStatus = self.prevMatchStatus;
     }
 
-    function getMatchStatus() {
+    function getMatchStatus() as MatchStatus {
         return self.matchStatus.copy();
     }
 
@@ -198,12 +198,12 @@ class PadelMatch {
         return res;
     }
 
-    function isInSuperTieBreak() {
+    function isInSuperTieBreak() as Boolean {
         var totalPlayedSets = self.matchStatus.getP1Sets() + self.matchStatus.getP2Sets();
         return self.superTie && self.numberOfSets - totalPlayedSets == 1 && self.matchStatus.getP1Sets() == self.matchStatus.getP2Sets();
     }
 
-    function isInTieBreak() {
+    function isInTieBreak() as Boolean {
         return self.matchStatus.getP1Games() >= 6 && self.matchStatus.getP2Games() >= 6;
     }
 
@@ -225,7 +225,7 @@ class PadelMatch {
         return true;
     } 
 
-    function resetAfterSetFinish() {
+    function resetAfterSetFinish() as Void  {
         var result = "" + self.matchStatus.getP1Games() + "-" + self.matchStatus.getP2Games();
         if (self.isInTieBreak()) {
             result += " (" + self.min(self.matchStatus.getP1TieScore(), self.matchStatus.getP2TieScore()) + ")";
@@ -238,7 +238,7 @@ class PadelMatch {
         self.resetAfterGameFinish();
     }
 
-    function resetAfterGameFinish() {
+    function resetAfterGameFinish() as Void {
         self.matchStatus.resetScores();
     }
 }

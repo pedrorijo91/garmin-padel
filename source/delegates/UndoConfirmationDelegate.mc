@@ -1,5 +1,6 @@
 using Toybox.WatchUi;
 using Toybox.System;
+import Toybox.Lang;
 
 class UndoConfirmationDelegate extends WatchUi.ConfirmationDelegate {
     function initialize() {
@@ -14,7 +15,7 @@ class UndoConfirmationDelegate extends WatchUi.ConfirmationDelegate {
 		return true;
     }
 
-    function onBack() {
+    function onBack() as Boolean {
 		return true;
     }
 }

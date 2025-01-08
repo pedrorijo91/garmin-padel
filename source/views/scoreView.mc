@@ -4,6 +4,7 @@ import Toybox.WatchUi;
 import Toybox.Graphics;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
+import Toybox.ActivityMonitor;
 
 class ScoreView extends WatchUi.View {
 
@@ -51,7 +52,7 @@ class ScoreView extends WatchUi.View {
         var steps = ActivityMonitor.getInfo().steps;
 
         var heartRateIterator = ActivityMonitor.getHeartRateHistory(1, true);
-        var heartRate = heartRateIterator.next().heartRate;
+        var heartRate = (heartRateIterator.next() as ActivityMonitor.HeartRateSample).heartRate;
 
         var stepsAndHeartLabel = View.findDrawableById("stepsAndHeartLabel") as Text;
         stepsAndHeartLabel.setText("" + steps + " / " + heartRate);

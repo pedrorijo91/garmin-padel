@@ -1,15 +1,16 @@
 import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.ActivityRecording;
 using Toybox.Time.Gregorian;
 
 class GarminpadelApp extends Application.AppBase {
 
-    private var matchConfig;
-    private var match;
-    private var session;
-    private var initialSetps;
-    private var initialDay; // we need to check if the activity crossed the day to correctly compute steps
+    private var matchConfig as MatchConfig;
+    private var match as PadelMatch or Null;
+    private var session as ActivityRecording.Session or Null;
+    private var initialSetps as Number;
+    private var initialDay as Number; // we need to check if the activity crossed the day to correctly compute steps
 
     function initialize() {
         AppBase.initialize();
@@ -32,22 +33,26 @@ class GarminpadelApp extends Application.AppBase {
     // TODO kinda meh that we allow everyone to update the matchConfig and we rely it's on a valid state at this moment
     function initMatch() as Void {
         self.match = new PadelMatch(self.matchConfig);
-        self.initialSetps = ActivityMonitor.getInfo().steps;
+        self.initialSetps = ActivityMonitor.getInfo().steps as Number;
         self.session = ActivityRecording.createSession({:sport => Activity.SPORT_RACKET, :subSport => Activity.SUB_SPORT_PADEL, :name => "Padel match"});
         self.session.start();
     }
 
     function getMatch() as PadelMatch {
-        return self.match;
+        return self.match as PadelMatch;
     }
 
     function getMatchConfig() as MatchConfig {
         return self.matchConfig;
     }
 
+    private function getSession() as ActivityRecording.Session or Null {
+        return self.session;
+    }
+
     function getScoreString() as String {
         var score = "";
-        var historicalScores = self.match.getHistoricalScores();
+        var historicalScores = self.getMatch().getHistoricalScores();
         for(var i = 0; i < historicalScores.size(); i++ ) {
             score += historicalScores[i] + " / ";
         }
@@ -55,15 +60,23 @@ class GarminpadelApp extends Application.AppBase {
             score = score.substring(0, score.length() - 3);
         }
 
-        return score;
+        return score as String;
     }
 
     function lapSession() as Void {
-        session.addLap();
+        var session = getSession();
+        if (session != null) {
+            session.addLap();
+        }
     }
 
-
     function saveSession() as Void {
+        var session = getSession();
+
+        if (session == null) {
+            return;
+        }
+
         var scoreField = session.createField("game_score", 0, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "points", :count => 50});
         var score = self.getScoreString();
         scoreField.setData(score);
@@ -76,15 +89,15 @@ class GarminpadelApp extends Application.AppBase {
         var appVersion = Application.loadResource(Rez.Strings.AppVersion) as String;
         versionField.setData(appVersion);
 
-        self.session.stop();
-        self.session.save();
+        session.stop();
+        session.save();
     }
 
     function computeTotalSteps() as Number {
         var currentDay = Gregorian.info(Time.now(), Time.FORMAT_SHORT).day;
         
         if (currentDay == self.initialDay) {
-            var finalSteps = ActivityMonitor.getInfo().steps;
+            var finalSteps = ActivityMonitor.getInfo().steps as Number;
             return finalSteps - self.initialSetps;
         } else {
             var history = ActivityMonitor.getHistory();

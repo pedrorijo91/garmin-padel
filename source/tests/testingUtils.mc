@@ -22,7 +22,7 @@ function incMatch(
         match as PadelMatch, 
         scoreP1 as Number, gamesP1 as Number, setsP1 as Number, 
         scoreP2 as Number, gamesP2 as Number, setsP2 as Number
-    ) {
+    ) as Void {
         // FIXME implement and add better API methods
 }
 

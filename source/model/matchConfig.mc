@@ -4,9 +4,9 @@ class MatchConfig {
 
     public static const UNLIMITED_SETS = 10;
 
-    private var superTie;
-    private var numberOfSets;
-    private var goldenPoint;
+    private var superTie as Boolean;
+    private var numberOfSets as Number;
+    private var goldenPoint as Boolean;
 
     function initialize() {
         superTie = false; 
