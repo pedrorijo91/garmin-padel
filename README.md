@@ -93,9 +93,9 @@ See `<iq:products>` element in [manifest.xml](https://github.com/pedrorijo91/gar
 While there's nothing preventing other devides to be supported, due to limited access to test on other devices, support is only focused on the following ranges at this moment:
 
 * garmin forerunner (165, 245, 265, 645, 735, 745, 935, 945, 965)
-* garmin fenix 5, 6, 7 (s/X/pro)
+* garmin fenix 5, 6, 7, 8 (s/X/pro)
 * garmin epix 2
-* garmin descent mk2i/mk2s
+* garmin descent mk2i/mk2s, mk3
 
 Feel free to raise an issue asking support for any specific device.
 
