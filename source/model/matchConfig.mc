@@ -2,7 +2,7 @@ import Toybox.Lang;
 
 class MatchConfig {
 
-    public static const UNLIMITED_SETS = 10;
+    public static const UNLIMITED_SETS = 20;
 
     private var superTie as Boolean;
     private var numberOfSets as Number;
