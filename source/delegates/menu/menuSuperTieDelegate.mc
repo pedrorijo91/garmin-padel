@@ -2,18 +2,17 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
 
-class MenuSuperTieDelegate extends WatchUi.MenuInputDelegate {
+class MenuSuperTieDelegate extends WatchUi.Menu2InputDelegate {
 
     function initialize() {
-        MenuInputDelegate.initialize();
+        Menu2InputDelegate.initialize();
     }
 
-    function onMenuItem(item as Symbol) as Void {
-        
+    function onSelect(item as MenuItem) as Void {
         var superTie = false;
-        if (item == :super_tie_yes) {
+        if (item.getId() == :super_tie_yes) {
             superTie = true;
-        } else if (item == :super_tie_no) {
+        } else if (item.getId() == :super_tie_no) {
             superTie = false;
         }
 
