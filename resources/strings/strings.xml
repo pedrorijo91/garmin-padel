@@ -1,6 +1,6 @@
 <strings>
     <string id="AppName">Padel Score</string>
-    <string id="AppVersion">1.19.0.beta</string>
+    <string id="AppVersion">1.19.0</string>
 
     <string id="fit_score_label">Game Score</string>
     <string id="fit_score_units">points</string>
