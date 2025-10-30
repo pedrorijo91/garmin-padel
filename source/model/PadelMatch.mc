@@ -8,7 +8,7 @@ class PadelMatch {
 
     private var matchStatus as MatchStatus;
 
-    private var prevMatchStatus as MatchStatus;
+    private var statusHistory as Array<MatchStatus>;
 
     function initialize(config as MatchConfig) {
 
@@ -17,12 +17,11 @@ class PadelMatch {
         goldenPoint = config.getGoldenPoint();
 
         matchStatus = MatchStatus.New();
-        prevMatchStatus = MatchStatus.New();
+        statusHistory = [];
     }
-
-    // returns a boolean indicating wether the match has ended.
+    // returns a boolean indicating whether the match has ended.
     function incP1() as Boolean {
-        prevMatchStatus = matchStatus.copy();
+        statusHistory.add(matchStatus.copy());
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP1TieScore();
 
@@ -100,9 +99,9 @@ class PadelMatch {
         return false;
     }
 
-    // returns a boolean indicating wether the match has ended.
+    // returns a boolean indicating whether the match has ended.
     function incP2() as Boolean {
-        prevMatchStatus = matchStatus.copy();
+        statusHistory.add(matchStatus.copy());
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP2TieScore();
 
@@ -181,7 +180,11 @@ class PadelMatch {
     }
 
     function undo() as Void {
-        self.matchStatus = self.prevMatchStatus;
+        var historySize = self.statusHistory.size();
+        if (historySize > 0) {
+            self.matchStatus = self.statusHistory[historySize - 1] as MatchStatus;
+            self.statusHistory = self.statusHistory.slice(0, historySize - 1);
+        }
     }
 
     function getMatchStatus() as MatchStatus {
