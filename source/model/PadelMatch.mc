@@ -7,8 +7,8 @@ class PadelMatch {
     private var goldenPoint as Boolean;
 
     private var matchStatus as MatchStatus;
-
     private var statusHistory as Array<MatchStatus>;
+    private const MAX_HISTORY_ARRAY_SIZE = 20;
 
     function initialize(config as MatchConfig) {
 
@@ -21,7 +21,8 @@ class PadelMatch {
     }
     // returns a boolean indicating whether the match has ended.
     function incP1() as Boolean {
-        statusHistory.add(matchStatus.copy());
+        addMatchStatusToHistory();
+
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP1TieScore();
 
@@ -99,9 +100,18 @@ class PadelMatch {
         return false;
     }
 
+    function addMatchStatusToHistory() as Void {
+        statusHistory.add(matchStatus.copy());
+        if (statusHistory.size() > MAX_HISTORY_ARRAY_SIZE) {
+            // keep the history size from MAX_HISTORY_ARRAY_SIZE / 2 to MAX_HISTORY_ARRAY_SIZE not to fill up the memory too much
+            statusHistory = statusHistory.slice(MAX_HISTORY_ARRAY_SIZE / 2, null);
+        }
+    }
+
     // returns a boolean indicating whether the match has ended.
     function incP2() as Boolean {
-        statusHistory.add(matchStatus.copy());
+        addMatchStatusToHistory();
+
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP2TieScore();
 
