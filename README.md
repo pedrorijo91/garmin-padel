@@ -33,13 +33,13 @@ After selecting all the options the score screen will display:
 
 <p align="center"><img src="screenshots/score0.jpeg" width="300"></p>
 
-Now you can control the score by clicking the `Up` and `Down` buttons on your device. By clicking `Up`, you'll increment your team score, and by clicking `Down` you'll increment opponent score:
+Now you can control the score by clicking the `Up` and `Down` buttons on your device. By clicking `Up`, you'll increment your team score, and by clicking `Down` you'll increment opponent score. If you have a touchscreen device, clicking on the top half and bottom half will have the same effect:
 
 <p align="center"><img src="screenshots/scoreMid.jpeg" width="300"></p>
 
 <p align="center"><img src="screenshots/scoreTie.jpeg" width="300"></p>
 
-If you clicked in the wrong player, you can revert the last score by pressing the `Enter` key (you may known it by `Start` key):
+If you clicked in the wrong player, you can revert the last score by pressing the `Enter`/`Start` key. If you are using a touchscreen device this can be achieved with a long press in the screen:
 
 <p align="center"><img src="screenshots/undo.jpeg" width="300"></p>
 

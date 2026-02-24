@@ -10,15 +10,19 @@ else
     exit 1
 fi
 
-new_version=$(python releases/scripts/replace_version.py drop_beta)
+new_version=$(python3 releases/scripts/replace_version.py drop_beta)
 exit_code=$?
 if [ $exit_code -ne 0 ]; then
     echo "--- Aborting release ---"
+    exit 1
 else
     echo 'New version:' $new_version
 fi
 
-sh releases/scripts/export.sh
+if ! sh releases/scripts/export.sh; then
+    echo "Export failed. Aborting release."
+    exit 1
+fi
 
 version_filename=$(echo $new_version | sed 's/\./_/g')
 mv releases/garminpadel.iq releases/garminpadel-v$version_filename.iq
@@ -27,7 +31,7 @@ git add resources/strings/strings.xml releases/
 git cmsg "add v$new_version exported app"
 git tag -a $new_version -m "version $new_version"
 
-python releases/scripts/replace_version.py next_beta
+python3 releases/scripts/replace_version.py next_beta
 git add resources/strings/strings.xml
 git cmsg "bump version for next development cycle"
 
