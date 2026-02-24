@@ -57,6 +57,11 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 var endOfMatch = match.incP1();
 
                 if (endOfMatch) {
+                    var deviceSettings = System.getDeviceSettings();
+                    if (deviceSettings.vibrateOn) {
+                        Attention.vibrate([ new Attention.VibeProfile(25, 500) ]);
+                    } 
+
                     WatchUi.pushView(new EndView(), new EndOfMatchDelegate(), WatchUi.SLIDE_UP);
                 }
                 
@@ -66,6 +71,11 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 var endOfMatch = match.incP2();
 
                 if (endOfMatch) {
+                    var deviceSettings = System.getDeviceSettings();
+                    if (deviceSettings.vibrateOn) {
+                        Attention.vibrate([ new Attention.VibeProfile(25, 500) ]);
+                    } 
+
                     WatchUi.pushView(new EndView(), new EndOfMatchDelegate(), WatchUi.SLIDE_UP);
                 }
 
