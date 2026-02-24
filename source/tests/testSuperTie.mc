@@ -4,78 +4,14 @@ import Toybox.Test;
 (:test)
 function goesIntoSuperTieTest(logger as Logger) as Boolean {
 
-    var matchConfig = new MatchConfig();
-    matchConfig.setGoldenPoint(true);
-    matchConfig.setNumberOfSets(3);
-    matchConfig.setSuperTie(true);
-
+    var matchConfig = getConfig();
     var match = new PadelMatch(matchConfig);
-    // 1-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 3-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 4-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 5-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 6-0 (set)
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
 
-    // 0-1
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-2
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-3
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-4
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-5
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-6 (1-1 sets)
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
+    playSet(match, 6, 0);
+    playSet(match, 0, 6);
+    playPointsP1(match, 1);
+    playPointsP2(match, 2);
 
-    // super: 1-2
-    match.incP2();
-    match.incP1();
-    match.incP2();
     var status = match.getMatchStatus();
 
     return 
@@ -92,85 +28,12 @@ function goesIntoSuperTieTest(logger as Logger) as Boolean {
 (:test)
 function superTieFinishTest(logger as Logger) as Boolean {
     
-    var matchConfig = new MatchConfig();
-    matchConfig.setGoldenPoint(true);
-    matchConfig.setNumberOfSets(3);
-    matchConfig.setSuperTie(true);
-
+    var matchConfig = getConfig();
     var match = new PadelMatch(matchConfig);
 
-    // 1-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 3-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 4-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 5-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 6-0 (set)
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-
-    // 0-1
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-2
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-3
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-4
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-5
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-6 (1-1 sets)
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-
-    // 10-0 super
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
+    playSet(match, 6, 0);
+    playSet(match, 0, 6);
+    playPointsP1(match, 9);
     var res = match.incP1();
 
     var status = match.getMatchStatus();
@@ -190,104 +53,21 @@ function superTieFinishTest(logger as Logger) as Boolean {
 (:test)
 function superTieFinishOnlyWhenAdvantageTest(logger as Logger) as Boolean {
     
-    var matchConfig = new MatchConfig();
-    matchConfig.setGoldenPoint(true);
-    matchConfig.setNumberOfSets(3);
-    matchConfig.setSuperTie(true);
-
+    var matchConfig = getConfig();
     var match = new PadelMatch(matchConfig);
 
-    // 1-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 3-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 4-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 5-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 6-0 (set)
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-
-    // 0-1
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-2
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-3
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-4
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-5
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-6 (1-1 sets)
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-
-    // super: 9-9
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP2();
+    playSet(match, 6, 0);
+    playSet(match, 0, 6);
+    playPointsP1(match, 9);
+    playPointsP2(match, 9);
 
     var tieStatus = match.getMatchStatus();
 
-    // tie: 13-11 (set)
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP2();
-    match.incP1();
-    match.incP1();
+    playPointsP1(match, 1);
+    playPointsP2(match, 1);
+    playPointsP1(match, 1);
+    playPointsP2(match, 1);
+    playPointsP1(match, 2);
 
     var status = match.getMatchStatus();
 
@@ -308,4 +88,57 @@ function superTieFinishOnlyWhenAdvantageTest(logger as Logger) as Boolean {
         status.getP2Score() == 0 &&
         status.getP1TieScore() == 13 &&
         status.getP2TieScore() == 11;
+}
+
+(:test)
+function undoInsideSuperTieBreakTest(logger as Logger) as Boolean {
+    
+    var matchConfig = getConfig();
+    var match = new PadelMatch(matchConfig);
+
+    playSet(match, 6, 0);
+    playSet(match, 0, 6);
+    match.incP1();
+    match.incP1();
+    match.undo();
+
+    var status = match.getMatchStatus();
+
+    return 
+        status.getP1Sets() == 1 &&
+        status.getP2Sets() == 1 &&
+        status.getP1Games() == 0 &&
+        status.getP2Games() == 0 &&
+        status.getP1Score() == 0 &&
+        status.getP2Score() == 0 &&
+        status.getP1TieScore() == 1 &&
+        status.getP2TieScore() == 0;
+}
+
+(:test)
+function superTieP2WinsTest(logger as Logger) as Boolean {
+    
+    var matchConfig = getConfig();
+    var match = new PadelMatch(matchConfig);
+
+    playSet(match, 6, 0);
+    playSet(match, 0, 6);
+
+    // super tie: P2 wins 10-8
+    playPointsP1(match, 8);
+    playPointsP2(match, 9);
+    var res = match.incP2();
+
+    var status = match.getMatchStatus();
+
+    return 
+        res == true &&
+        status.getP1Sets() == 1 &&
+        status.getP2Sets() == 2 &&
+        status.getP1Games() == 0 &&
+        status.getP2Games() == 0 &&
+        status.getP1Score() == 0 &&
+        status.getP2Score() == 0 &&
+        status.getP1TieScore() == 8 &&
+        status.getP2TieScore() == 10;
 }

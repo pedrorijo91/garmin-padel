@@ -3,6 +3,8 @@ import Toybox.Lang;
 class PadelMatch {
 
     static const MAX_UNDO = 5;
+    static const SIDE_P1 = 0;
+    static const SIDE_P2 = 1;
 
     private var numberOfSets as Number;
     private var superTie as Boolean;
@@ -25,66 +27,128 @@ class PadelMatch {
     // returns a boolean indicating wether the match has ended.
     function incP1() as Boolean {
         self.saveMatchStatus();
-        if (self.isInSuperTieBreak()) {
-            self.matchStatus.incP1TieScore();
+        return self.scorePoint(SIDE_P1);
+    }
 
-            if (self.matchStatus.getP1TieScore() >= 10 && self.matchStatus.getP1TieScore() - self.matchStatus.getP2TieScore() >= 2) {
-                self.matchStatus.incP1Sets();
-                var endOfMatch = self.finishSuperTie();
-                return endOfMatch;
+    // returns a boolean indicating wether the match has ended.
+    function incP2() as Boolean {
+        self.saveMatchStatus();
+        return self.scorePoint(SIDE_P2);
+    }
+
+    // Generic scorer, parameterized by side
+    function scorePoint(side as Number) as Boolean {
+        var opponent = self.otherSide(side);
+
+        if (self.isInSuperTieBreak()) {
+            self.incTieScoreForSide(side);
+
+            if (self.getTieScoreForSide(side) >= 10 &&
+                self.getTieScoreForSide(side) - self.getTieScoreForSide(opponent) >= 2) {
+
+                self.incSetsForSide(side);
+                return self.finishSuperTie();
             }
 
             return false;
         }
 
         if (self.isInTieBreak()) {
-            self.matchStatus.incP1TieScore();
+            self.incTieScoreForSide(side);
 
-            if (self.matchStatus.getP1TieScore() >= 7 && self.matchStatus.getP1TieScore() - self.matchStatus.getP2TieScore() >= 2) {
-                self.matchStatus.incP1Games();
-                self.matchStatus.incP1Sets();
-                var endOfMatch = self.finishSet();
-                return endOfMatch;
+            if (self.getTieScoreForSide(side) >= 7 &&
+                self.getTieScoreForSide(side) - self.getTieScoreForSide(opponent) >= 2) {
+
+                self.incGamesForSide(side);
+                self.incSetsForSide(side);
+                return self.finishSet();
             }
 
             return false;
         }
 
-        // G:
-            // P1 == 40 (end game)
-            // P1 != 40 (mid game)
-        // A:
-            // (end game)
-                // P1 == A 
-                // P1 == 40 && P2 != A && P2 < 40
-            // P2 == A (deuce)
-            // (mid game)
-
+        // Regular game (non tie-break)
         if (self.goldenPoint) {
             // mid game
-            if (self.matchStatus.getP1Score() != 40) {
-                self.matchStatus.incP1Score();
+            if (self.getScoreForSide(side) != 40) {
+                self.incScoreForSide(side);
                 return false;
             } else {
-                return incP1Game();
+                return self.incGameForSide(side);
             }
         } else {
-            // P2 was in Adv, revert to deuce
-            if (self.matchStatus.getP2Score() == 'A') {
+            // Advantage rules
+            // Opponent was in Adv, revert to deuce
+            if (self.getScoreForSide(opponent) == 'A') {
                 self.matchStatus.setDeuce();
                 return false;
             }
 
-            // P1 will win game
+            // Current side will win game
             if (
-                self.matchStatus.getP1Score() == 'A' || 
-                (self.matchStatus.getP1Score() == 40 && self.matchStatus.getP2Score() != 40)) {
-                    return incP1Game();
+                self.getScoreForSide(side) == 'A' ||
+                (self.getScoreForSide(side) == 40 && self.getScoreForSide(opponent) != 40)
+            ) {
+                return self.incGameForSide(side);
             }
 
             // mid game
-            self.matchStatus.incP1Score();
+            self.incScoreForSide(side);
             return false;
+        }
+    }
+
+    // Side-aware helpers
+    function otherSide(side as Number) as Number {
+        if (side == SIDE_P1) {
+            return SIDE_P2;
+        }
+        return SIDE_P1;
+    }
+
+    function getScoreForSide(side as Number) as Object {
+        if (side == SIDE_P1) {
+            return self.matchStatus.getP1Score();
+        }
+        return self.matchStatus.getP2Score();
+    }
+
+    function incScoreForSide(side as Number) as Void {
+        if (side == SIDE_P1) {
+            self.matchStatus.incP1Score();
+        } else {
+            self.matchStatus.incP2Score();
+        }
+    }
+
+    function getTieScoreForSide(side as Number) as Number {
+        if (side == SIDE_P1) {
+            return self.matchStatus.getP1TieScore();
+        }
+        return self.matchStatus.getP2TieScore();
+    }
+
+    function incTieScoreForSide(side as Number) as Void {
+        if (side == SIDE_P1) {
+            self.matchStatus.incP1TieScore();
+        } else {
+            self.matchStatus.incP2TieScore();
+        }
+    }
+
+    function incGamesForSide(side as Number) as Void {
+        if (side == SIDE_P1) {
+            self.matchStatus.incP1Games();
+        } else {
+            self.matchStatus.incP2Games();
+        }
+    }
+
+    function incSetsForSide(side as Number) as Void {
+        if (side == SIDE_P1) {
+            self.matchStatus.incP1Sets();
+        } else {
+            self.matchStatus.incP2Sets();
         }
     }
 
@@ -102,72 +166,6 @@ class PadelMatch {
         return false;
     }
 
-    // returns a boolean indicating wether the match has ended.
-    function incP2() as Boolean {
-        self.saveMatchStatus();
-        if (self.isInSuperTieBreak()) {
-            self.matchStatus.incP2TieScore();
-
-            if (self.matchStatus.getP2TieScore() >= 10 && self.matchStatus.getP2TieScore() - self.matchStatus.getP1TieScore() >= 2) {
-                self.matchStatus.incP2Sets();
-                var endOfMatch = self.finishSuperTie();
-                return endOfMatch;
-            }
-
-            return false;
-        }
-
-        if (self.isInTieBreak()) {
-            self.matchStatus.incP2TieScore();
-
-            if (self.matchStatus.getP2TieScore() >= 7 && self.matchStatus.getP2TieScore() - self.matchStatus.getP1TieScore() >= 2) {
-                self.matchStatus.incP2Games();
-                self.matchStatus.incP2Sets();
-                var endOfMatch = self.finishSet();
-                return endOfMatch;
-            }
-
-            return false;
-        }
-
-        // G:
-            // P1 == 40 (end game)
-            // P1 != 40 (mid game)
-        // A:
-            // (end game)
-                // P1 == A 
-                // P1 == 40 && P2 != A && P2 < 40
-            // P2 == A (deuce)
-            // (mid game)
-
-        if (self.goldenPoint) {
-            // mid game
-            if (self.matchStatus.getP2Score() != 40) {
-                self.matchStatus.incP2Score();
-                return false;
-            } else {
-                return incP2Game();
-            }
-        } else {
-            // P1 was in Adv, revert to deuce
-            if (self.matchStatus.getP1Score() == 'A') {
-                self.matchStatus.setDeuce();
-                return false;
-            }
-
-            // P2 will win game
-            if (
-                self.matchStatus.getP2Score() == 'A' || 
-                (self.matchStatus.getP2Score() == 40 && self.matchStatus.getP1Score() != 40)) {
-                    return incP2Game();
-            }
-
-            // mid game
-            self.matchStatus.incP2Score();
-            return false;
-        }
-    }
-
     function incP2Game() as Boolean {
         self.matchStatus.incP2Games();
         self.resetAfterGameFinish();
@@ -180,6 +178,13 @@ class PadelMatch {
         }
 
         return false;
+    }
+
+    function incGameForSide(side as Number) as Boolean {
+        if (side == SIDE_P1) {
+            return self.incP1Game();
+        }
+        return self.incP2Game();
     }
 
     function undo() as Void {
