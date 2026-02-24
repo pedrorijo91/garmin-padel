@@ -13,30 +13,38 @@ class InitialScreenDelegate extends WatchUi.InputDelegate {
                 System.exit();
             }
             case KEY_ENTER: {
-
-                var menu = new WatchUi.Menu2({:title=>"Score"});
-                menu.addItem(
-                    new MenuItem(
-                        "Golden Point",
-                        "",
-                        :golden_point_yes,
-                        {}
-                    )
-                );
-                menu.addItem(
-                    new MenuItem(
-                        "Advantages",
-                        "",
-                        :golden_point_no,
-                        {}
-                    )
-                );
-                WatchUi.pushView(menu, new MenuGoldenPointDelegate(), WatchUi.SLIDE_BLINK);
+                openConfigMenu();
                 break;
             }
         }
-        
+
         return true;
+    }
+
+    function onTap(clickEvent as WatchUi.ClickEvent) as Boolean {
+        openConfigMenu();
+        return true;
+    }
+
+    private function openConfigMenu() as Void {
+        var menu = new WatchUi.Menu2({:title=>"Score"});
+        menu.addItem(
+            new MenuItem(
+                "Golden Point",
+                "",
+                :golden_point_yes,
+                {}
+            )
+        );
+        menu.addItem(
+            new MenuItem(
+                "Advantages",
+                "",
+                :golden_point_no,
+                {}
+            )
+        );
+        WatchUi.pushView(menu, new MenuGoldenPointDelegate(), WatchUi.SLIDE_BLINK);
     }
 
 }
