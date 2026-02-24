@@ -40,7 +40,7 @@ function multipleUndoTest(logger as Logger) as Boolean {
     matchConfig.setNumberOfSets(3);
     matchConfig.setSuperTie(true);
 
-    // match 30-30 and then 40-30  
+    // match 30-0, then 30-30, and finally 40-30  
     var match = new PadelMatch(matchConfig);
     match.incP1();
     match.incP1();
@@ -48,7 +48,6 @@ function multipleUndoTest(logger as Logger) as Boolean {
     match.incP2();
     match.incP1();
 
-    match.undo();
     match.undo();
     match.undo();
 
@@ -60,7 +59,7 @@ function multipleUndoTest(logger as Logger) as Boolean {
         status.getP1Games() == 0 &&
         status.getP2Games() == 0 &&
         status.getP1Score() == 30 &&
-        status.getP2Score() == 30 &&
+        status.getP2Score() == 15 &&
         status.getP1TieScore() == 0 &&
         status.getP2TieScore() == 0;
 }
@@ -237,6 +236,52 @@ function undoAdvAfterGameTest(logger as Logger) as Boolean {
         status.getP2Games() == 0 &&
         status.getP1Score() == 'A' &&
         status.getP2Score() == 40 &&
+        status.getP1TieScore() == 0 &&
+        status.getP2TieScore() == 0;
+}
+
+(:test)
+function undoMaxCapTest(logger as Logger) as Boolean {
+    
+    var matchConfig = new MatchConfig();
+    matchConfig.setGoldenPoint(true);
+    matchConfig.setNumberOfSets(3);
+    matchConfig.setSuperTie(true);
+
+    // 7 consecutive points for P1:
+    // 0-0 -> 15-0 -> 30-0 -> 40-0 -> 1-0 games (0-0 points) -> 15-0 -> 30-0 -> 40-0
+    var match = new PadelMatch(matchConfig);
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+
+    // Try to undo more times than the MAX_UNDO (5)
+    match.undo();
+    match.undo();
+    match.undo();
+    match.undo();
+    match.undo();
+    match.undo();
+    match.undo();
+    match.undo();
+    match.undo();
+    match.undo();
+
+    var status = match.getMatchStatus();
+
+    // After 7 points and at most 5 effective undos, we can't go back
+    // past the earliest saved state; we should end at 30-0, not 0-0.
+    return 
+        status.getP1Sets() == 0 &&
+        status.getP2Sets() == 0 &&
+        status.getP1Games() == 0 &&
+        status.getP2Games() == 0 &&
+        status.getP1Score() == 30 &&
+        status.getP2Score() == 0 &&
         status.getP1TieScore() == 0 &&
         status.getP2TieScore() == 0;
 }
