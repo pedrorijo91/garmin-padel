@@ -133,41 +133,10 @@ function incP2ToDeuceTest(logger as Logger) as Boolean {
 (:test)
 function incSetP1Test(logger as Logger) as Boolean {
     
-    var matchConfig = new MatchConfig();
-    matchConfig.setGoldenPoint(true);
-    matchConfig.setNumberOfSets(3);
-    matchConfig.setSuperTie(true);
-
+    var matchConfig = getConfig();
     var match = new PadelMatch(matchConfig);
-    // 1-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 3-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 4-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 5-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 6-0 (set)
-    match.incP1();
-    match.incP1();
-    match.incP1();
+
+    playPointsP1(match, 23);
     var res = match.incP1();
 
     var status = match.getMatchStatus();
@@ -187,72 +156,11 @@ function incSetP1Test(logger as Logger) as Boolean {
 (:test)
 function finishWhenTwoSetsTest(logger as Logger) as Boolean {
 
-    var matchConfig = new MatchConfig();
-    matchConfig.setGoldenPoint(true);
-    matchConfig.setNumberOfSets(3);
-    matchConfig.setSuperTie(true);
-
+    var matchConfig = getConfig();
     var match = new PadelMatch(matchConfig);
-    // 1-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 3-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 4-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 5-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 6-0 (set)
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
 
-    // 1-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 3-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 4-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 5-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 6-0 (2-0 sets)
-    match.incP1();
-    match.incP1();
-    match.incP1();
+    playSet(match, 6, 0);
+    playPointsP1(match, 23);
     var res = match.incP1();
     var status = match.getMatchStatus();
 

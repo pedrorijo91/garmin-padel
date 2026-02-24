@@ -4,90 +4,14 @@ import Toybox.Test;
 (:test)
 function goesNormalLastSetTest(logger as Logger) as Boolean {
 
-    var matchConfig = new MatchConfig();
-    matchConfig.setGoldenPoint(true);
-    matchConfig.setNumberOfSets(3);
+    var matchConfig = getConfig();
     matchConfig.setSuperTie(false);
-
     var match = new PadelMatch(matchConfig);
-    // 1-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 3-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 4-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 5-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 6-0 (set)
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
 
-    // 0-1
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-2
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-3
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-4
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-5
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 0-6 (1-1 sets)
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
+    playSet(match, 6, 0);
+    playSet(match, 0, 6);
+    playSet(match, 2, 1);
 
-    // 3rd set: 1-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-1
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    
     var status = match.getMatchStatus();
 
     return 
