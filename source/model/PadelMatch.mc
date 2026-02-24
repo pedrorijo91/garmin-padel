@@ -2,13 +2,15 @@ import Toybox.Lang;
 
 class PadelMatch {
 
+    static const MAX_UNDO = 5;
+
     private var numberOfSets as Number;
     private var superTie as Boolean;
     private var goldenPoint as Boolean;
 
     private var matchStatus as MatchStatus;
 
-    private var prevMatchStatus as MatchStatus;
+    private var undoStack;
 
     function initialize(config as MatchConfig) {
 
@@ -17,12 +19,12 @@ class PadelMatch {
         goldenPoint = config.getGoldenPoint();
 
         matchStatus = MatchStatus.New();
-        prevMatchStatus = MatchStatus.New();
+        undoStack = [];
     }
 
     // returns a boolean indicating wether the match has ended.
     function incP1() as Boolean {
-        prevMatchStatus = matchStatus.copy();
+        self.saveMatchStatus();
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP1TieScore();
 
@@ -102,7 +104,7 @@ class PadelMatch {
 
     // returns a boolean indicating wether the match has ended.
     function incP2() as Boolean {
-        prevMatchStatus = matchStatus.copy();
+        self.saveMatchStatus();
         if (self.isInSuperTieBreak()) {
             self.matchStatus.incP2TieScore();
 
@@ -181,7 +183,13 @@ class PadelMatch {
     }
 
     function undo() as Void {
-        self.matchStatus = self.prevMatchStatus;
+        if (undoStack == null || undoStack.size() == 0) {
+            return;
+        }
+
+        var lastState = undoStack[undoStack.size() - 1];
+        self.matchStatus = lastState;
+        undoStack.remove(lastState); // Arrays remove by object, not index, so remove the stored state object
     }
 
     function getMatchStatus() as MatchStatus {
@@ -240,5 +248,17 @@ class PadelMatch {
 
     function resetAfterGameFinish() as Void {
         self.matchStatus.resetScores();
+    }
+
+    function saveMatchStatus() as Void {
+        if (undoStack == null) {
+            undoStack = [];
+        }
+
+        if (undoStack.size() == MAX_UNDO) {
+            undoStack.remove(undoStack[0]); // Arrays remove by object, not by index, so remove the first element object explicitly
+        }
+
+        undoStack.add(self.matchStatus.copy());
     }
 }
