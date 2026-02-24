@@ -70,94 +70,18 @@ function tieFinishTest(logger as Logger) as Boolean {
 (:test)
 function tieFinishOnlyWhenAdvantageTest(logger as Logger) as Boolean {
     
-    var matchConfig = new MatchConfig();
-    matchConfig.setGoldenPoint(true);
-    matchConfig.setNumberOfSets(3);
-    matchConfig.setSuperTie(true);
-
+    var matchConfig = getConfig();
     var match = new PadelMatch(matchConfig);
 
-    // 1-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 2-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 3-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 4-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 5-0
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    // 5-1
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 5-2
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();  
-    // 5-3
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();  
-    // 5-4
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();  
-    // 5-5
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();  
-    // 5-6
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // 6-6
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();              
-    // tie: 6-6
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP1();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    match.incP2();
-    // tie: 7-7
-    match.incP1();
-    match.incP2();
+    playSetTo6All(match);
+    playPointsP1(match, 6);
+    playPointsP2(match, 6);
+    playPointsP1(match, 1);
+    playPointsP2(match, 1);
+
     var tieStatus = match.getMatchStatus();
 
-    // tie: 9-7 (set)
-    match.incP1();
-    match.incP1();
+    playPointsP1(match, 2);
 
     var status = match.getMatchStatus();
 
