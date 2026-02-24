@@ -401,3 +401,99 @@ function undoInsideSuperTieBreakTest(logger as Logger) as Boolean {
         status.getP1TieScore() == 1 &&
         status.getP2TieScore() == 0;
 }
+
+(:test)
+function superTieP2WinsTest(logger as Logger) as Boolean {
+    
+    var matchConfig = new MatchConfig();
+    matchConfig.setGoldenPoint(true);
+    matchConfig.setNumberOfSets(3);
+    matchConfig.setSuperTie(true);
+
+    var match = new PadelMatch(matchConfig);
+
+    // 1-0 set
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+
+    // 0-1 set
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+
+    // super tie: P2 wins 10-8 (e.g. 8 incP1, 10 incP2 in super)
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    var res = match.incP2();
+
+    var status = match.getMatchStatus();
+
+    return 
+        res == true &&
+        status.getP1Sets() == 1 &&
+        status.getP2Sets() == 2 &&
+        status.getP1Games() == 0 &&
+        status.getP2Games() == 0 &&
+        status.getP1Score() == 0 &&
+        status.getP2Score() == 0 &&
+        status.getP1TieScore() == 8 &&
+        status.getP2TieScore() == 10;
+}

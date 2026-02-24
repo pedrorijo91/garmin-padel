@@ -473,3 +473,102 @@ function undoInsideTieBreakTest(logger as Logger) as Boolean {
         status.getP1TieScore() == 1 &&
         status.getP2TieScore() == 0;
 }
+
+(:test)
+function tieP2WinsSetTest(logger as Logger) as Boolean {
+    
+    var matchConfig = new MatchConfig();
+    matchConfig.setGoldenPoint(true);
+    matchConfig.setNumberOfSets(3);
+    matchConfig.setSuperTie(true);
+
+    var match = new PadelMatch(matchConfig);
+
+    // 1-0
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 2-0
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 3-0
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 4-0
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 5-0
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    // 5-1
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    // 5-2
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();  
+    // 5-3
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();  
+    // 5-4
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();  
+    // 5-5
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();  
+    // 5-6
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    match.incP2();
+    // 6-6
+    match.incP1();
+    match.incP1();
+    match.incP1();
+    match.incP1();              
+
+    // tie: 7-5 P2 wins (alternate to 5-5 then P2 P2)
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    match.incP1();
+    match.incP2();
+    var res = match.incP2();
+
+    var status = match.getMatchStatus();
+
+    return 
+        res == false &&
+        status.getP1Sets() == 0 &&
+        status.getP2Sets() == 1 &&
+        status.getP1Games() == 0 &&
+        status.getP2Games() == 0 &&
+        status.getP1Score() == 0 &&
+        status.getP2Score() == 0 &&
+        status.getP1TieScore() == 0 &&
+        status.getP2TieScore() == 0;
+}
