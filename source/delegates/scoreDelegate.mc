@@ -39,6 +39,9 @@ class ScoreDelegate extends WatchUi.InputDelegate {
             new MenuItem("Undo last point", "", :score_option_undo, {})
         );
         menu.addItem(
+            new MenuItem("Unforced error", "", :score_option_unforced_error, {})
+        );
+        menu.addItem(
             new MenuItem("Finish activity", "", :score_option_finish, {})
         );
         menu.addItem(
@@ -72,13 +75,20 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 break;
             }
             case KEY_ENTER: {
-                var message = "Undo?";
-                var dialog = new WatchUi.Confirmation(message);
-                WatchUi.pushView(
-                    dialog,
-                    new UndoConfirmationDelegate(),
-                    WatchUi.SLIDE_IMMEDIATE
+                var menu = new WatchUi.Menu2({:title=>"Options"});
+                menu.addItem(
+                    new MenuItem("Undo last point", "", :score_option_undo, {})
                 );
+                menu.addItem(
+                    new MenuItem("Unforced error", "", :score_option_unforced_error, {})
+                );
+                menu.addItem(
+                    new MenuItem("Finish activity", "", :score_option_finish, {})
+                );
+                menu.addItem(
+                    new MenuItem("Cancel", "Back to score", :score_option_cancel, {})
+                );
+                WatchUi.pushView(menu, new ScoreOptionsMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
                 break;
             }
             case KEY_ESC: {

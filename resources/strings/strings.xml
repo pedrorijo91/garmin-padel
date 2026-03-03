@@ -10,4 +10,7 @@
 
     <string id="app_version_label">App Version</string>
     <string id="app_version_units">v</string>
+
+    <string id="fit_unforced_errors_label">Unforced Errors</string>
+    <string id="fit_unforced_errors_units">count</string>
 </strings>
