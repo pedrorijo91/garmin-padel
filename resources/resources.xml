@@ -21,5 +21,12 @@
                 dataLabel="@Strings.app_version_label"
                 unitLabel="@Strings.app_version_units"
             />
+            <fitField id="3" 
+                displayInActivitySummary="true" 
+                sortOrder = "3" 
+                precision="0"
+                dataLabel="@Strings.fit_unforced_errors_label"
+                unitLabel="@Strings.fit_unforced_errors_units"
+            />
     </fitContributions>
 </resources>

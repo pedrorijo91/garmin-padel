@@ -89,6 +89,10 @@ class GarminpadelApp extends Application.AppBase {
         var appVersion = Application.loadResource(Rez.Strings.AppVersion) as String;
         versionField.setData(appVersion);
 
+        var unforcedErrorsField = session.createField("unforced_errors", 3, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "count"});
+        var unforcedErrors = self.getMatch().getMatchStatus().getUnforcedErrors();
+        unforcedErrorsField.setData(unforcedErrors);
+
         session.stop();
         session.save();
     }

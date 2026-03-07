@@ -36,6 +36,12 @@ class PadelMatch {
         return self.scorePoint(SIDE_P2);
     }
 
+    // register an unforced error for our team (does not change score)
+    function addUnforcedError() as Void {
+        self.saveMatchStatus();
+        self.matchStatus.incUnforcedErrors();
+    }
+
     // Generic scorer, parameterized by side
     function scorePoint(side as Number) as Boolean {
         var opponent = self.otherSide(side);

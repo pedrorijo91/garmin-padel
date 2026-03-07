@@ -18,9 +18,12 @@ class MatchStatus {
 
     private var historicalScores as Array<String>;
 
+    // total unforced errors for our team during the whole match
+    private var unforcedErrors as Number;
+
 
     static function New() as MatchStatus {
-        return new MatchStatus(0,0,0,0,0,0,0,0, []);
+        return new MatchStatus(0,0,0,0,0,0,0,0, [], 0);
     }
 
     function initialize(
@@ -32,7 +35,8 @@ class MatchStatus {
         p2ScoreIdx as Number, 
         p1TieBreakScore as Number, 
         p2TieBreakScore as Number, 
-        historicalScores as Array<String>
+        historicalScores as Array<String>,
+        unforcedErrors as Number
     ) {
 
         self.p1Sets = p1Sets;
@@ -48,6 +52,8 @@ class MatchStatus {
         self.p2TieBreakScore = p2TieBreakScore;
 
         self.historicalScores = historicalScores;
+
+        self.unforcedErrors = unforcedErrors;
      }
 
 
@@ -143,9 +149,17 @@ class MatchStatus {
         self.p2TieBreakScore = 0;
     }
 
+    function getUnforcedErrors() as Number {
+        return self.unforcedErrors;
+    }
+
+    function incUnforcedErrors() as Void {
+        self.unforcedErrors++;
+    }
+
     function copy() as MatchStatus {
         var newHistory = [];
         newHistory.addAll(self.historicalScores);
-        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, newHistory);
+        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, newHistory, unforcedErrors);
     }
 }
