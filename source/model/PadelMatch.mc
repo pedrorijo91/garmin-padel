@@ -12,7 +12,7 @@ class PadelMatch {
 
     private var matchStatus as MatchStatus;
 
-    private var undoStack;
+    private var undoStack as Array<MatchStatus>;
 
     function initialize(config as MatchConfig) {
 

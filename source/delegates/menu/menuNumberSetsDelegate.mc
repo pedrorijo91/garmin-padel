@@ -9,21 +9,17 @@ class MenuNumberSetsDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function onSelect(item as MenuItem) as Void {
-        
-        var nbrSets = MatchConfig.UNLIMITED_SETS;
 
-         switch (item.getId()) {
-            case :sets_unlimited: {
-                break;
-            }
-            case :sets_5: {
-                nbrSets = 5;
-                break;
-            }
-            case :sets_3: {
+        var nbrSets = MatchConfig.UNLIMITED_SETS;
+        var id = item.getId();
+
+        if (id != null) {
+            if (id == :sets_3) {
                 nbrSets = 3;
-                break;
+            } else if (id == :sets_5) {
+                nbrSets = 5;
             }
+            // else :sets_unlimited, nbrSets stays UNLIMITED_SETS
         }
 
         Application.getApp().getMatchConfig().setNumberOfSets(nbrSets);

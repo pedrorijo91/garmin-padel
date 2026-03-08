@@ -1,0 +1,28 @@
+# CI for Garmin Connect IQ (Monkey C) app
+# - Compiles the app for a target device with type checking
+# - Runs unit tests via "Run No Evil"
+
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and run tests
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            -w /app \
+            -e HOME=/root \
+            ghcr.io/matco/connectiq-tester:latest \
+            fenix847mm ""
+
