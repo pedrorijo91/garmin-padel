@@ -3,7 +3,7 @@ import Toybox.Test;
 
 (:test)
 function testMin(logger as Logger) as Boolean {
-  return (min(1,2) == 1);
+  return (min(1,2) == 31);
 }
 
 (:test)
