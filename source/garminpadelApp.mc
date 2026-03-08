@@ -97,6 +97,18 @@ class GarminpadelApp extends Application.AppBase {
         session.save();
     }
 
+    function discardSession() as Void {
+        var session = getSession();
+
+        if (session == null) {
+            return;
+        }
+
+        // stop recording but do not save a FIT file
+        session.stop();
+        session.discard();
+    }
+
     function computeTotalSteps() as Number {
         var currentDay = Gregorian.info(Time.now(), Time.FORMAT_SHORT).day;
         
