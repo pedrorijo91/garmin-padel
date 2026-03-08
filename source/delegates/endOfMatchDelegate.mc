@@ -11,26 +11,30 @@ class EndOfMatchDelegate extends WatchUi.InputDelegate {
         switch (keyEvent.getKey()) {
             case KEY_ESC: {}
             case KEY_ENTER: {
-                showFinishDialog();
+                showFinishMenu();
             }
         }
         return true;
     }
 
     function onTap(clickEvent as WatchUi.ClickEvent) as Boolean {
-        showFinishDialog();
+        showFinishMenu();
         return true;
     }
 
-    private function showFinishDialog() as Void {
+    private function showFinishMenu() as Void {
         var score = Application.getApp().getScoreString();
-        var message = "Finish Activity?\n" + score;
-        var dialog = new WatchUi.Confirmation(message);
-        WatchUi.pushView(
-            dialog,
-            new ExitConfirmationDelegate(),
-            WatchUi.SLIDE_IMMEDIATE
+        var menu = new WatchUi.Menu2({:title=>"Finish Activity"});
+        menu.addItem(
+            new MenuItem("Save and exit", score, :finish_save_exit, {})
         );
+        menu.addItem(
+            new MenuItem("Discard", "Don't save activity", :finish_discard, {})
+        );
+        menu.addItem(
+            new MenuItem("Cancel", "Back to summary", :finish_cancel, {})
+        );
+        WatchUi.pushView(menu, new FinishActivityMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 
 }
