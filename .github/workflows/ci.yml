@@ -1,0 +1,29 @@
+# CI for Garmin Connect IQ (Monkey C) app
+# - Compiles the app for a target device (monkeyc includes type checking with -l 3)
+# - Runs unit tests via "Run No Evil" (monkeydo -t)
+# Uses matco/action-connectiq-tester (Docker image with Connect IQ SDK + device bits).
+# See: https://github.com/marketplace/actions/connectiq-tester
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and run tests
+        id: run_tests
+        uses: matco/action-connectiq-tester@v1
+        with:
+          path: .
+          device: fenix7
+          # certificate: omit to use a temporary cert (developer_key is not in repo)
+
