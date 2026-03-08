@@ -1,16 +1,14 @@
 # CI for Garmin Connect IQ (Monkey C) app
-# - Compiles the app for a target device (monkeyc includes type checking with -l 3)
-# - Runs unit tests via "Run No Evil" (monkeydo -t)
-# Uses matco/connectiq-tester Docker image directly so test output is visible in the log.
-# (The GitHub Action pipes output to ::debug:: which is hidden by default.)
+# - Compiles the app for a target device with type checking
+# - Runs unit tests via "Run No Evil"
 
 name: CI
 
 on:
   pull_request:
-    branches: [main, master]
+    branches: [master]
   push:
-    branches: [main, master]
+    branches: [master]
 
 jobs:
   build-and-test:
@@ -26,5 +24,5 @@ jobs:
             -w /app \
             -e HOME=/root \
             ghcr.io/matco/connectiq-tester:latest \
-            fenix7 ""
+            fenix847mm ""
 
