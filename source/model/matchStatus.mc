@@ -23,38 +23,36 @@ class MatchStatus {
 
 
     static function New() as MatchStatus {
-        return new MatchStatus(0,0,0,0,0,0,0,0, [], 0);
+        return new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, []);
     }
 
+    // Max 9 arguments for compatibility with older devices (e.g. marqgolfer)
     function initialize(
-        p1Sets  as Number, 
-        p2Sets as Number, 
-        p1Games as Number, 
-        p2Games as Number, 
-        p1ScoreIdx as Number, 
-        p2ScoreIdx as Number, 
-        p1TieBreakScore as Number, 
-        p2TieBreakScore as Number, 
-        historicalScores as Array<String>,
-        unforcedErrors as Number
+        p1Sets  as Number,
+        p2Sets as Number,
+        p1Games as Number,
+        p2Games as Number,
+        p1ScoreIdx as Number,
+        p2ScoreIdx as Number,
+        p1TieBreakScore as Number,
+        p2TieBreakScore as Number,
+        historicalScores as Array<String>
     ) {
-
         self.p1Sets = p1Sets;
         self.p2Sets = p2Sets;
-
         self.p1Games = p1Games;
         self.p2Games = p2Games;
-        
         self.p1ScoreIdx = p1ScoreIdx;
         self.p2ScoreIdx = p2ScoreIdx;
-
         self.p1TieBreakScore = p1TieBreakScore;
         self.p2TieBreakScore = p2TieBreakScore;
-
         self.historicalScores = historicalScores;
+        self.unforcedErrors = 0;
+    }
 
-        self.unforcedErrors = unforcedErrors;
-     }
+    function setUnforcedErrors(n as Number) as Void {
+        self.unforcedErrors = n;
+    }
 
 
     function getP1Sets() as Number {
@@ -160,6 +158,8 @@ class MatchStatus {
     function copy() as MatchStatus {
         var newHistory = [];
         newHistory.addAll(self.historicalScores);
-        return new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, newHistory, unforcedErrors);
+        var s = new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, newHistory);
+        s.setUnforcedErrors(self.unforcedErrors);
+        return s;
     }
 }
