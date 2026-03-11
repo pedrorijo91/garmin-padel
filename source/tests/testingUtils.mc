@@ -69,3 +69,91 @@ function printMatchStatus(status as MatchStatus) as String {
         ",P2TieScore=" + status.getP2TieScore() +
         ",history=" + status.getHistoricalScores();
 }
+
+// --- Helpers for unit tests (engines + MatchStatus) ---
+
+// MatchStatus at 40-40 (score indices 3,3)
+function statusDeuce() as MatchStatus {
+    var hist = [];
+    return new MatchStatus(0, 0, 0, 0, 3, 3, 0, 0, hist);
+}
+
+// MatchStatus at P1 advantage (A-40)
+function statusP1Advantage() as MatchStatus {
+    var hist = [];
+    return new MatchStatus(0, 0, 0, 0, 4, 3, 0, 0, hist);
+}
+
+// MatchStatus at P2 advantage (40-A)
+function statusP2Advantage() as MatchStatus {
+    var hist = [];
+    return new MatchStatus(0, 0, 0, 0, 3, 4, 0, 0, hist);
+}
+
+// Play one full game (4 points) for the given side with NormalSetEngine (golden point).
+function playOneGame(engine as NormalSetEngine, side as Number, status as MatchStatus) as Void {
+    for (var i = 0; i < 4; i++) {
+        engine.scorePoint(side, status);
+    }
+}
+
+// Play n full games for the given side (each game = 4 points with golden point).
+function playNGames(engine as NormalSetEngine, side as Number, status as MatchStatus, n as Number) as Void {
+    for (var g = 0; g < n; g++) {
+        playOneGame(engine, side, status);
+    }
+}
+
+// Play until set is 6-6 in games (alternate 6 games P1, 6 games P2). Use before tie-break.
+function playSetTo6AllForEngine(engine as NormalSetEngine, status as MatchStatus) as Void {
+    for (var g = 0; g < 6; g++) {
+        playOneGame(engine, SetEngine.SIDE_P1, status);
+        playOneGame(engine, SetEngine.SIDE_P2, status);
+    }
+}
+
+// At 6-6, play tie-break points: p1Points for P1 then p2Points for P2 (e.g. 7,5 => 7-5).
+function playTieBreakPoints(engine as NormalSetEngine, status as MatchStatus, p1Points as Number, p2Points as Number) as Void {
+    for (var i = 0; i < p1Points; i++) {
+        engine.scorePoint(SetEngine.SIDE_P1, status);
+    }
+    for (var i = 0; i < p2Points; i++) {
+        engine.scorePoint(SetEngine.SIDE_P2, status);
+    }
+}
+
+// Play super-tie points: p2Points for P2 then p1Points for P1 (e.g. 10, 8 => 10-8 for P1).
+function playSuperTiePoints(engine as SuperTieSetEngine, status as MatchStatus, p1Points as Number, p2Points as Number) as Void {
+    for (var i = 0; i < p2Points; i++) {
+        engine.scorePoint(SetEngine.SIDE_P2, status);
+    }
+    for (var i = 0; i < p1Points; i++) {
+        engine.scorePoint(SetEngine.SIDE_P1, status);
+    }
+}
+
+// Play one game with advantage rules: 40-40 then P1 advantage then P1 wins (5 points P1, 3 P2).
+function playOneGameP1WinsWithAdvantage(engine as NormalSetEngine, status as MatchStatus) as Void {
+    engine.scorePoint(SetEngine.SIDE_P1, status);
+    engine.scorePoint(SetEngine.SIDE_P1, status);
+    engine.scorePoint(SetEngine.SIDE_P1, status);
+    engine.scorePoint(SetEngine.SIDE_P2, status);
+    engine.scorePoint(SetEngine.SIDE_P2, status);
+    engine.scorePoint(SetEngine.SIDE_P2, status);
+    engine.scorePoint(SetEngine.SIDE_P1, status);
+    engine.scorePoint(SetEngine.SIDE_P1, status);
+}
+
+// Play one game with advantage rules: 40-40, P1 advantage, P2 back to deuce, P2 advantage, P2 wins (4 P1, 6 P2).
+function playOneGameP2WinsWithAdvantage(engine as NormalSetEngine, status as MatchStatus) as Void {
+    engine.scorePoint(SetEngine.SIDE_P1, status);
+    engine.scorePoint(SetEngine.SIDE_P1, status);
+    engine.scorePoint(SetEngine.SIDE_P1, status);
+    engine.scorePoint(SetEngine.SIDE_P2, status);
+    engine.scorePoint(SetEngine.SIDE_P2, status);
+    engine.scorePoint(SetEngine.SIDE_P2, status);
+    engine.scorePoint(SetEngine.SIDE_P1, status);
+    engine.scorePoint(SetEngine.SIDE_P2, status);
+    engine.scorePoint(SetEngine.SIDE_P2, status);
+    engine.scorePoint(SetEngine.SIDE_P2, status);
+}

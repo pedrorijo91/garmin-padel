@@ -1,24 +1,6 @@
 import Toybox.Lang;
 import Toybox.Test;
 
-// Helper: MatchStatus at 40-40 (score indices 3,3)
-function statusDeuce() as MatchStatus {
-    var hist = [];
-    return new MatchStatus(0, 0, 0, 0, 3, 3, 0, 0, hist);
-}
-
-// Helper: MatchStatus at P1 advantage (A-40)
-function statusP1Advantage() as MatchStatus {
-    var hist = [];
-    return new MatchStatus(0, 0, 0, 0, 4, 3, 0, 0, hist);
-}
-
-// Helper: MatchStatus at P2 advantage (40-A)
-function statusP2Advantage() as MatchStatus {
-    var hist = [];
-    return new MatchStatus(0, 0, 0, 0, 3, 4, 0, 0, hist);
-}
-
 (:test)
 function goldenPoint_atDeuce_p1WinsGame(logger as Logger) as Boolean {
     var engine = new GoldenPointGameEngine();
