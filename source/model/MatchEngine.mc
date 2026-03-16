@@ -5,8 +5,6 @@ import Toybox.Lang;
 class MatchEngine {
 
     static const MAX_UNDO = 5;
-    static const SIDE_P1 = 0;
-    static const SIDE_P2 = 1;
 
     private var numberOfSets as Number;
     private var defaultSetEngine as SetEngine;
@@ -29,12 +27,12 @@ class MatchEngine {
 
     function incP1() as Boolean {
         self.saveMatchStatus();
-        return self.scorePoint(SIDE_P1);
+        return self.scorePoint(Sides.SIDE_P1);
     }
 
     function incP2() as Boolean {
         self.saveMatchStatus();
-        return self.scorePoint(SIDE_P2);
+        return self.scorePoint(Sides.SIDE_P2);
     }
 
     function addUnforcedError() as Void {

@@ -5,9 +5,6 @@ import Toybox.Lang;
 // Subclasses implement isInTieBreak, isInSuperTieBreak for the current set.
 class SetEngine {
 
-    static const SIDE_P1 = 0;
-    static const SIDE_P2 = 1;
-
     function initialize() {
     }
 
@@ -26,14 +23,14 @@ class SetEngine {
     }
 
     protected function otherSide(side as Number) as Number {
-        if (side == SIDE_P1) {
-            return SIDE_P2;
+        if (side == Sides.SIDE_P1) {
+            return Sides.SIDE_P2;
         }
-        return SIDE_P1;
+        return Sides.SIDE_P1;
     }
 
     protected function incGamesForSide(side as Number, matchStatus as MatchStatus) as Void {
-        if (side == SIDE_P1) {
+        if (side == Sides.SIDE_P1) {
             matchStatus.incP1Games();
         } else {
             matchStatus.incP2Games();
@@ -41,7 +38,7 @@ class SetEngine {
     }
 
     protected function incSetsForSide(side as Number, matchStatus as MatchStatus) as Void {
-        if (side == SIDE_P1) {
+        if (side == Sides.SIDE_P1) {
             matchStatus.incP1Sets();
         } else {
             matchStatus.incP2Sets();
@@ -49,14 +46,14 @@ class SetEngine {
     }
 
     protected function getTieScoreForSide(side as Number, matchStatus as MatchStatus) as Number {
-        if (side == SIDE_P1) {
+        if (side == Sides.SIDE_P1) {
             return matchStatus.getP1TieScore();
         }
         return matchStatus.getP2TieScore();
     }
 
     protected function incTieScoreForSide(side as Number, matchStatus as MatchStatus) as Void {
-        if (side == SIDE_P1) {
+        if (side == Sides.SIDE_P1) {
             matchStatus.incP1TieScore();
         } else {
             matchStatus.incP2TieScore();
@@ -99,11 +96,11 @@ class NormalSetEngine extends SetEngine {
             var p1g = matchStatus.getP1Games();
             var p2g = matchStatus.getP2Games();
             if (p1g >= GAMES_TO_WIN && p1g - p2g >= MARGIN) {
-                self.incSetsForSide(SIDE_P1, matchStatus);
+                self.incSetsForSide(Sides.SIDE_P1, matchStatus);
                 return true;
             }
             if (p2g >= GAMES_TO_WIN && p2g - p1g >= MARGIN) {
-                self.incSetsForSide(SIDE_P2, matchStatus);
+                self.incSetsForSide(Sides.SIDE_P2, matchStatus);
                 return true;
             }
         }

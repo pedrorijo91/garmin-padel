@@ -5,9 +5,6 @@ import Toybox.Lang;
 // Stateless: receives MatchStatus, mutates only current game points, returns true if game won.
 class GameEngine {
 
-    static const SIDE_P1 = 0;
-    static const SIDE_P2 = 1;
-
     function initialize() {
     }
 
@@ -19,14 +16,14 @@ class GameEngine {
     }
 
     protected function getScoreForSide(side as Number, matchStatus as MatchStatus) as Object {
-        if (side == SIDE_P1) {
+        if (side == Sides.SIDE_P1) {
             return matchStatus.getP1Score();
         }
         return matchStatus.getP2Score();
     }
 
     protected function incScoreForSide(side as Number, matchStatus as MatchStatus) as Void {
-        if (side == SIDE_P1) {
+        if (side == Sides.SIDE_P1) {
             matchStatus.incP1Score();
         } else {
             matchStatus.incP2Score();
@@ -34,10 +31,10 @@ class GameEngine {
     }
 
     protected function otherSide(side as Number) as Number {
-        if (side == SIDE_P1) {
-            return SIDE_P2;
+        if (side == Sides.SIDE_P1) {
+            return Sides.SIDE_P2;
         }
-        return SIDE_P1;
+        return Sides.SIDE_P1;
     }
 }
 

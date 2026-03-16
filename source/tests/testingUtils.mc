@@ -107,53 +107,53 @@ function playNGames(engine as NormalSetEngine, side as Number, status as MatchSt
 // Play until set is 6-6 in games (alternate 6 games P1, 6 games P2). Use before tie-break.
 function playSetTo6AllForEngine(engine as NormalSetEngine, status as MatchStatus) as Void {
     for (var g = 0; g < 6; g++) {
-        playOneGame(engine, SetEngine.SIDE_P1, status);
-        playOneGame(engine, SetEngine.SIDE_P2, status);
+        playOneGame(engine, Sides.SIDE_P1, status);
+        playOneGame(engine, Sides.SIDE_P2, status);
     }
 }
 
 // At 6-6, play tie-break points: p1Points for P1 then p2Points for P2 (e.g. 7,5 => 7-5).
 function playTieBreakPoints(engine as NormalSetEngine, status as MatchStatus, p1Points as Number, p2Points as Number) as Void {
     for (var i = 0; i < p1Points; i++) {
-        engine.scorePoint(SetEngine.SIDE_P1, status);
+        engine.scorePoint(Sides.SIDE_P1, status);
     }
     for (var i = 0; i < p2Points; i++) {
-        engine.scorePoint(SetEngine.SIDE_P2, status);
+        engine.scorePoint(Sides.SIDE_P2, status);
     }
 }
 
 // Play super-tie points: p2Points for P2 then p1Points for P1 (e.g. 10, 8 => 10-8 for P1).
 function playSuperTiePoints(engine as SuperTieSetEngine, status as MatchStatus, p1Points as Number, p2Points as Number) as Void {
     for (var i = 0; i < p2Points; i++) {
-        engine.scorePoint(SetEngine.SIDE_P2, status);
+        engine.scorePoint(Sides.SIDE_P2, status);
     }
     for (var i = 0; i < p1Points; i++) {
-        engine.scorePoint(SetEngine.SIDE_P1, status);
+        engine.scorePoint(Sides.SIDE_P1, status);
     }
 }
 
 // Play one game with advantage rules: 40-40 then P1 advantage then P1 wins (5 points P1, 3 P2).
 function playOneGameP1WinsWithAdvantage(engine as NormalSetEngine, status as MatchStatus) as Void {
-    engine.scorePoint(SetEngine.SIDE_P1, status);
-    engine.scorePoint(SetEngine.SIDE_P1, status);
-    engine.scorePoint(SetEngine.SIDE_P1, status);
-    engine.scorePoint(SetEngine.SIDE_P2, status);
-    engine.scorePoint(SetEngine.SIDE_P2, status);
-    engine.scorePoint(SetEngine.SIDE_P2, status);
-    engine.scorePoint(SetEngine.SIDE_P1, status);
-    engine.scorePoint(SetEngine.SIDE_P1, status);
+    engine.scorePoint(Sides.SIDE_P1, status);
+    engine.scorePoint(Sides.SIDE_P1, status);
+    engine.scorePoint(Sides.SIDE_P1, status);
+    engine.scorePoint(Sides.SIDE_P2, status);
+    engine.scorePoint(Sides.SIDE_P2, status);
+    engine.scorePoint(Sides.SIDE_P2, status);
+    engine.scorePoint(Sides.SIDE_P1, status);
+    engine.scorePoint(Sides.SIDE_P1, status);
 }
 
 // Play one game with advantage rules: 40-40, P1 advantage, P2 back to deuce, P2 advantage, P2 wins (4 P1, 6 P2).
 function playOneGameP2WinsWithAdvantage(engine as NormalSetEngine, status as MatchStatus) as Void {
-    engine.scorePoint(SetEngine.SIDE_P1, status);
-    engine.scorePoint(SetEngine.SIDE_P1, status);
-    engine.scorePoint(SetEngine.SIDE_P1, status);
-    engine.scorePoint(SetEngine.SIDE_P2, status);
-    engine.scorePoint(SetEngine.SIDE_P2, status);
-    engine.scorePoint(SetEngine.SIDE_P2, status);
-    engine.scorePoint(SetEngine.SIDE_P1, status);
-    engine.scorePoint(SetEngine.SIDE_P2, status);
-    engine.scorePoint(SetEngine.SIDE_P2, status);
-    engine.scorePoint(SetEngine.SIDE_P2, status);
+    engine.scorePoint(Sides.SIDE_P1, status);
+    engine.scorePoint(Sides.SIDE_P1, status);
+    engine.scorePoint(Sides.SIDE_P1, status);
+    engine.scorePoint(Sides.SIDE_P2, status);
+    engine.scorePoint(Sides.SIDE_P2, status);
+    engine.scorePoint(Sides.SIDE_P2, status);
+    engine.scorePoint(Sides.SIDE_P1, status);
+    engine.scorePoint(Sides.SIDE_P2, status);
+    engine.scorePoint(Sides.SIDE_P2, status);
+    engine.scorePoint(Sides.SIDE_P2, status);
 }

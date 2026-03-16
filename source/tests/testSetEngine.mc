@@ -7,7 +7,7 @@ function normalSetEngine_sixGamesWinsSet(logger as Logger) as Boolean {
     var setEngine = new NormalSetEngine(gameEngine);
     var hist = [];
     var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
-    playNGames(setEngine, SetEngine.SIDE_P1, status, 6);
+    playNGames(setEngine, Sides.SIDE_P1, status, 6);
     return status.getP1Sets() == 1 && status.getP1Games() == 6 && status.getP2Games() == 0;
 }
 
@@ -30,12 +30,12 @@ function normalSetEngine_tieBreak_76DoesNotWin(logger as Logger) as Boolean {
     var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
     playSetTo6AllForEngine(setEngine, status);
     playTieBreakPoints(setEngine, status, 6, 6);
-    setEngine.scorePoint(SetEngine.SIDE_P1, status); // 7-6: set not won (need margin 2)
+    setEngine.scorePoint(Sides.SIDE_P1, status); // 7-6: set not won (need margin 2)
     var setWonAt76 = status.getP1Sets() == 0 && status.getP2Sets() == 0 && status.getP1TieScore() == 7 && status.getP2TieScore() == 6;
     if (!setWonAt76) {
         return false;
     }
-    setEngine.scorePoint(SetEngine.SIDE_P1, status); // 8-6: set won
+    setEngine.scorePoint(Sides.SIDE_P1, status); // 8-6: set won
     return status.getP1Sets() == 1 && status.getP1TieScore() == 8 && status.getP2TieScore() == 6;
 }
 
@@ -114,8 +114,8 @@ function normalSetEngine_advantageEngine_setCompletes64(logger as Logger) as Boo
     var hist = [];
     var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
     playOneGameP1WinsWithAdvantage(setEngine, status);
-    playNGames(setEngine, SetEngine.SIDE_P1, status, 4);
-    playNGames(setEngine, SetEngine.SIDE_P2, status, 4);
-    playOneGame(setEngine, SetEngine.SIDE_P1, status); // 6-4, set won
+    playNGames(setEngine, Sides.SIDE_P1, status, 4);
+    playNGames(setEngine, Sides.SIDE_P2, status, 4);
+    playOneGame(setEngine, Sides.SIDE_P1, status); // 6-4, set won
     return status.getP1Games() == 6 && status.getP2Games() == 4 && status.getP1Sets() == 1 && status.getP2Sets() == 0;
 }
