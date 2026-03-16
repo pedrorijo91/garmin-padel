@@ -22,6 +22,15 @@ class SetEngine {
         return false;
     }
 
+    // For mini set: when starting the set, games can be initialized (e.g. 2-2). Default 0-0.
+    function getInitialP1Games() as Number {
+        return 0;
+    }
+
+    function getInitialP2Games() as Number {
+        return 0;
+    }
+
     protected function otherSide(side as Number) as Number {
         return side == Sides.SIDE_P1 ? Sides.SIDE_P2 : Sides.SIDE_P1;
     }
@@ -55,17 +64,33 @@ class SetEngine {
     }
 }
 
-// Standard set: first to 6 games (margin 2), tie-break at 6-6 (first to 7, margin 2).
-class NormalSetEngine extends SetEngine {
+// Parameterized set: first to gamesToWin (margin 2), tie-break when both have tieBreakAt games (first to 7, margin 2).
+// Optional initial games for mini set (start 2-2). Subclasses pass (gameEngine, gamesToWin, tieBreakAt, initialP1, initialP2).
+class GamesSetEngine extends SetEngine {
 
     private var gameEngine as GameEngine;
-    private const GAMES_TO_WIN as Number = 6;
+    private var gamesToWin as Number;
+    private var tieBreakAt as Number;
+    private var initialP1 as Number;
+    private var initialP2 as Number;
     private const TIE_BREAK_TARGET as Number = 7;
     private const MARGIN as Number = 2;
 
-    function initialize(engine as GameEngine) {
+    function initialize(engine as GameEngine, gamesToWin as Number, tieBreakAt as Number, initialP1 as Number, initialP2 as Number) {
         SetEngine.initialize();
         self.gameEngine = engine;
+        self.gamesToWin = gamesToWin;
+        self.tieBreakAt = tieBreakAt;
+        self.initialP1 = initialP1;
+        self.initialP2 = initialP2;
+    }
+
+    function getInitialP1Games() as Number {
+        return self.initialP1;
+    }
+
+    function getInitialP2Games() as Number {
+        return self.initialP2;
     }
 
     function scorePoint(side as Number, matchStatus as MatchStatus) as Boolean {
@@ -89,11 +114,11 @@ class NormalSetEngine extends SetEngine {
             matchStatus.resetScores();
             var p1g = matchStatus.getP1Games();
             var p2g = matchStatus.getP2Games();
-            if (p1g >= GAMES_TO_WIN && p1g - p2g >= MARGIN) {
+            if (p1g >= self.gamesToWin && p1g - p2g >= MARGIN) {
                 self.incSetsForSide(Sides.SIDE_P1, matchStatus);
                 return true;
             }
-            if (p2g >= GAMES_TO_WIN && p2g - p1g >= MARGIN) {
+            if (p2g >= self.gamesToWin && p2g - p1g >= MARGIN) {
                 self.incSetsForSide(Sides.SIDE_P2, matchStatus);
                 return true;
             }
@@ -102,11 +127,35 @@ class NormalSetEngine extends SetEngine {
     }
 
     function isInTieBreak(matchStatus as MatchStatus) as Boolean {
-        return matchStatus.getP1Games() >= 6 && matchStatus.getP2Games() >= 6;
+        return matchStatus.getP1Games() >= self.tieBreakAt && matchStatus.getP2Games() >= self.tieBreakAt;
     }
 
     function isInSuperTieBreak(matchStatus as MatchStatus) as Boolean {
         return false;
+    }
+}
+
+// Standard set: first to 6 games, tie-break at 6-6.
+class NormalSetEngine extends GamesSetEngine {
+
+    function initialize(engine as GameEngine) {
+        GamesSetEngine.initialize(engine, 6, 6, 0, 0);
+    }
+}
+
+// Pro set: first to 9 games, tie-break at 8-8.
+class ProSetEngine extends GamesSetEngine {
+
+    function initialize(engine as GameEngine) {
+        GamesSetEngine.initialize(engine, 9, 8, 0, 0);
+    }
+}
+
+// Mini set: starts 2-2, first to 6 games wins (margin 2), tie-break at 5-5.
+class MiniSetEngine extends GamesSetEngine {
+
+    function initialize(engine as GameEngine) {
+        GamesSetEngine.initialize(engine, 6, 5, 2, 2);
     }
 }
 

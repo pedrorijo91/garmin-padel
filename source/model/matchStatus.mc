@@ -78,6 +78,10 @@ class MatchStatus {
         return self.p1Games;
     }
 
+    function setP1Games(n as Number) as Void {
+        self.p1Games = n;
+    }
+
     function incP1Games() as Void {
         self.p1Games++;
     }
@@ -108,6 +112,10 @@ class MatchStatus {
 
     function getP2Games() as Number {
         return self.p2Games;
+    }
+
+    function setP2Games(n as Number) as Void {
+        self.p2Games = n;
     }
 
     function incP2Games() as Void {

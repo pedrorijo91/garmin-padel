@@ -9,7 +9,12 @@ class MatchConfig {
     public static const POINT_RULE_SILVER = 2;
     public static const POINT_RULE_STAR = 3;
 
+    public static const SET_TYPE_NORMAL = 0;
+    public static const SET_TYPE_PRO = 1;
+    public static const SET_TYPE_MINI = 2;
+
     private var superTie as Boolean;
+    private var setType as Number;
     private var numberOfSets as Number;
     private var pointRule as Number;
 
@@ -17,6 +22,7 @@ class MatchConfig {
         superTie = false;
         numberOfSets = UNLIMITED_SETS;
         pointRule = POINT_RULE_GOLDEN;
+        setType = SET_TYPE_NORMAL;
     }
 
     function setPointRule(rule as Number) as Void {
@@ -51,8 +57,16 @@ class MatchConfig {
         return self.numberOfSets;
     }
 
+    function setSetType(type as Number) as Void {
+        self.setType = type;
+    }
+
+    function getSetType() as Number {
+        return self.setType;
+    }
+
     function toString() as Lang.String {
-        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets + ", pointRule: " + self.pointRule;
+        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets + ", pointRule: " + self.pointRule + ", setType: " + self.setType;
     }
 
 }

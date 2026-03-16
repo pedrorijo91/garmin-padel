@@ -23,14 +23,21 @@ class MatchEngine {
         self.decidingSetEngine = decidingEngine;
         self.matchStatus = MatchStatus.New();
         self.undoStack = [];
+        self.applyInitialGames(self.defaultSetEngine);
     }
 
     function incP1() as Boolean {
+        if (self.isMatchOver()) {
+            return false;
+        }
         self.saveMatchStatus();
         return self.scorePoint(Sides.SIDE_P1);
     }
 
     function incP2() as Boolean {
+        if (self.isMatchOver()) {
+            return false;
+        }
         self.saveMatchStatus();
         return self.scorePoint(Sides.SIDE_P2);
     }
@@ -107,6 +114,18 @@ class MatchEngine {
         self.matchStatus.resetGames();
         if (!setEngine.isInSuperTieBreak(self.matchStatus)) {
             self.matchStatus.resetScores();
+        }
+        if (!self.isMatchOver()) {
+            self.applyInitialGames(self.getCurrentSetEngine());
+        }
+    }
+
+    private function applyInitialGames(setEngine as SetEngine) as Void {
+        var ip1 = setEngine.getInitialP1Games();
+        var ip2 = setEngine.getInitialP2Games();
+        if (ip1 != 0 || ip2 != 0) {
+            self.matchStatus.setP1Games(ip1);
+            self.matchStatus.setP2Games(ip2);
         }
     }
 

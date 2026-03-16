@@ -24,39 +24,11 @@ class MenuNumberSetsDelegate extends WatchUi.Menu2InputDelegate {
 
         Application.getApp().getMatchConfig().setNumberOfSets(nbrSets);
 
-        // if not unlimited sets, lets ask about super tie config
-        if (nbrSets != MatchConfig.UNLIMITED_SETS) {
-            var menu = new WatchUi.Menu2({:title=>"Super Tie"});
-                menu.addItem(
-                    new MenuItem(
-                        "Yes",
-                        "",
-                        :super_tie_yes,
-                        {}
-                    )
-                );
-                 menu.addItem(
-                    new MenuItem(
-                        "No",
-                        "",
-                        :super_tie_no,
-                        {}
-                    )
-                );
-                 menu.addItem(
-                    new MenuItem(
-                        "5",
-                        "",
-                        :sets_5,
-                        {}
-                    )
-                );
-                
-        WatchUi.pushView(menu, new MenuSuperTieDelegate(), WatchUi.SLIDE_BLINK);
-        } else {
-            Application.getApp().initMatch();
-            WatchUi.pushView(new ScoreView(), new ScoreDelegate(), WatchUi.SLIDE_UP);
-        }
+        var menu = new WatchUi.Menu2({:title=>"Set Type"});
+        menu.addItem(new MenuItem("Normal", "", :set_type_normal, {}));
+        menu.addItem(new MenuItem("Pro Set", "", :set_type_pro, {}));
+        menu.addItem(new MenuItem("Mini", "", :set_type_mini, {}));
+        WatchUi.pushView(menu, new MenuSetTypeDelegate(), WatchUi.SLIDE_BLINK);
     }
 
 }
