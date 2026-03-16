@@ -23,10 +23,7 @@ class SetEngine {
     }
 
     protected function otherSide(side as Number) as Number {
-        if (side == Sides.SIDE_P1) {
-            return Sides.SIDE_P2;
-        }
-        return Sides.SIDE_P1;
+        return side == Sides.SIDE_P1 ? Sides.SIDE_P2 : Sides.SIDE_P1;
     }
 
     protected function incGamesForSide(side as Number, matchStatus as MatchStatus) as Void {
@@ -46,10 +43,7 @@ class SetEngine {
     }
 
     protected function getTieScoreForSide(side as Number, matchStatus as MatchStatus) as Number {
-        if (side == Sides.SIDE_P1) {
-            return matchStatus.getP1TieScore();
-        }
-        return matchStatus.getP2TieScore();
+        return side == Sides.SIDE_P1 ? matchStatus.getP1TieScore() : matchStatus.getP2TieScore();
     }
 
     protected function incTieScoreForSide(side as Number, matchStatus as MatchStatus) as Void {

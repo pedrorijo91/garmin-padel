@@ -16,10 +16,7 @@ class GameEngine {
     }
 
     protected function getScoreForSide(side as Number, matchStatus as MatchStatus) as Object {
-        if (side == Sides.SIDE_P1) {
-            return matchStatus.getP1Score();
-        }
-        return matchStatus.getP2Score();
+        return side == Sides.SIDE_P1 ? matchStatus.getP1Score() : matchStatus.getP2Score();
     }
 
     protected function incScoreForSide(side as Number, matchStatus as MatchStatus) as Void {
@@ -31,10 +28,7 @@ class GameEngine {
     }
 
     protected function otherSide(side as Number) as Number {
-        if (side == Sides.SIDE_P1) {
-            return Sides.SIDE_P2;
-        }
-        return Sides.SIDE_P1;
+        return side == Sides.SIDE_P1 ? Sides.SIDE_P2 : Sides.SIDE_P1;
     }
 }
 
