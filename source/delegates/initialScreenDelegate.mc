@@ -32,7 +32,15 @@ class InitialScreenDelegate extends WatchUi.InputDelegate {
             new MenuItem(
                 "Golden Point",
                 "",
-                :golden_point_yes,
+                :point_rule_golden,
+                {}
+            )
+        );
+        menu.addItem(
+            new MenuItem(
+                "Star Point",
+                "",
+                :point_rule_star,
                 {}
             )
         );
@@ -40,7 +48,15 @@ class InitialScreenDelegate extends WatchUi.InputDelegate {
             new MenuItem(
                 "Advantages",
                 "",
-                :golden_point_no,
+                :point_rule_advantage,
+                {}
+            )
+        );
+        menu.addItem(
+            new MenuItem(
+                "Silver Point",
+                "",
+                :point_rule_silver,
                 {}
             )
         );

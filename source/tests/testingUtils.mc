@@ -90,6 +90,14 @@ function statusP2Advantage() as MatchStatus {
     return new MatchStatus(0, 0, 0, 0, 3, 4, 0, 0, hist);
 }
 
+// MatchStatus at 40-40 with given deuce revert count (for Silver: 1 = golden next; Star: 2 = star point next).
+function statusDeuceWithRevertCount(count as Number) as MatchStatus {
+    var hist = [];
+    var status = new MatchStatus(0, 0, 0, 0, 3, 3, 0, 0, hist);
+    status.setDeuceRevertCount(count);
+    return status;
+}
+
 // Play one full game (4 points) for the given side with NormalSetEngine (golden point).
 function playOneGame(engine as NormalSetEngine, side as Number, status as MatchStatus) as Void {
     for (var i = 0; i < 4; i++) {

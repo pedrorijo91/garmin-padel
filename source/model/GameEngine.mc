@@ -72,3 +72,50 @@ class AdvantageGameEngine extends GameEngine {
         return false;
     }
 }
+
+// Advantage with a decisive point after N reverts to deuce (Silver = 1, Star = 2).
+// Shared logic for Silver and Star point.
+class LimitedAdvantageGameEngine extends GameEngine {
+
+    private var revertThreshold as Number;
+
+    function initialize(threshold as Number) {
+        GameEngine.initialize();
+        self.revertThreshold = threshold;
+    }
+
+    function scorePoint(side as Number, matchStatus as MatchStatus) as Boolean {
+        var opponent = self.otherSide(side);
+        var sideScore = self.getScoreForSide(side, matchStatus);
+        var oppScore = self.getScoreForSide(opponent, matchStatus);
+
+        if (sideScore == 40 && oppScore == 40 && matchStatus.getDeuceRevertCount() >= self.revertThreshold) {
+            return true; // decisive point
+        }
+        if (oppScore == 'A') {
+            matchStatus.setDeuce();
+            return false;
+        }
+        if (sideScore == 'A' || (sideScore == 40 && oppScore != 40)) {
+            return true;
+        }
+        self.incScoreForSide(side, matchStatus);
+        return false;
+    }
+}
+
+// Silver point: one advantage; if we revert to deuce, the next point is golden.
+class SilverPointGameEngine extends LimitedAdvantageGameEngine {
+
+    function initialize() {
+        LimitedAdvantageGameEngine.initialize(1);
+    }
+}
+
+// FIP Star point: up to two advantage cycles; after second revert, next point is Star Point.
+class StarPointGameEngine extends LimitedAdvantageGameEngine {
+
+    function initialize() {
+        LimitedAdvantageGameEngine.initialize(2);
+    }
+}
