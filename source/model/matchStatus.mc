@@ -21,6 +21,8 @@ class MatchStatus {
     // total unforced errors for our team during the whole match
     private var unforcedErrors as Number;
 
+    // number of times we have returned to 40-40 after having advantage (for Silver/Star point)
+    private var deuceRevertCount as Number;
 
     static function New() as MatchStatus {
         return new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, []);
@@ -48,6 +50,15 @@ class MatchStatus {
         self.p2TieBreakScore = p2TieBreakScore;
         self.historicalScores = historicalScores;
         self.unforcedErrors = 0;
+        self.deuceRevertCount = 0;
+    }
+
+    function getDeuceRevertCount() as Number {
+        return self.deuceRevertCount;
+    }
+
+    function setDeuceRevertCount(n as Number) as Void {
+        self.deuceRevertCount = n;
     }
 
     function setUnforcedErrors(n as Number) as Void {
@@ -132,6 +143,7 @@ class MatchStatus {
     function setDeuce() as Void {
         self.p1ScoreIdx = 3;
         self.p2ScoreIdx = 3;
+        self.deuceRevertCount++;
     }
 
     function resetGames() as Void {
@@ -145,6 +157,7 @@ class MatchStatus {
 
         self.p2ScoreIdx = 0;
         self.p2TieBreakScore = 0;
+        self.deuceRevertCount = 0;
     }
 
     function getUnforcedErrors() as Number {
@@ -160,6 +173,7 @@ class MatchStatus {
         newHistory.addAll(self.historicalScores);
         var s = new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, newHistory);
         s.setUnforcedErrors(self.unforcedErrors);
+        s.setDeuceRevertCount(self.deuceRevertCount);
         return s;
     }
 }

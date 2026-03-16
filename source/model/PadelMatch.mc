@@ -7,12 +7,7 @@ class PadelMatch {
     private var matchEngine as MatchEngine;
 
     function initialize(config as MatchConfig) {
-        var gameEngine;
-        if (config.getGoldenPoint()) {
-            gameEngine = new GoldenPointGameEngine();
-        } else {
-            gameEngine = new AdvantageGameEngine();
-        }
+        var gameEngine = self.gameEngineForPointRule(config.getPointRule());
         var defaultSetEngine = new NormalSetEngine(gameEngine);
         var decidingSetEngine = null;
         if (config.getSuperTie()) {
@@ -55,5 +50,21 @@ class PadelMatch {
 
     function isInSuperTieBreak() as Boolean {
         return self.matchEngine.isInSuperTieBreak();
+    }
+
+    private function gameEngineForPointRule(rule as Number) as GameEngine {
+        if (rule == MatchConfig.POINT_RULE_GOLDEN) {
+            return new GoldenPointGameEngine();
+        }
+        if (rule == MatchConfig.POINT_RULE_ADVANTAGE) {
+            return new AdvantageGameEngine();
+        }
+        if (rule == MatchConfig.POINT_RULE_SILVER) {
+            return new SilverPointGameEngine();
+        }
+        if (rule == MatchConfig.POINT_RULE_STAR) {
+            return new StarPointGameEngine();
+        }
+        return new GoldenPointGameEngine();
     }
 }

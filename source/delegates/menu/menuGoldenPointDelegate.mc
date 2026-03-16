@@ -9,14 +9,18 @@ class MenuGoldenPointDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function onSelect(item as MenuItem) {
-       var goldenPoint = true;
-        if (item.getId() == :golden_point_yes) {
-            goldenPoint = true;
-        } else if (item.getId() == :golden_point_no) {
-            goldenPoint = false;
+        var rule = MatchConfig.POINT_RULE_GOLDEN;
+        var id = item.getId();
+        if (id == :point_rule_golden) {
+            rule = MatchConfig.POINT_RULE_GOLDEN;
+        } else if (id == :point_rule_advantage) {
+            rule = MatchConfig.POINT_RULE_ADVANTAGE;
+        } else if (id == :point_rule_silver) {
+            rule = MatchConfig.POINT_RULE_SILVER;
+        } else if (id == :point_rule_star) {
+            rule = MatchConfig.POINT_RULE_STAR;
         }
-
-        Application.getApp().getMatchConfig().setGoldenPoint(goldenPoint);
+        Application.getApp().getMatchConfig().setPointRule(rule);
 
          var menu = new WatchUi.Menu2({:title=>"Sets"});
                 menu.addItem(
