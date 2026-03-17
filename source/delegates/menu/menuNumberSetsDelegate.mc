@@ -14,7 +14,9 @@ class MenuNumberSetsDelegate extends WatchUi.Menu2InputDelegate {
         var id = item.getId();
 
         if (id != null) {
-            if (id == :sets_3) {
+            if (id == :sets_1) {
+                nbrSets = 1;
+            } else if (id == :sets_3) {
                 nbrSets = 3;
             } else if (id == :sets_5) {
                 nbrSets = 5;
