@@ -58,3 +58,16 @@ function proSetEngine_97WinsSet(logger as Logger) as Boolean {
     return status.getP1Sets() == 1 && status.getP1Games() == 9 && status.getP2Games() == 7;
 }
 
+// P2 wins set (symmetry)
+
+(:test)
+function proSetEngine_p2Wins97(logger as Logger) as Boolean {
+    var gameEngine = new GoldenPointGameEngine();
+    var setEngine = new ProSetEngine(gameEngine);
+    var hist = [];
+    var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
+    playNGames(setEngine, Sides.SIDE_P1, status, 7);
+    playNGames(setEngine, Sides.SIDE_P2, status, 8);
+    playOneGame(setEngine, Sides.SIDE_P2, status);
+    return status.getP2Sets() == 1 && status.getP1Games() == 7 && status.getP2Games() == 9;
+}

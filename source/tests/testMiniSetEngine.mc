@@ -68,3 +68,14 @@ function miniSetEngine_tieBreakP2Wins75(logger as Logger) as Boolean {
     return status.getP2Sets() == 1 && status.getP1TieScore() == 5 && status.getP2TieScore() == 7;
 }
 
+// P2 wins set from 2-2 (symmetry)
+
+(:test)
+function miniSetEngine_p2Wins62From22(logger as Logger) as Boolean {
+    var gameEngine = new GoldenPointGameEngine();
+    var setEngine = new MiniSetEngine(gameEngine);
+    var hist = [];
+    var status = new MatchStatus(0, 0, 2, 2, 0, 0, 0, 0, hist);
+    playNGames(setEngine, Sides.SIDE_P2, status, 4);
+    return status.getP2Sets() == 1 && status.getP1Games() == 2 && status.getP2Games() == 6;
+}

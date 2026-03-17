@@ -27,6 +27,17 @@ function superTieSetEngine_109DoesNotWin(logger as Logger) as Boolean {
     return status.getP1Sets() == 0 && status.getP2Sets() == 0 && status.getP1TieScore() == 10 && status.getP2TieScore() == 9;
 }
 
+// P2 wins super tie (symmetry)
+
+(:test)
+function superTieSetEngine_p2Wins108(logger as Logger) as Boolean {
+    var setEngine = new SuperTieSetEngine();
+    var hist = [];
+    var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
+    playSuperTiePoints(setEngine, status, 8, 10);
+    return status.getP2Sets() == 1 && status.getP1TieScore() == 8 && status.getP2TieScore() == 10;
+}
+
 // Initial games for SuperTie set
 
 (:test)

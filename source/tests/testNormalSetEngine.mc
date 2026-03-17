@@ -94,6 +94,29 @@ function normalSetEngine_advantageEngine_setCompletes64(logger as Logger) as Boo
     return status.getP1Games() == 6 && status.getP2Games() == 4 && status.getP1Sets() == 1 && status.getP2Sets() == 0;
 }
 
+// P2 wins set (symmetry)
+
+(:test)
+function normalSetEngine_p2WinsSet60(logger as Logger) as Boolean {
+    var gameEngine = new GoldenPointGameEngine();
+    var setEngine = new NormalSetEngine(gameEngine);
+    var hist = [];
+    var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
+    playNGames(setEngine, Sides.SIDE_P2, status, 6);
+    return status.getP2Sets() == 1 && status.getP1Games() == 0 && status.getP2Games() == 6;
+}
+
+(:test)
+function normalSetEngine_tieBreakP2Wins75(logger as Logger) as Boolean {
+    var gameEngine = new GoldenPointGameEngine();
+    var setEngine = new NormalSetEngine(gameEngine);
+    var hist = [];
+    var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
+    playSetTo6AllForEngine(setEngine, status);
+    playTieBreakPoints(setEngine, status, 5, 7);
+    return status.getP2Sets() == 1 && status.getP1TieScore() == 5 && status.getP2TieScore() == 7;
+}
+
 // Normal set margin: 6-3 wins without tie-break
 
 (:test)
