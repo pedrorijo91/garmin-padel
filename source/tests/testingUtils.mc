@@ -98,30 +98,52 @@ function statusDeuceWithRevertCount(count as Number) as MatchStatus {
     return status;
 }
 
-// Play one full game (4 points) for the given side with NormalSetEngine (golden point).
-function playOneGame(engine as NormalSetEngine, side as Number, status as MatchStatus) as Void {
+// Play one full game (4 points) for the given side (golden point).
+function playOneGame(engine as SetEngine, side as Number, status as MatchStatus) as Void {
     for (var i = 0; i < 4; i++) {
         engine.scorePoint(side, status);
     }
 }
 
 // Play n full games for the given side (each game = 4 points with golden point).
-function playNGames(engine as NormalSetEngine, side as Number, status as MatchStatus, n as Number) as Void {
+function playNGames(engine as SetEngine, side as Number, status as MatchStatus, n as Number) as Void {
     for (var g = 0; g < n; g++) {
         playOneGame(engine, side, status);
     }
 }
 
 // Play until set is 6-6 in games (alternate 6 games P1, 6 games P2). Use before tie-break.
-function playSetTo6AllForEngine(engine as NormalSetEngine, status as MatchStatus) as Void {
+function playSetTo6AllForEngine(engine as SetEngine, status as MatchStatus) as Void {
     for (var g = 0; g < 6; g++) {
         playOneGame(engine, Sides.SIDE_P1, status);
         playOneGame(engine, Sides.SIDE_P2, status);
     }
 }
 
-// At 6-6, play tie-break points: p1Points for P1 then p2Points for P2 (e.g. 7,5 => 7-5).
-function playTieBreakPoints(engine as NormalSetEngine, status as MatchStatus, p1Points as Number, p2Points as Number) as Void {
+// Play until set is 8-8 in games (Pro Set). Use before tie-break.
+function playSetTo8AllForEngine(engine as SetEngine, status as MatchStatus) as Void {
+    for (var g = 0; g < 8; g++) {
+        playOneGame(engine, Sides.SIDE_P1, status);
+        playOneGame(engine, Sides.SIDE_P2, status);
+    }
+}
+
+// From 2-2, play one game each to reach 3-3. Status must start at 2-2.
+function playMiniSetTo3All(engine as SetEngine, status as MatchStatus) as Void {
+    playOneGame(engine, Sides.SIDE_P1, status);
+    playOneGame(engine, Sides.SIDE_P2, status);
+}
+
+// From 2-2, play 3 games each to reach 5-5 (Mini set tie-break). Status must start at 2-2.
+function playMiniSetTo5All(engine as SetEngine, status as MatchStatus) as Void {
+    for (var g = 0; g < 3; g++) {
+        playOneGame(engine, Sides.SIDE_P1, status);
+        playOneGame(engine, Sides.SIDE_P2, status);
+    }
+}
+
+// At tie (6-6 or 8-8), play tie-break points: p1Points for P1 then p2Points for P2 (e.g. 7,5 => 7-5).
+function playTieBreakPoints(engine as SetEngine, status as MatchStatus, p1Points as Number, p2Points as Number) as Void {
     for (var i = 0; i < p1Points; i++) {
         engine.scorePoint(Sides.SIDE_P1, status);
     }
@@ -141,7 +163,7 @@ function playSuperTiePoints(engine as SuperTieSetEngine, status as MatchStatus, 
 }
 
 // Play one game with advantage rules: 40-40 then P1 advantage then P1 wins (5 points P1, 3 P2).
-function playOneGameP1WinsWithAdvantage(engine as NormalSetEngine, status as MatchStatus) as Void {
+function playOneGameP1WinsWithAdvantage(engine as SetEngine, status as MatchStatus) as Void {
     engine.scorePoint(Sides.SIDE_P1, status);
     engine.scorePoint(Sides.SIDE_P1, status);
     engine.scorePoint(Sides.SIDE_P1, status);
@@ -153,7 +175,7 @@ function playOneGameP1WinsWithAdvantage(engine as NormalSetEngine, status as Mat
 }
 
 // Play one game with advantage rules: 40-40, P1 advantage, P2 back to deuce, P2 advantage, P2 wins (4 P1, 6 P2).
-function playOneGameP2WinsWithAdvantage(engine as NormalSetEngine, status as MatchStatus) as Void {
+function playOneGameP2WinsWithAdvantage(engine as SetEngine, status as MatchStatus) as Void {
     engine.scorePoint(Sides.SIDE_P1, status);
     engine.scorePoint(Sides.SIDE_P1, status);
     engine.scorePoint(Sides.SIDE_P1, status);

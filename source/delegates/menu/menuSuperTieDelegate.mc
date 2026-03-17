@@ -17,8 +17,12 @@ class MenuSuperTieDelegate extends WatchUi.Menu2InputDelegate {
         }
 
         Application.getApp().getMatchConfig().setSuperTie(superTie);
-        Application.getApp().initMatch();
-        WatchUi.pushView(new ScoreView(), new ScoreDelegate(), WatchUi.SLIDE_UP);
-    }
 
+        var menu = new WatchUi.Menu2({:title=>"Score"});
+        menu.addItem(new MenuItem("Golden Point", "", :point_rule_golden, {}));
+        menu.addItem(new MenuItem("Star Point", "", :point_rule_star, {}));
+        menu.addItem(new MenuItem("Advantages", "", :point_rule_advantage, {}));
+        menu.addItem(new MenuItem("Silver Point", "", :point_rule_silver, {}));
+        WatchUi.pushView(menu, new MenuScoreDelegate(), WatchUi.SLIDE_BLINK);
+    }
 }

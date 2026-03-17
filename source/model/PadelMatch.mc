@@ -8,7 +8,7 @@ class PadelMatch {
 
     function initialize(config as MatchConfig) {
         var gameEngine = self.gameEngineForPointRule(config.getPointRule());
-        var defaultSetEngine = new NormalSetEngine(gameEngine);
+        var defaultSetEngine = self.setEngineForSetType(config.getSetType(), gameEngine);
         var decidingSetEngine = null;
         if (config.getSuperTie()) {
             decidingSetEngine = new SuperTieSetEngine();
@@ -18,6 +18,16 @@ class PadelMatch {
             defaultSetEngine,
             decidingSetEngine
         );
+    }
+
+    private function setEngineForSetType(setType as Number, gameEngine as GameEngine) as SetEngine {
+        if (setType == MatchConfig.SET_TYPE_PRO) {
+            return new ProSetEngine(gameEngine);
+        }
+        if (setType == MatchConfig.SET_TYPE_MINI) {
+            return new MiniSetEngine(gameEngine);
+        }
+        return new NormalSetEngine(gameEngine);
     }
 
     function incP1() as Boolean {

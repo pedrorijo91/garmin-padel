@@ -27,40 +27,12 @@ class InitialScreenDelegate extends WatchUi.InputDelegate {
     }
 
     private function openConfigMenu() as Void {
-        var menu = new WatchUi.Menu2({:title=>"Score"});
-        menu.addItem(
-            new MenuItem(
-                "Golden Point",
-                "",
-                :point_rule_golden,
-                {}
-            )
-        );
-        menu.addItem(
-            new MenuItem(
-                "Star Point",
-                "",
-                :point_rule_star,
-                {}
-            )
-        );
-        menu.addItem(
-            new MenuItem(
-                "Advantages",
-                "",
-                :point_rule_advantage,
-                {}
-            )
-        );
-        menu.addItem(
-            new MenuItem(
-                "Silver Point",
-                "",
-                :point_rule_silver,
-                {}
-            )
-        );
-        WatchUi.pushView(menu, new MenuGoldenPointDelegate(), WatchUi.SLIDE_BLINK);
+        var menu = new WatchUi.Menu2({:title=>"Sets"});
+        menu.addItem(new MenuItem("1", "", :sets_1, {}));
+        menu.addItem(new MenuItem("3", "", :sets_3, {}));
+        menu.addItem(new MenuItem("5", "", :sets_5, {}));
+        menu.addItem(new MenuItem("Unlimited", "", :sets_unlimited, {}));
+        WatchUi.pushView(menu, new MenuNumberSetsDelegate(), WatchUi.SLIDE_BLINK);
     }
 
 }
