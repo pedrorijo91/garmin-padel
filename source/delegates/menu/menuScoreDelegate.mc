@@ -1,7 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-// Shown after Sets / Set type / Super Tie. User picks point rule at deuce; then match starts.
 class MenuScoreDelegate extends WatchUi.Menu2InputDelegate {
 
     function initialize() {
