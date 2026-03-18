@@ -27,12 +27,13 @@ class InitialScreenDelegate extends WatchUi.InputDelegate {
     }
 
     private function openConfigMenu() as Void {
-        var menu = new WatchUi.Menu2({:title=>"Sets"});
-        menu.addItem(new MenuItem("1", "", :sets_1, {}));
-        menu.addItem(new MenuItem("3", "", :sets_3, {}));
-        menu.addItem(new MenuItem("5", "", :sets_5, {}));
-        menu.addItem(new MenuItem("Unlimited", "", :sets_unlimited, {}));
-        WatchUi.pushView(menu, new MenuNumberSetsDelegate(), WatchUi.SLIDE_BLINK);
+        var menu = new WatchUi.Menu2({:title=>"Game Mode"});
+        menu.addItem(new MenuItem("Tournament", "", GameModes.MODE_TOURNAMENT, {}));
+        menu.addItem(new MenuItem("Tournament (super)", "", GameModes.MODE_TOURNAMENT_SUPER, {}));
+        menu.addItem(new MenuItem("Pro Set Tournament", "", GameModes.MODE_PRO_SET_TOURNAMENT, {}));
+        menu.addItem(new MenuItem("Friendly", "", GameModes.MODE_FRIENDLY, {}));
+        menu.addItem(new MenuItem("Custom", "", GameModes.MODE_CUSTOM, {}));
+        WatchUi.pushView(menu, new MenuGameModeDelegate(), WatchUi.SLIDE_BLINK);
     }
 
 }
