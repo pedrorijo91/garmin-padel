@@ -28,14 +28,14 @@ version_filename=$(echo $new_version | sed 's/\./_/g')
 mv releases/garminpadel.iq releases/garminpadel-v$version_filename.iq
 
 git add resources/strings/strings.xml releases/
-git cmsg "add v$new_version exported app"
+git commit -m "add v$new_version exported app"
 git tag -a $new_version -m "version $new_version"
 
 python3 releases/scripts/replace_version.py next_beta
 git add resources/strings/strings.xml
-git cmsg "bump version for next development cycle"
+git commit -m "bump version for next development cycle"
 
-git po && git ptags
+git push --follow-tags
 
 echo "\n\n----------------\n\n"
 echo "Missing steps:"
