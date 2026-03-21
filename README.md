@@ -1,90 +1,130 @@
 # garmin-padel
 
-padel scorekeeper garmin watch app, available in [garmin connect](https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993)
+padel scorekeeper garmin watch app, available in [garmin connect app store](https://apps.garmin.com/apps/c63edba4-4217-4345-9ebc-86a90307e968?tid=0)
 
 <a href="https://www.buymeacoffee.com/pedrorijo91" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## Functionalities
 
-Keeps track of padel match score.
+Keeps full padel match score: sets, games, standard **tie-breaks**, and **super tie-break** when configured.
 
-* display current hearth rate and steps
-* Configure number of sets (or unlimited)
-* Configure Super tie break
-* Configure between Advantages and Golden Point scores.
-* Tie break
-* Save game score in activity details
-* Save steps in activity details
-* Undo scores
+**Setup**
 
-Other work to be done is listed in [GitHub issues](https://github.com/pedrorijo91/garmin-padel/issues)
+* **Quick presets**: Tournament (best of 3, golden point, no super tie), Tournament with super tie, **Pro set** tournament (single pro set), **Friendly** (unlimited sets), or **Custom** to tune everything.
+* **Custom match**: number of sets (**1**, **3**, **5**, or **unlimited**), **set type** (normal, pro set, or mini set), optional **super tie-break** (when using 3 or 5 sets), and **point rule**:
+  * **Golden point** — deuce is decided by the next point
+  * **Advantages** — classic advantage / deuce
+  * **Silver point** — one advantage cycle; if it returns to deuce again, the next point wins the game
+  * **Star point** (FIP-style) — up to two advantage cycles, then a decisive point at deuce
+
+**During play**
+
+* Score with **Up** / **Down** (or top / bottom half of the screen on touch devices).
+* Real time **heart rate** on the score screen.
+* **Options** menu (**Enter** / **Start**, or **long press** on touch): **undo** last point, track an **unforced error**, or **finish** the activity.
+
+**Activity / Garmin Connect**
+
+* Records a **padel** activity; on save, writes **match score** (full history string), **steps** during the session, **unforced errors** count, and **app version** into the activity for Connect / FIT.
 
 ## How to use
 
-After starting the application, the initial screen will show up:
+### Start and match setup
 
-<p align="center"><img src="screenshots/initial.jpeg" width="300"></p>
+When you open the app, the initial screen appears. Press `Enter` / `Start`, or tap the screen on a touch device, to continue.
 
-Just click the `Enter` button to enter the menu where you can configure the match settings. See the corresponding [section](https://github.com/pedrorijo91/garmin-padel#available-game-configurations) for more details on available game options.
+<p align="center"><img src="screenshots/initial.png" width="300" alt="Initial screen"></p>
 
-Use the `Up` and `Down` buttons on your device to scroll on each configuration, and use the `Enter`button to select.
+You’ll see the **Game Mode** menu first:
 
-After selecting all the options the score screen will display:
+* **Tournament**, **Tournament (super)**, **Pro Set Tournament**, or **Friendly** — pick one, review the summary, then choose **Start match**.
+* **Custom** — walk through **Sets** (1 / 3 / 5 / Unlimited) → **Set type** (Normal / Pro set / Mini) → **Super tie** (only for 3 or 5 sets) → **Score** rule (Golden / Star / Advantages / Silver), then start.
 
-<p align="center"><img src="screenshots/score0.jpeg" width="300"></p>
+Use `Up` / `Down` to move in menus and `Enter` to select. For exact scoring mechanics (set lengths, tie-breaks, deuce rules), see [Match rules reference](#match-rules-reference).
 
-Now you can control the score by clicking the `Up` and `Down` buttons on your device. By clicking `Up`, you'll increment your team score, and by clicking `Down` you'll increment opponent score. If you have a touchscreen device, clicking on the top half and bottom half will have the same effect:
+<p align="center"><img src="screenshots/game_modes.png" width="300" alt="Game modes"></p>
 
-<p align="center"><img src="screenshots/scoreMid.jpeg" width="300"></p>
 
-<p align="center"><img src="screenshots/scoreTie.jpeg" width="300"></p>
+<p align="center"><img src="screenshots/tournament_mode_details.png" width="300" alt="Tournament mode details"></p>
 
-If you clicked in the wrong player, you can revert the last score by pressing the `Enter`/`Start` key. If you are using a touchscreen device this can be achieved with a long press in the screen:
+<p align="center"><img src="screenshots/custom_score_config.png" width="300" alt="Custom mode score configuration"></p>
 
-<p align="center"><img src="screenshots/undo.jpeg" width="300"></p>
+### During the match
 
-If you selected a limited amount of sets (current options are 3, 5, or unlimited sets), when the game is over you'll see a final screen with the game summary:
+The score view shows sets, games, and points (or **Tie** / **Super** when applicable), plus a clock and heart rate. Your team is scored with **`Up`**; the opponent with **`Down`**. On touch devices, tap the **top** half for your point and the **bottom** half for theirs.
 
-<p align="center"><img src="screenshots/end.jpeg" width="300"></p>
+<p align="center"><img src="screenshots/score_0.png" width="300" alt="Initial score screen"></p>
 
-If you select unlimited sets, to finish the activity at any moment, just click the `Back` button and confirm you wish to finish it:
+<p align="center"><img src="screenshots/score_mid.png" width="300" alt="Score screen mid-game"></p>
 
-<p align="center"><img src="screenshots/exit_confirmation.jpeg" width="300"></p>
+<p align="center"><img src="screenshots/score_tie.png" width="300" alt="Score screen during tie break"></p>
 
-After syncing with your Garmin Connect account, you'll be able to see some custom information about the match, such as game result.
+### Options, undo, and finishing
 
-## Available Game Configurations
+Press **`Enter`** / **`Start`** on the score screen, or **long-press** on a touch device, to open **Options**:
 
-### golden point
+* **Undo last point** — asks for confirmation before reverting.
+* **Unforced error** — increments the error counter (also saved with the activity and available in garmin connect later).
+* **Finish activity** — **Save and exit**, **Discard**, or **Cancel** back to the score.
 
-This app allows to configure the score rules with either:
+Pressing **`Back`** from the score screen opens the same **Finish activity** menu (save, discard, or cancel).
 
-* Golden Point: if 40-40, the first to win a point, wins the game
-* Advantages: if 40-40, the first point becomes advantage, and only if the same team wins another point it will win the game. How we usually see in tennis matches. 
+<p align="center"><img src="screenshots/options.png" width="300" alt="Options menu"></p>
 
-<p align="center"><img src="screenshots/menu_golden.jpeg" width="300"></p>
+<p align="center"><img src="screenshots/undo.png" width="300" alt="Undo confirmation"></p>
 
-<p align="center"><img src="screenshots/score_advantage.jpeg" width="300"></p>
+<p align="center"><img src="screenshots/finish_menu.png" width="300" alt="Finish menu"></p>
 
-### number of sets
+### After the last point (limited matches)
 
-It is possible to configure the maximum number of sets for your game:
+If the match ends because a player/team has won the required sets, a **summary** screen is shown. Press **`Enter`** or tap to open **Finish activity** and save or discard as above.
 
-* 3 sets
-* 5 sets
-* unlimited sets, useful for friendly matches that don't have a limited number of sets.
+<p align="center"><img src="screenshots/game_finish.png" width="300" alt="Finish summary screen"></p>
 
-<p align="center"><img src="screenshots/menu_sets.jpeg" width="300"></p>
 
-### super tie break
+### Garmin Connect
 
-You can also configure if the game should have super tie break in case of tie in sets. This option is only available if you select a limited number of sets in the previous step
+After syncing, open the saved **padel** activity in Garmin Connect to see the recorded **score**, **steps** during the session, **unforced errors**, and **app version** in the activity details (exact layout depends on Connect / device).
 
-If you choose to have super tie break, then in case of a tie, the last set will be a super tie (like a tie break, but until 10 and difference of 2 points). This means that if you select best of 3 sets, the third will be tie if it reaches 1-1 in sets. Similarly, if you select best of 5 sets, the fifth set will be a super tie if the score is 2-2 in sets.
+<p align="center"><img src="screenshots/connect.jpeg" width="300" alt="Garmin connect activity details"></p>
 
-<p align="center"><img src="screenshots/menu_super.jpeg" width="300"></p>
+## Match rules reference
 
-<p align="center"><img src="screenshots/scoreSuperTie.jpeg" width="300"></p>
+This section describes **what the app implements**, not the on-watch menus (those are covered in [How to use](#how-to-use)).
+
+### Match format (sets)
+
+* **1, 3, or 5 sets**: the match ends when one side has won enough sets (e.g. 2 of 3, 3 of 5).
+* **Unlimited**: the session does not auto-finish on set count; you end it from **Options** or **Back** when you want to save or discard the activity.
+
+**Super tie-break** can be turned on only when you chose **3** or **5** sets. If sets would end in a draw at the last possible moment (e.g. **1–1** in a best-of-3 match with super tie enabled), the **deciding set is not played as games**: it is a single **super tie-break** (see below).
+
+### Set types (games within a set)
+
+All set types use **standard padel-style game scoring** (0 → 15 → 30 → 40, then game / deuce, depending on the **point rule** you picked). **Tie-breaks** inside a set are **first to 7 points, win by 2**.
+
+| Set type | Win the set | Tie-break when |
+|----------|-------------|----------------|
+| **Normal** | First to **6** games, **win by 2** | **6–6** |
+| **Pro set** | First to **9** games, **win by 2** | **8–8** |
+| **Mini** | Games start at **2–2**; first to **6** games, **win by 2** | **5–5** |
+
+### Super tie-break (deciding set)
+
+When the match configuration uses a super tie for the decider, that **entire final “set”** is a **super tie-break**: **first to 10 points, win by 2**. There are no games inside that set.
+
+### Point rules at deuce (40–40)
+
+These options only change what happens when a game reaches **40–40** (deuce):
+
+* **Golden point** — the **next** point wins the game.
+* **Advantages** — classic **advantage / deuce**: after deuce, a side needs **advantage** and then **another** point to win the game; losing advantage returns to deuce.
+* **Silver point** — like advantages, but each time play returns to deuce **after** the receiving side had **advantage**, a counter advances. After **one** such return to deuce, the **next** time the score is 40–40, the **following point** wins the game (no further advantage play in that game).
+* **Star point** (FIP-style) — same hybrid idea as Silver, but **two** returns to deuce from that advantage situation are allowed before the next 40–40 point becomes **decisive** (wins the game).
+
+### Tie-break scoring (within a set)
+
+During a normal set **tie-break** (not the super tie), the UI shows **Tie:** *points–points*. Points are counted numerically; win the tie-break by reaching **7** points with a **margin of 2**.
 
 ## List of supported devices
 
@@ -103,35 +143,8 @@ Note: api level by device listed in [garmin dev docs](https://developer.garmin.c
 
 ## Garmin Connect app link
 
-* Public app link: https://apps.garmin.com/en-US/apps/697552d2-271d-40cc-a059-08a936f63993
-* Beta link: https://apps.garmin.com/en-US/apps/e1d39ed9-b37d-4082-a375-a9ccdf78194f
+available in [garmin connect app store](https://apps.garmin.com/apps/c63edba4-4217-4345-9ebc-86a90307e968?tid=0)
 
-## Releasing
+## Maintainer / development
 
-From the repository root just run:
-
-```
-$ sh releases/scripts/release_all.sh
-```
-
-and follow the instructions displayed after finishing building the binary
-
-### Resources
-
-icons
-* https://www.iconfinder.com/search?q=&iconset=octicons
-
-docs
-* Garmin connect API docs: https://developer.garmin.com/connect-iq/api-docs/
-* Garmin SDK docs: https://developer.garmin.com/connect-iq/core-topics/
-* Garmin dev forum: https://forums.garmin.com/developer/
-* devices capabilities: https://developer.garmin.com/connect-iq/reference-guides/devices-reference/#devicereference
-
-other apps
-* from https://github.com/search?l=Monkey+C&q=garmin&type=Repositories:
-* https://github.com/matco/badminton
-* https://github.com/viorelyo/ChairUmpire
-* https://apps.garmin.com/en-US/apps/5bf8f979-52ea-4124-be63-e9ff9ba81026
-
-FIT file viewer:
-* https://www.fitfileviewer.com/
+Release workflow and developer resource links: [RELEASING.md](RELEASING.md).
