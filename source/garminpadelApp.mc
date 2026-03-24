@@ -1,5 +1,7 @@
 import Toybox.Application;
+import Toybox.Attention;
 import Toybox.Lang;
+import Toybox.System;
 import Toybox.WatchUi;
 import Toybox.ActivityRecording;
 using Toybox.Time.Gregorian;
@@ -11,6 +13,7 @@ class GarminpadelApp extends Application.AppBase {
     private var session as ActivityRecording.Session or Null;
     private var initialSetps as Number;
     private var initialDay as Number; // we need to check if the activity crossed the day to correctly compute steps
+    private var courtChangeBannerUntil as Number;
 
     function initialize() {
         AppBase.initialize();
@@ -18,6 +21,7 @@ class GarminpadelApp extends Application.AppBase {
 
         initialSetps = 0; 
         initialDay = Gregorian.info(Time.now(), Time.FORMAT_SHORT).day;
+        courtChangeBannerUntil = 0;
     }
 
     function onStart(state as Dictionary?) as Void {
@@ -36,6 +40,7 @@ class GarminpadelApp extends Application.AppBase {
         self.initialSetps = ActivityMonitor.getInfo().steps as Number;
         self.session = ActivityRecording.createSession({:sport => Activity.SPORT_RACKET, :subSport => Activity.SUB_SPORT_PADEL, :name => "Padel match"});
         self.session.start();
+        self.courtChangeBannerUntil = 0;
     }
 
     function getMatch() as PadelMatch {
@@ -68,6 +73,17 @@ class GarminpadelApp extends Application.AppBase {
         if (session != null) {
             session.addLap();
         }
+    }
+
+    function onTieBreakCourtChange() as Void {
+        self.courtChangeBannerUntil = System.getTimer() + 2500;
+        var vibe1 = new Attention.VibeProfile(75, 150);
+        var vibe2 = new Attention.VibeProfile(75, 150);
+        Attention.vibrate([vibe1, vibe2] as Array<Attention.VibeProfile>);
+    }
+
+    function isCourtChangeBannerVisible() as Boolean {
+        return self.courtChangeBannerUntil != 0 && System.getTimer() < self.courtChangeBannerUntil;
     }
 
     function saveSession() as Void {

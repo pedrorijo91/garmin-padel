@@ -1,3 +1,4 @@
+import Toybox.Application;
 import Toybox.Lang;
 
 // Owns match state (MatchStatus, undo) and delegates point scoring to the current SetEngine.
@@ -92,6 +93,14 @@ class MatchEngine {
     private function scorePoint(side as Number) as Boolean {
         var setEngine = self.getCurrentSetEngine();
         var setWon = setEngine.scorePoint(side, self.matchStatus);
+        if (!setWon) {
+            if (setEngine.isInTieBreak(self.matchStatus) || setEngine.isInSuperTieBreak(self.matchStatus)) {
+                var totalTiePoints = self.matchStatus.getP1TieScore() + self.matchStatus.getP2TieScore();
+                if (totalTiePoints > 0 && totalTiePoints % 6 == 0) {
+                    Application.getApp().onTieBreakCourtChange();
+                }
+            }
+        }
         if (setWon) {
             self.resetAfterSetFinish(setEngine);
             Application.getApp().lapSession();
