@@ -13,4 +13,6 @@
 
     <string id="fit_unforced_errors_label">Unforced Errors</string>
     <string id="fit_unforced_errors_units">count</string>
+
+    <string id="court_change_ends">Change ends</string>
 </strings>

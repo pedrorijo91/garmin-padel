@@ -1,3 +1,4 @@
+import Toybox.Application;
 import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
@@ -67,6 +68,22 @@ class ScoreView extends WatchUi.View {
         clockLabel.setText(timeString);
 
         View.onUpdate(dc);
+
+        if (Application.getApp().isCourtChangeBannerVisible()) {
+            var w = dc.getWidth();
+            var h = dc.getHeight();
+            var padX = w / 12;
+            var padY = h / 14;
+            var boxTop = h * 38 / 100;
+            var fh = dc.getFontHeight(Graphics.FONT_MEDIUM);
+            var boxH = fh + padY;
+            dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_DK_GRAY);
+            dc.fillRectangle(padX, boxTop, w - 2 * padX, boxH);
+            dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
+            var msg = Application.loadResource(Rez.Strings.court_change_ends) as String;
+            var textY = boxTop + (boxH - fh) / 2;
+            dc.drawText(w / 2, textY, Graphics.FONT_MEDIUM, msg, Graphics.TEXT_JUSTIFY_CENTER);
+        }
     }
 
     public function requestUpdate() as Void {
