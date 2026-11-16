@@ -1,6 +1,6 @@
 # Plan 4: Serving indicator (team, then player)
 
-- **Status:** Team level done (branch `claude/serving-indicator-c45b6a`). Player level not started. See [Implementation notes (team level)](#implementation-notes-team-level).
+- **Status:** Team level **done and merged to `master`** in [#152](https://github.com/pedrorijo91/garmin-padel/pull/152) (`ccda76d`); not in a release yet (last release v2.6.0). Player level not started; #66 and #101 were closed by #152, so no open issue tracks it. See [Implementation notes (team level)](#implementation-notes-team-level).
 - **Size:** Team level small–medium; player level medium
 - **Depends on:** nothing. It's easier after [plan 1](01-switch-set-format.md), so standalone tie-breaks and super ties are handled from the start.
 - **GitHub:**
@@ -117,6 +117,7 @@ What was built, and where it differs from the design above:
   - Round screens: white arc, pen width `w / 30` (min 4 px), **80°** centred on 12 o'clock (50°–130°) or 6 o'clock (230°–310°). A wider arc (first prototype: 35°–145°) almost touched the 32 px steps/heart icons on 260 px screens (fr255).
   - Other screen shapes (`screenShape != SCREEN_SHAPE_ROUND`: venusq2, Instinct semi-octagon): a bar of 40% of the width on the top or bottom edge. On Instinct, the top bar is moved left of the round sub-screen (`WatchUi.getSubscreen()`, guarded with `has`), which otherwise hides it.
   - White only, no colour accent.
+- **Starting the match moved:** `MenuFirstServeDelegate.onSelect` now calls `initMatch()` and pushes the score screen (before #152, `MenuGameModeConfirmDelegate` and `MenuScoreDelegate` did). So recording starts after the first-serve choice.
 - **Plan 1 not built yet:** standalone tie-breaks don't exist, so only the in-set tie-break and the deciding super tie are covered. When plan 1 lands, a standalone tie-break / super tie must add 1 to `gamesPlayed` when won; `MatchEngine.scorePoint` already does that for any set won.
 - **Tests:** `source/tests/testServing.mc`, one per rule: alternation, carrying across a set, tie-break rotation, the set after a tie-break, super tie, mini set from 2-2, undo across a tie-break set, unknown server, switch server (incl. undo and from unknown).
 - **Checked in the simulator** (SDK 9.3.0) on fenix847mm, fr265, fr255, fr245, venusq2 and instinct2: a scripted play-through (games, 6-6 tie-break, court-change banner, set won by tie-break, undo, Options), screenshots for all six devices are in PR #152; the README uses `screenshots/serving/fenix847mm_us.png` and `fenix847mm_them.png`.

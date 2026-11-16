@@ -39,6 +39,16 @@ The user moves between them from the Options menu. When a drill is won it ends b
 5. **Match never ends by itself.** Use `numberOfSets = UNLIMITED_SETS`; the user presses Finish.
 6. **Point rule.** Training drills still need a point rule for game-based formats. Ask for it (default Golden), the same way presets do.
 
+### Warm-up
+
+[Plan 5](05-warm-up-lap.md) adds a warm-up phase at the start of every match, as its own lap. In this plan's model, that warm-up is just a `FREE` segment. If plan 5 was built first, replace its `phase` field with the segment format here, and keep its rule that undo never goes back into a finished free segment (a lap can't be removed once it is added).
+
+### Serving indicator (plan 4, already on `master`)
+
+- In free play, `getServingSide()` should return -1 (nothing drawn).
+- Drills are short and players often decide the server per drill, so the indicator should be **off by default in training**: skip the "First serve" step for the Training mode, leave `firstServer = -1`, and let **Options → Switch server** turn it on during a drill (it already does that when the server is unknown).
+- When a drill ends, reset `firstServer` to -1 and `gamesPlayed` to 0, so the next drill starts without a stale server. Do it inside the undo entry for ending the drill, so undo brings both back.
+
 ### Laps and recording
 
 - Every segment change (free → drill, drill → free, drill → drill) should call `lapSession()`, so Garmin Connect shows how long each segment took. Today a lap is only added when a set is won, in `MatchEngine.scorePoint`. Starting or ending a segment from the menu must add one too.
@@ -55,7 +65,7 @@ The user moves between them from the Options menu. When a drill is won it ends b
    - Middle: "Free play" and the time elapsed in this segment (store the segment start time; see below).
    - Bottom: steps/HR and clock as today.
 3. **Score screen during a drill:** the same as a match. Change the top label to "Drills: x - y" instead of "Sets: x - y".
-4. **Options menu** (the helper built in plan 1), in training:
+4. **Options menu** (`ScoreDelegate.pushOptionsMenu()`, the single helper added in #152), in training:
    - In free play: **Start drill ▸** *Tie-break / Super tie-break / Mini set / Set*, Undo (only when there is an undo entry, e.g. right after End drill or a won drill; free-play presses push none), Unforced error, Finish.
    - During a drill: **End drill**, **Next drill ▸** *(same drill list)*, Undo, Unforced error, Finish. *Next drill* ends the current drill (partial result marked with `*`, as for End drill) and starts the chosen one directly, without going through free play.
    - Show "Next set format" (plan 1) only outside training. In training, "Start drill" replaces it.

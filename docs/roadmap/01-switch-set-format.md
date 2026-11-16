@@ -54,7 +54,7 @@ Issue #146 adds that players sometimes choose a **tie-break**, a **super tie-bre
 
 ### UI
 
-1. Move the duplicated Options menu in `ScoreDelegate` (`onHold` and `onKey`) into one `buildOptionsMenu()` helper.
+1. ~~Move the duplicated Options menu into one helper~~: done in #152 (`ScoreDelegate.pushOptionsMenu()`). Add the new item there.
 2. When `canChangeSetFormat()` is true, add the item **"Next set format"**. It opens a submenu: *Tie-break*, *Super tie-break*, *Mini set*, *Normal set*, *Pro set* (optional), *Default*. Mark the current choice in the sublabel.
 3. `ScoreView`:
    - Standalone tie-break: hide the "Games:" line and show `Tie: x - y`.
@@ -65,6 +65,13 @@ Issue #146 adds that players sometimes choose a **tie-break**, a **super tie-bre
 
 - No new FIT fields. The result string goes into history as usual, and the set still causes a lap.
 
+### Serving indicator (plan 4, team level, already on `master`)
+
+The serving indicator must stay correct with the new formats:
+- A standalone tie-break / super tie counts as **one game** in the team alternation once won. `MatchEngine.scorePoint` already adds 1 to `gamesPlayed` for any set won. Keep that check **right after** `setEngine.scorePoint(...)` and before `resetAfterSetFinish()`, so the initial games of the next set (mini set 2-2) are never counted.
+- Inside a standalone tie-break, `getServingSide()` uses the tie-point rotation only if `isInTieBreak()` or `isInSuperTieBreak()` is true. So the 7-point standalone engine must return true from one of them for the whole set (see Design step 5).
+- Setting or clearing the override at 0-0 can change games (mini set 2-2 → 0-0). That happens outside `scorePoint`, so it must **not** touch `gamesPlayed`.
+
 ## Test plan (`source/tests/`)
 
 - Unlimited, normal set 6-3, then override super tie, then play to 10-8: history is `["6-3", "10-8"]` (or bracketed, see above); the match is not over; the next set is normal; tie scores are 0.
@@ -74,7 +81,8 @@ Issue #146 adds that players sometimes choose a **tie-break**, a **super tie-bre
 - Undo: undo the first point of an overridden set → the override is still there; undo right after choosing → the override is gone; undo across the set boundary of an overridden set restores the in-progress tie scores.
 - `canChangeSetFormat()` is false after one point and true again after undoing it.
 - Court-change vibration still fires every 6 points in a standalone tie and super tie (needs a test hook or a manual check).
-- All existing tests still pass, especially `testSuperTie`, `testHistory` and `testUndoMatch`.
+- Serving (`testServing.mc`): in a standalone tie-break and super tie, the team due to serve serves point 1, then serve changes every 2 points; after it is won the next set starts with the other team; choosing a mini set override at 0-0 doesn't change who serves.
+- All existing tests still pass, especially `testSuperTie`, `testHistory`, `testUndoMatch` and `testServing`.
 
 ## Acceptance criteria
 

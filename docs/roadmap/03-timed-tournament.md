@@ -67,6 +67,7 @@ Store these in `MatchConfig` (`roundDurationSec`, `timeEndRule`, `totalDurationS
 - After a round ends, go to `FREE` (the "break"). Its timer counts up from 0.
 - **"Start next round"** goes in the Options menu during a break. Consider also letting Up/Down start the next round, since there is nothing to score during a break. That needs a decision, because pressing by accident would start the round early.
 - Break length is not configured; the user starts the next round when the organiser does.
+- The session starts with a warm-up before round 1, using the mechanism from [plan 5](05-warm-up-lap.md).
 
 ### UI
 
@@ -85,9 +86,11 @@ Store these in `MatchConfig` (`roundDurationSec`, `timeEndRule`, `totalDurationS
 - Every round and every break is a lap (from plan 2), with the round score in the per-lap field from plan 2.
 - Session `game_score`: the round results, truncated as designed in plan 2.
 
-### Serving (if plan 4 has shipped by then)
+### Serving (plan 4 team level is on `master`)
 
-- Each round is a new match, often against new opponents, so ask "who serves first" at the start of every round (from the break screen), or default to "unknown".
+- Each round is a new match, often against new opponents. When a round starts, reset `gamesPlayed` to 0 and ask "First serve: Us / Them / Skip" again (from the break screen's "Start next round").
+- Reuse the menu from `MenuFirstServeDelegate`, but **not its `onSelect` as is**: it calls `initMatch()`, which would start a new recording session. Add a variant (e.g. a flag or a callback) that only sets the first server and starts the round.
+- During breaks, `getServingSide()` should return -1 (nothing drawn).
 
 ## Test plan (deterministic, with made-up timestamps)
 
