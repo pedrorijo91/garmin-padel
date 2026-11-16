@@ -105,19 +105,31 @@ class ScoreView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
         if (System.getDeviceSettings().screenShape == System.SCREEN_SHAPE_ROUND) {
-            // 0 deg = 3 o'clock, counter-clockwise. Keep away from the horizontal middle and from the
-            // steps/heart icons (y = 70%), which sit close to the edge on the lower half.
+            // 0 deg = 3 o'clock, counter-clockwise. 80 degrees centred on 12 / 6 o'clock: on small screens
+            // a wider arc would touch the steps/heart icons (32px at y = 70%, x = 15% / 75%).
             dc.setPenWidth(pen);
             var r = w / 2 - pen / 2;
             if (top) {
-                dc.drawArc(w / 2, h / 2, r, Graphics.ARC_COUNTER_CLOCKWISE, 35, 145);
+                dc.drawArc(w / 2, h / 2, r, Graphics.ARC_COUNTER_CLOCKWISE, 50, 130);
             } else {
-                dc.drawArc(w / 2, h / 2, r, Graphics.ARC_COUNTER_CLOCKWISE, 215, 325);
+                dc.drawArc(w / 2, h / 2, r, Graphics.ARC_COUNTER_CLOCKWISE, 230, 310);
             }
             dc.setPenWidth(1);
         } else {
             var barW = w * 2 / 5;
-            dc.fillRectangle((w - barW) / 2, top ? 0 : h - pen, barW, pen);
+            var x = (w - barW) / 2;
+            // Instinct: keep the top bar left of the round sub-screen, which hides what is drawn under it
+            if (top && (WatchUi has :getSubscreen)) {
+                var sub = WatchUi.getSubscreen();
+                if (sub != null && sub.x < x + barW) {
+                    x = sub.x - pen - barW;
+                    if (x < pen) {
+                        barW -= pen - x;
+                        x = pen;
+                    }
+                }
+            }
+            dc.fillRectangle(x, top ? 0 : h - pen, barW, pen);
         }
     }
 
