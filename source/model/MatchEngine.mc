@@ -87,7 +87,7 @@ class MatchEngine {
     }
 
     function undo() as Void {
-        if (self.undoStack == null || self.undoStack.size() == 0) {
+        if (self.undoStack.size() == 0) {
             return;
         }
         var lastState = self.undoStack[self.undoStack.size() - 1];
@@ -197,9 +197,6 @@ class MatchEngine {
     }
 
     private function saveMatchStatus() as Void {
-        if (self.undoStack == null) {
-            self.undoStack = [];
-        }
         if (self.undoStack.size() == MAX_UNDO) {
             self.undoStack.remove(self.undoStack[0]);
         }

@@ -1,6 +1,6 @@
 # CI for Garmin Connect IQ (Monkey C) app
-# - Compiles the app for a target device with type checking
-# - Runs unit tests via "Run No Evil"
+# - Compiles the app for a set of representative devices with strict type checking
+# - Runs unit tests via "Run No Evil" on each of those devices
 
 name: CI
 
@@ -10,9 +10,26 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        device:
+          - fenix847mm # main development device
+          - fr245      # older CIQ device with less memory
+          - instinct2  # monochrome MIP screen with its own resource overlay
+          - venusq2    # rectangular screen
+    name: build-and-test (${{ matrix.device }})
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,5 +41,4 @@ jobs:
             -w /app \
             -e HOME=/root \
             ghcr.io/matco/connectiq-tester:latest \
-            fenix847mm ""
-
+            ${{ matrix.device }} ""
