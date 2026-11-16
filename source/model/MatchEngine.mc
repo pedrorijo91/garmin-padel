@@ -59,10 +59,10 @@ class MatchEngine {
     function switchServer() as Void {
         self.saveMatchStatus();
         var current = self.getServingSide();
-        var target = current == Sides.SIDE_P1 ? Sides.SIDE_P2 : Sides.SIDE_P1;
+        var target = Sides.other(current); // unknown (-1) -> us
         // serving side = firstServer when the alternation index is even, so pick firstServer to land on target
         var parity = self.getServeTurnIndex() % 2;
-        self.matchStatus.setFirstServer(parity == 0 ? target : otherSide(target));
+        self.matchStatus.setFirstServer(parity == 0 ? target : Sides.other(target));
     }
 
     // Team serving the current point: Sides.SIDE_P1, Sides.SIDE_P2, or -1 if unknown or the match is over.
@@ -73,7 +73,7 @@ class MatchEngine {
         if (first < 0 || self.isMatchOver()) {
             return -1;
         }
-        return self.getServeTurnIndex() % 2 == 0 ? first : otherSide(first);
+        return self.getServeTurnIndex() % 2 == 0 ? first : Sides.other(first);
     }
 
     // Number of serve changes since the start of the match (games played, plus turns inside a tie-break).
@@ -84,10 +84,6 @@ class MatchEngine {
             turns += (tiePoints + 1) / 2;
         }
         return turns;
-    }
-
-    private function otherSide(side as Number) as Number {
-        return side == Sides.SIDE_P1 ? Sides.SIDE_P2 : Sides.SIDE_P1;
     }
 
     function undo() as Void {

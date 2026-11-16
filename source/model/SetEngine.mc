@@ -31,9 +31,6 @@ class SetEngine {
         return 0;
     }
 
-    protected function otherSide(side as Number) as Number {
-        return side == Sides.SIDE_P1 ? Sides.SIDE_P2 : Sides.SIDE_P1;
-    }
 
     protected function incGamesForSide(side as Number, matchStatus as MatchStatus) as Void {
         if (side == Sides.SIDE_P1) {
@@ -94,7 +91,7 @@ class GamesSetEngine extends SetEngine {
     }
 
     function scorePoint(side as Number, matchStatus as MatchStatus) as Boolean {
-        var opponent = self.otherSide(side);
+        var opponent = Sides.other(side);
 
         if (self.isInTieBreak(matchStatus)) {
             self.incTieScoreForSide(side, matchStatus);
@@ -170,7 +167,7 @@ class SuperTieSetEngine extends SetEngine {
     }
 
     function scorePoint(side as Number, matchStatus as MatchStatus) as Boolean {
-        var opponent = self.otherSide(side);
+        var opponent = Sides.other(side);
         self.incTieScoreForSide(side, matchStatus);
         var myTie = self.getTieScoreForSide(side, matchStatus);
         var oppTie = self.getTieScoreForSide(opponent, matchStatus);

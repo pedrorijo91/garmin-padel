@@ -141,15 +141,6 @@ These options only change what happens when a game reaches **40–40** (deuce):
 
 During a normal set **tie-break** (not the super tie), the UI shows **Tie:** *points–points*. Points are counted numerically; win the tie-break by reaching **7** points with a **margin of 2**.
 
-### Serving order
-
-The serving indicator follows the padel serving rules:
-
-* Serve alternates between the teams **every game**, across sets too (the first-serving team is only chosen once, at the start of the match).
-* In a **tie-break** or **super tie-break**, the team due to serve serves the **first point**, then serve changes **every 2 points**.
-* A tie-break counts as **one game** for the alternation, so the team that served first in a tie-break **receives** first in the next set.
-* In a **mini set**, the 2–2 starting games were not played, so they don't count.
-
 ## List of supported devices
 
 See `<iq:products>` element in [manifest.xml](https://github.com/pedrorijo91/garmin-padel/blob/main/manifest.xml#L16) file.
@@ -172,5 +163,3 @@ available in [garmin connect app store](https://apps.garmin.com/apps/c63edba4-42
 ## Maintainer / development
 
 Release workflow and developer resource links: [RELEASING.md](RELEASING.md).
-
-Planned features (design plans with code context, test plans and open questions, for both developers and coding agents): [docs/roadmap](docs/roadmap/README.md).

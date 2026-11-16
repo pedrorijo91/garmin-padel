@@ -27,9 +27,6 @@ class GameEngine {
         }
     }
 
-    protected function otherSide(side as Number) as Number {
-        return side == Sides.SIDE_P1 ? Sides.SIDE_P2 : Sides.SIDE_P1;
-    }
 }
 
 // At 40-40 (deuce), the next point wins the game.
@@ -57,7 +54,7 @@ class AdvantageGameEngine extends GameEngine {
     }
 
     function scorePoint(side as Number, matchStatus as MatchStatus) as Boolean {
-        var opponent = self.otherSide(side);
+        var opponent = Sides.other(side);
         var sideScore = self.getScoreForSide(side, matchStatus);
         var oppScore = self.getScoreForSide(opponent, matchStatus);
 
@@ -85,7 +82,7 @@ class LimitedAdvantageGameEngine extends GameEngine {
     }
 
     function scorePoint(side as Number, matchStatus as MatchStatus) as Boolean {
-        var opponent = self.otherSide(side);
+        var opponent = Sides.other(side);
         var sideScore = self.getScoreForSide(side, matchStatus);
         var oppScore = self.getScoreForSide(opponent, matchStatus);
 
