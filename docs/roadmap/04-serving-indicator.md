@@ -1,6 +1,6 @@
 # Plan 4: Serving indicator (team, then player)
 
-- **Status:** Not started
+- **Status:** Team level done (branch `claude/serving-indicator-c45b6a`). Player level not started. See [Implementation notes (team level)](#implementation-notes-team-level).
 - **Size:** Team level small–medium; player level medium
 - **Depends on:** nothing. It's easier after [plan 1](01-switch-set-format.md), so standalone tie-breaks and super ties are handled from the start.
 - **GitHub:**
@@ -106,8 +106,23 @@ The server serves from the right (deuce) side when the total points played in th
 - Skipping the first-serve question gives exactly today's screen.
 - README updated with a screenshot.
 
+## Implementation notes (team level)
+
+What was built, and where it differs from the design above:
+
+- **Model:** as designed. `MatchStatus.firstServer` / `gamesPlayed` (setters, copied in `copy()`). `MatchEngine.scorePoint` adds 1 to `gamesPlayed` when the games total changes or a set is won (a game, a tie-break or a super tie), so `SetEngine` / `GameEngine` stay stateless. `getServingSide()` returns -1 when unknown **or when the match is over**.
+- **Fixing the server:** the Options item is **"Switch server"**. It pushes an undo entry, then sets `firstServer` so the team serving *now* flips (works inside a tie-break too). If the server was unknown (Skip), it turns the indicator on with *us* serving now. The sub-label shows `Serving: us / them / not set`. The Options menu is now built once in `ScoreDelegate.pushOptionsMenu()`.
+- **Input:** "First serve: Us / Them / Skip" (`MenuFirstServeDelegate`) is the last step for presets (after "Start match") and for the custom flow (after the score rule). It is asked every time; the focus starts on *Us*.
+- **UI: the arc is the default; no text fallback was needed.** `Dc.drawArc` is API 1.2.0 and `Dc.setPenWidth` 1.0.0, both below `minApiLevel` 2.4.0.
+  - Round screens: white arc, pen width `w / 30` (min 4 px), **80°** centred on 12 o'clock (50°–130°) or 6 o'clock (230°–310°). A wider arc (first prototype: 35°–145°) almost touched the 32 px steps/heart icons on 260 px screens (fr255).
+  - Other screen shapes (`screenShape != SCREEN_SHAPE_ROUND`: venusq2, Instinct semi-octagon): a bar of 40% of the width on the top or bottom edge. On Instinct, the top bar is moved left of the round sub-screen (`WatchUi.getSubscreen()`, guarded with `has`), which otherwise hides it.
+  - White only, no colour accent.
+- **Plan 1 not built yet:** standalone tie-breaks don't exist, so only the in-set tie-break and the deciding super tie are covered. When plan 1 lands, a standalone tie-break / super tie must add 1 to `gamesPlayed` when won; `MatchEngine.scorePoint` already does that for any set won.
+- **Tests:** `source/tests/testServing.mc` (alternation, set boundary, tie-break rotation, set after a tie-break, pro set tie-break, super tie, mini set from 2-2, undo across game/set/tie-break, unknown server, switch server, match over, `copy()`).
+- **Checked in the simulator** (SDK 9.3.0) on fenix847mm, fr265, fr255, fr245, venusq2 and instinct2: a scripted play-through (games, 6-6 tie-break, court-change banner, set won by tie-break, undo, Options), screenshots in `screenshots/serving/`.
+
 ## Open questions
 
-- Arc vs. text marker as the default: decide after a simulator prototype on the devices above.
-- Should "Who serves first?" be asked for presets too, or only when a setting turns the feature on? Proposal: ask every time, with *Skip* as the quick default.
+- ~~Arc vs. text marker as the default~~: arc (see implementation notes).
+- ~~Should "Who serves first?" be asked for presets too?~~ Asked every time, for presets and custom. *Skip* is the last item; the focus starts on *Us*.
 - Player level: is the opponents' serving player useful to show, or only our own team's?

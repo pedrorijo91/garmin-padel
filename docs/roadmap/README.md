@@ -9,7 +9,7 @@ Written 2026-11-16 against `master` at v2.6.0 (`f77f3e7`). Code references use c
 | 1 | [Switch set format mid-match](01-switch-set-format.md) (final tie-break / super tie / mini set) | S–M | — | [#146](https://github.com/pedrorijo91/garmin-padel/issues/146) | Not started |
 | 2 | [Training mode](02-training-mode.md) (free play + scored drills) | M | 1 | — | Not started |
 | 3 | [Timed tournament](03-timed-tournament.md) (time-limited sets, breaks) | M–L | 1, 2 (free/break segment) | [#27](https://github.com/pedrorijo91/garmin-padel/issues/27) (closed; "timed tournament" item never built) | Not started |
-| 4 | [Serving indicator](04-serving-indicator.md) (team, then player) | team S–M, player M | none (easier after 1) | [#66](https://github.com/pedrorijo91/garmin-padel/issues/66), [#101](https://github.com/pedrorijo91/garmin-padel/issues/101) | Not started |
+| 4 | [Serving indicator](04-serving-indicator.md) (team, then player) | team S–M, player M | none (easier after 1) | [#66](https://github.com/pedrorijo91/garmin-padel/issues/66), [#101](https://github.com/pedrorijo91/garmin-padel/issues/101) | Team level done; player level not started |
 
 Update the **Status** column and the plan's own "Status" section when work starts or lands.
 
