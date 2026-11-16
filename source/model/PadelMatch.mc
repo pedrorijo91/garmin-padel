@@ -46,6 +46,19 @@ class PadelMatch {
         self.matchEngine.undo();
     }
 
+    function setFirstServer(side as Number) as Void {
+        self.matchEngine.setFirstServer(side);
+    }
+
+    function switchServer() as Void {
+        self.matchEngine.switchServer();
+    }
+
+    // Sides.SIDE_P1 (us), Sides.SIDE_P2 (them), or -1 when unknown / match over.
+    function getServingSide() as Number {
+        return self.matchEngine.getServingSide();
+    }
+
     function getMatchStatus() as MatchStatus {
         return self.matchEngine.getMatchStatus();
     }

@@ -48,6 +48,44 @@ class MatchEngine {
         self.matchStatus.incUnforcedErrors();
     }
 
+    // Set which team serves the first game (Sides.SIDE_P1 / SIDE_P2, or -1 to hide the indicator).
+    // Called once when the match starts, so no undo entry.
+    function setFirstServer(side as Number) as Void {
+        self.matchStatus.setFirstServer(side);
+    }
+
+    // Fix a wrong serving team mid-match: flips who serves now (and from now on). Undoable.
+    // If the serving team was unknown, it becomes "us serving now".
+    function switchServer() as Void {
+        self.saveMatchStatus();
+        var current = self.getServingSide();
+        var target = Sides.other(current); // unknown (-1) -> us
+        // serving side = firstServer when the alternation index is even, so pick firstServer to land on target
+        var parity = self.getServeTurnIndex() % 2;
+        self.matchStatus.setFirstServer(parity == 0 ? target : Sides.other(target));
+    }
+
+    // Team serving the current point: Sides.SIDE_P1, Sides.SIDE_P2, or -1 if unknown or the match is over.
+    // Serve alternates every game; a tie-break / super tie counts as one game in that alternation.
+    // Inside a tie-break the team due to serve serves point 1, then serve changes every 2 points.
+    function getServingSide() as Number {
+        var first = self.matchStatus.getFirstServer();
+        if (first < 0 || self.isMatchOver()) {
+            return -1;
+        }
+        return self.getServeTurnIndex() % 2 == 0 ? first : Sides.other(first);
+    }
+
+    // Number of serve changes since the start of the match (games played, plus turns inside a tie-break).
+    private function getServeTurnIndex() as Number {
+        var turns = self.matchStatus.getGamesPlayed();
+        if (self.isInTieBreak() || self.isInSuperTieBreak()) {
+            var tiePoints = self.matchStatus.getP1TieScore() + self.matchStatus.getP2TieScore();
+            turns += (tiePoints + 1) / 2;
+        }
+        return turns;
+    }
+
     function undo() as Void {
         if (self.undoStack == null || self.undoStack.size() == 0) {
             return;
@@ -92,7 +130,12 @@ class MatchEngine {
 
     private function scorePoint(side as Number) as Boolean {
         var setEngine = self.getCurrentSetEngine();
+        var gamesBefore = self.matchStatus.getP1Games() + self.matchStatus.getP2Games();
         var setWon = setEngine.scorePoint(side, self.matchStatus);
+        // a game won, or a set won (by a game, a tie-break or a super tie), counts as one played game
+        if (setWon || self.matchStatus.getP1Games() + self.matchStatus.getP2Games() != gamesBefore) {
+            self.matchStatus.incGamesPlayed();
+        }
         if (!setWon) {
             if (setEngine.isInTieBreak(self.matchStatus) || setEngine.isInSuperTieBreak(self.matchStatus)) {
                 var totalTiePoints = self.matchStatus.getP1TieScore() + self.matchStatus.getP2TieScore();

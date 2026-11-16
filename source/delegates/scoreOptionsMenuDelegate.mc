@@ -21,6 +21,9 @@ class ScoreOptionsMenuDelegate extends WatchUi.Menu2InputDelegate {
         } else if (item.getId() == :score_option_unforced_error) {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             Application.getApp().getMatch().addUnforcedError();
+        } else if (item.getId() == :score_option_switch_server) {
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+            Application.getApp().getMatch().switchServer();
         } else if (item.getId() == :score_option_finish) {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             var score = Application.getApp().getScoreString();

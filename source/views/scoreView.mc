@@ -69,6 +69,8 @@ class ScoreView extends WatchUi.View {
 
         View.onUpdate(dc);
 
+        drawServingIndicator(dc, match.getServingSide());
+
         if (Application.getApp().isCourtChangeBannerVisible()) {
             var w = dc.getWidth();
             var h = dc.getHeight();
@@ -83,6 +85,44 @@ class ScoreView extends WatchUi.View {
             var msg = Application.loadResource(Rez.Strings.court_change_ends) as String;
             var textY = boxTop + (boxH - fh) / 2;
             dc.drawText(w / 2, textY, Graphics.FONT_MEDIUM, msg, Graphics.TEXT_JUSTIFY_CENTER);
+        }
+    }
+
+    // Marks the serving team along the screen edge: top half = us (Up), bottom half = them (Down).
+    // Drawn from dc size only (no per-device layouts). White, so it also works on black-and-white screens.
+    // Round screens: a thick arc hugging the edge. Other shapes (rectangle, Instinct semi-octagon): a bar on the edge.
+    private function drawServingIndicator(dc as Dc, side as Number) as Void {
+        if (side < 0) {
+            return;
+        }
+        var w = dc.getWidth();
+        var h = dc.getHeight();
+        var pen = w / 30;
+        if (pen < 4) {
+            pen = 4;
+        }
+        var top = side == Sides.SIDE_P1;
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+
+        if (System.getDeviceSettings().screenShape == System.SCREEN_SHAPE_ROUND) {
+            // 80 degrees centred on 12 / 6 o'clock (0 deg = 3 o'clock, counter-clockwise).
+            // Wider, it touches the steps/heart icons on small screens.
+            var start = top ? 50 : 230;
+            dc.setPenWidth(pen);
+            dc.drawArc(w / 2, h / 2, w / 2 - pen / 2, Graphics.ARC_COUNTER_CLOCKWISE, start, start + 80);
+            dc.setPenWidth(1);
+        } else {
+            var barW = w * 2 / 5;
+            var x = (w - barW) / 2;
+            // Instinct: the round sub-screen hides what is drawn under it, so keep the top bar left of it
+            if (top && (WatchUi has :getSubscreen)) {
+                var sub = WatchUi.getSubscreen();
+                var subX = sub != null ? sub.x : null;
+                if (subX != null && subX < x + barW) {
+                    x = subX - pen - barW;
+                }
+            }
+            dc.fillRectangle(x, top ? 0 : h - pen, barW, pen);
         }
     }
 

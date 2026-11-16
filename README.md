@@ -16,12 +16,14 @@ Keeps full padel match score: sets, games, standard **tie-breaks**, and **super 
   * **Advantages** — classic advantage / deuce
   * **Silver point** — one advantage cycle; if it returns to deuce again, the next point wins the game
   * **Star point** (FIP-style) — up to two advantage cycles, then a decisive point at deuce
+* **First serve**: choose which team serves first (**Us** / **Them**), or **Skip** to play without the serving indicator.
 
 **During play**
 
 * Score with **Up** / **Down** (or top / bottom half of the screen on touch devices).
+* **Serving indicator**: a marker along the screen edge on the serving team's half (top = us, bottom = them). It follows padel serving rules, including tie-breaks and super tie-breaks, and undo.
 * Real time **heart rate** on the score screen.
-* **Options** menu (**Enter** / **Start**, or **long press** on touch): **undo** last point, track an **unforced error**, or **finish** the activity.
+* **Options** menu (**Enter** / **Start**, or **long press** on touch): **undo** last point, track an **unforced error**, **switch server** (fix the serving team), or **finish** the activity.
 
 **Activity / Garmin Connect**
 
@@ -38,7 +40,8 @@ When you open the app, the initial screen appears. Press `Enter` / `Start`, or t
 You’ll see the **Game Mode** menu first:
 
 * **Tournament**, **Tournament (super)**, **Pro Set Tournament**, or **Friendly** — pick one, review the summary, then choose **Start match**.
-* **Custom** — walk through **Sets** (1 / 3 / 5 / Unlimited) → **Set type** (Normal / Pro set / Mini) → **Super tie** (only for 3 or 5 sets) → **Score** rule (Golden / Star / Advantages / Silver), then start.
+* **Custom** — walk through **Sets** (1 / 3 / 5 / Unlimited) → **Set type** (Normal / Pro set / Mini) → **Super tie** (only for 3 or 5 sets) → **Score** rule (Golden / Star / Advantages / Silver).
+* Both end with **First serve**: pick **Us** or **Them** for the team serving the first game, or **Skip** if you don't want the serving indicator. The match starts right after.
 
 Use `Up` / `Down` to move in menus and `Enter` to select. For exact scoring mechanics (set lengths, tie-breaks, deuce rules), see [Match rules reference](#match-rules-reference).
 
@@ -59,12 +62,24 @@ The score view shows sets, games, and points (or **Tie** / **Super** when applic
 
 <p align="center"><img src="screenshots/score_tie.png" width="300" alt="Score screen during tie break"></p>
 
+#### Who is serving
+
+If you picked who serves first, a white marker on the screen edge shows the serving team: on the **top** half when your team serves, on the **bottom** half when the opponents serve (the same halves as the `Up` / `Down` buttons and the tap areas). Round screens show an arc; rectangular screens and Instinct show a bar. Say the server's score first when calling it out loud.
+
+The marker moves on its own after every game, and inside tie-breaks after the first point and then every two points. If it is on the wrong team (for example, you picked the wrong one at the start), open **Options** → **Switch server**. That can be undone like a point.
+
+<p align="center">
+<img src="screenshots/serving/fenix847mm_us.png" width="240" alt="Serving indicator: us serving">
+<img src="screenshots/serving/fenix847mm_them.png" width="240" alt="Serving indicator: them serving">
+</p>
+
 ### Options, undo, and finishing
 
 Press **`Enter`** / **`Start`** on the score screen, or **long-press** on a touch device, to open **Options**:
 
 * **Undo last point** — asks for confirmation before reverting.
 * **Unforced error** — increments the error counter (also saved with the activity and available in garmin connect later).
+* **Switch server** — flips the serving team shown by the serving indicator from now on (the sub-label shows who is serving now). If you skipped **First serve**, this turns the indicator on with your team serving.
 * **Finish activity** — **Save and exit**, **Discard**, or **Cancel** back to the score.
 
 Pressing **`Back`** from the score screen opens the same **Finish activity** menu (save, discard, or cancel).

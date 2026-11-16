@@ -24,6 +24,13 @@ class MatchStatus {
     // number of times we have returned to 40-40 after having advantage (for Silver/Star point)
     private var deuceRevertCount as Number;
 
+    // team serving the first game of the match: Sides.SIDE_P1, Sides.SIDE_P2, or -1 = unknown (no serving indicator)
+    private var firstServer as Number;
+
+    // games actually played in the match (not the mini set's initial 2-2). A tie-break or super tie counts as one game.
+    // Used to work out the serving team, which alternates every game.
+    private var gamesPlayed as Number;
+
     static function New() as MatchStatus {
         return new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, []);
     }
@@ -51,6 +58,28 @@ class MatchStatus {
         self.historicalScores = historicalScores;
         self.unforcedErrors = 0;
         self.deuceRevertCount = 0;
+        self.firstServer = -1;
+        self.gamesPlayed = 0;
+    }
+
+    function getFirstServer() as Number {
+        return self.firstServer;
+    }
+
+    function setFirstServer(side as Number) as Void {
+        self.firstServer = side;
+    }
+
+    function getGamesPlayed() as Number {
+        return self.gamesPlayed;
+    }
+
+    function setGamesPlayed(n as Number) as Void {
+        self.gamesPlayed = n;
+    }
+
+    function incGamesPlayed() as Void {
+        self.gamesPlayed++;
     }
 
     function getDeuceRevertCount() as Number {
@@ -182,6 +211,8 @@ class MatchStatus {
         var s = new MatchStatus(p1Sets, p2Sets, p1Games, p2Games, p1ScoreIdx, p2ScoreIdx, p1TieBreakScore, p2TieBreakScore, newHistory);
         s.setUnforcedErrors(self.unforcedErrors);
         s.setDeuceRevertCount(self.deuceRevertCount);
+        s.setFirstServer(self.firstServer);
+        s.setGamesPlayed(self.gamesPlayed);
         return s;
     }
 }
