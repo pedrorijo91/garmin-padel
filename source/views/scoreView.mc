@@ -121,8 +121,9 @@ class ScoreView extends WatchUi.View {
             // Instinct: keep the top bar left of the round sub-screen, which hides what is drawn under it
             if (top && (WatchUi has :getSubscreen)) {
                 var sub = WatchUi.getSubscreen();
-                if (sub != null && sub.x < x + barW) {
-                    x = sub.x - pen - barW;
+                var subX = sub != null ? sub.x : null;
+                if (subX != null && subX < x + barW) {
+                    x = subX - pen - barW;
                     if (x < pen) {
                         barW -= pen - x;
                         x = pen;
