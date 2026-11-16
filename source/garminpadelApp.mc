@@ -14,6 +14,14 @@ class GarminpadelApp extends Application.AppBase {
     private var initialSetps as Number;
     private var initialDay as Number; // we need to check if the activity crossed the day to correctly compute steps
     private var courtChangeBannerUntil as Number;
+    // text of the banner shown until courtChangeBannerUntil ("Change ends", or "Match started" after the warm-up)
+    private var bannerText as ResourceId;
+    // laps added this session (test seam for the warm-up lap, plan 5)
+    private var lapCount as Number;
+    // System.getTimer() when the warm-up started, or -1 if the match has no warm-up
+    private var warmUpStartedAt as Number;
+    // System.getTimer() when the warm-up ended, or -1 while it runs
+    private var warmUpEndedAt as Number;
 
     function initialize() {
         AppBase.initialize();
@@ -22,6 +30,10 @@ class GarminpadelApp extends Application.AppBase {
         initialSetps = 0; 
         initialDay = Gregorian.info(Time.now(), Time.FORMAT_SHORT).day;
         courtChangeBannerUntil = 0;
+        bannerText = Rez.Strings.court_change_ends;
+        lapCount = 0;
+        warmUpStartedAt = -1;
+        warmUpEndedAt = -1;
     }
 
     function onStart(state as Dictionary?) as Void {
@@ -41,6 +53,8 @@ class GarminpadelApp extends Application.AppBase {
         self.session = ActivityRecording.createSession({:sport => Activity.SPORT_RACKET, :subSport => Activity.SUB_SPORT_PADEL, :name => "Padel match"});
         self.session.start();
         self.courtChangeBannerUntil = 0;
+        self.warmUpStartedAt = self.matchConfig.getWarmUp() ? System.getTimer() : -1;
+        self.warmUpEndedAt = -1;
     }
 
     function getMatch() as PadelMatch {
@@ -73,10 +87,42 @@ class GarminpadelApp extends Application.AppBase {
         if (session != null) {
             session.addLap();
         }
+        self.lapCount++;
+    }
+
+    function getLapCount() as Number {
+        return self.lapCount;
+    }
+
+    // --- Warm-up (plan 5) ---
+
+    // Called by MatchEngine when the warm-up ends: lap 1 = warm-up, then a short vibration and a banner.
+    function onWarmUpEnd() as Void {
+        self.warmUpEndedAt = System.getTimer();
+        self.lapSession();
+        self.bannerText = Rez.Strings.match_started;
+        self.courtChangeBannerUntil = System.getTimer() + 2000;
+        if (Attention has :vibrate) {
+            Attention.vibrate([new Attention.VibeProfile(75, 300)] as Array<Attention.VibeProfile>);
+        }
+    }
+
+    // Length of the warm-up in seconds (still counting while it runs), or -1 if the match has no warm-up.
+    function getWarmUpSeconds() as Number {
+        if (self.warmUpStartedAt < 0) {
+            return -1;
+        }
+        var end = self.warmUpEndedAt >= 0 ? self.warmUpEndedAt : System.getTimer();
+        return (end - self.warmUpStartedAt) / 1000;
+    }
+
+    function getBannerText() as String {
+        return Application.loadResource(self.bannerText) as String;
     }
 
     function onTieBreakCourtChange() as Void {
         self.courtChangeBannerUntil = System.getTimer() + 2500;
+        self.bannerText = Rez.Strings.court_change_ends;
         var vibe1 = new Attention.VibeProfile(75, 150);
         var vibe2 = new Attention.VibeProfile(75, 150);
         Attention.vibrate([vibe1, vibe2] as Array<Attention.VibeProfile>);
@@ -108,6 +154,12 @@ class GarminpadelApp extends Application.AppBase {
         var unforcedErrorsField = session.createField("unforced_errors", 3, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "count"});
         var unforcedErrors = self.getMatch().getMatchStatus().getUnforcedErrors();
         unforcedErrorsField.setData(unforcedErrors);
+
+        var warmUpSeconds = self.getWarmUpSeconds();
+        if (warmUpSeconds >= 0) {
+            var warmUpField = session.createField("warmup_seconds", 4, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "s"});
+            warmUpField.setData(warmUpSeconds > 65535 ? 65535 : warmUpSeconds);
+        }
 
         session.stop();
         session.save();

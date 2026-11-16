@@ -28,6 +28,10 @@ class MatchEngine {
     }
 
     function incP1() as Boolean {
+        if (self.isWarmingUp()) {
+            self.endWarmUp();
+            return false;
+        }
         if (self.isMatchOver()) {
             return false;
         }
@@ -36,6 +40,10 @@ class MatchEngine {
     }
 
     function incP2() as Boolean {
+        if (self.isWarmingUp()) {
+            self.endWarmUp();
+            return false;
+        }
         if (self.isMatchOver()) {
             return false;
         }
@@ -84,6 +92,28 @@ class MatchEngine {
             turns += (tiePoints + 1) / 2;
         }
         return turns;
+    }
+
+    // --- Warm-up phase (plan 5) ---
+    // The session starts recording in warm-up; the first Up/Down press (or Options -> Start match) ends it
+    // without scoring and adds a lap, so lap 1 is the warm-up. A FIT lap can't be removed, so ending the
+    // warm-up clears the undo stack: undo never goes back into the warm-up.
+
+    function startWarmUp() as Void {
+        self.matchStatus.setPhase(MatchStatus.PHASE_WARM_UP);
+    }
+
+    function isWarmingUp() as Boolean {
+        return self.matchStatus.getPhase() == MatchStatus.PHASE_WARM_UP;
+    }
+
+    function endWarmUp() as Void {
+        if (!self.isWarmingUp()) {
+            return;
+        }
+        self.matchStatus.setPhase(MatchStatus.PHASE_MATCH);
+        self.undoStack = [];
+        Application.getApp().onWarmUpEnd();
     }
 
     function undo() as Void {

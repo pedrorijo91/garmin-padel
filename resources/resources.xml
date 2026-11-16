@@ -28,5 +28,12 @@
                 dataLabel="@Strings.fit_unforced_errors_label"
                 unitLabel="@Strings.fit_unforced_errors_units"
             />
+            <fitField id="4"
+                displayInActivitySummary="true"
+                sortOrder = "4"
+                precision="0"
+                dataLabel="@Strings.fit_warm_up_label"
+                unitLabel="@Strings.fit_warm_up_units"
+            />
     </fitContributions>
 </resources>

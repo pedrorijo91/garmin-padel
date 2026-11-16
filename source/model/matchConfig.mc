@@ -17,12 +17,23 @@ class MatchConfig {
     private var setType as Number;
     private var numberOfSets as Number;
     private var pointRule as Number;
+    // start the session in a warm-up phase (its own lap). Off by default; the setup menus turn it on.
+    private var warmUp as Boolean;
 
     function initialize() {
         superTie = false;
         numberOfSets = UNLIMITED_SETS;
         pointRule = POINT_RULE_GOLDEN;
         setType = SET_TYPE_NORMAL;
+        warmUp = false;
+    }
+
+    function setWarmUp(enabled as Boolean) as Void {
+        self.warmUp = enabled;
+    }
+
+    function getWarmUp() as Boolean {
+        return self.warmUp;
     }
 
     function setPointRule(rule as Number) as Void {

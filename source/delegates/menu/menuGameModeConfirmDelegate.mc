@@ -10,6 +10,10 @@ class MenuGameModeConfirmDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function onSelect(item as MenuItem) as Void {
+        if (item.getId() == MenuWarmUpDelegate.TOGGLE_ITEM_ID) {
+            MenuWarmUpDelegate.toggle(item);
+            return;
+        }
         if (item.getId() != :mode_start_confirm) {
             return;
         }

@@ -18,6 +18,9 @@ class PadelMatch {
             defaultSetEngine,
             decidingSetEngine
         );
+        if (config.getWarmUp()) {
+            self.matchEngine.startWarmUp();
+        }
     }
 
     private function setEngineForSetType(setType as Number, gameEngine as GameEngine) as SetEngine {
@@ -57,6 +60,16 @@ class PadelMatch {
     // Sides.SIDE_P1 (us), Sides.SIDE_P2 (them), or -1 when unknown / match over.
     function getServingSide() as Number {
         return self.matchEngine.getServingSide();
+    }
+
+    // Warm-up phase (plan 5): Up/Down end it without scoring.
+    function isWarmingUp() as Boolean {
+        return self.matchEngine.isWarmingUp();
+    }
+
+    // Options -> Start match: ends the warm-up (adds a lap) without scoring.
+    function endWarmUp() as Void {
+        self.matchEngine.endWarmUp();
     }
 
     function getMatchStatus() as MatchStatus {

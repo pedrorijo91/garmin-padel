@@ -27,6 +27,7 @@ class MenuGameModeDelegate extends WatchUi.Menu2InputDelegate {
             appConfig.setSetType(presetConfig.getSetType());
             appConfig.setSuperTie(presetConfig.getSuperTie());
             appConfig.setPointRule(presetConfig.getPointRule());
+            appConfig.setWarmUp(MenuWarmUpDelegate.WARM_UP_DEFAULT);
             var lines = GameModes.summaryLines(id);
             self.pushModeConfirmMenu(
                 GameModes.title(id),
@@ -53,6 +54,7 @@ class MenuGameModeDelegate extends WatchUi.Menu2InputDelegate {
         menu.addItem(new MenuItem(line2, "", :mode_info_2, {}));
         menu.addItem(new MenuItem(line3, "", :mode_info_3, {}));
         menu.addItem(new MenuItem(line4, "", :mode_info_4, {}));
+        menu.addItem(MenuWarmUpDelegate.toggleItem());
         menu.addItem(new MenuItem("Start match", "Press ENTER/START", :mode_start_confirm, {}));
         WatchUi.pushView(menu, new MenuGameModeConfirmDelegate(), WatchUi.SLIDE_BLINK);
     }
