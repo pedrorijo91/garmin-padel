@@ -34,6 +34,7 @@ The user moves between them from the Options menu. When a drill is won it ends b
    - Reset scores and games and go back to `FREE`.
    - Push an undo entry first, so this can be undone.
    - This is the "switch mid-set" extension mentioned as future work in plan 1.
+   - **Drill → drill:** `endSegment(nextFormat)` (or a separate `startSegment(format)` that ends the current drill first) does the same, but goes straight to the chosen drill instead of `FREE`. It is one undo entry and one lap, with no free-play segment in between.
 4. **Drill results.** A won drill still increments `p1Sets` / `p2Sets`, so "drills won" can be shown. History entries should say what the drill was, so the saved score can be read later, e.g. `TB 7-5`, `ST 10-8`, `MS 6-4`, `6-3`. Prefixes keep the string short (see the FIT limit below).
 5. **Match never ends by itself.** Use `numberOfSets = UNLIMITED_SETS`; the user presses Finish.
 6. **Point rule.** Training drills still need a point rule for game-based formats. Ask for it (default Golden), the same way presets do.
@@ -55,8 +56,8 @@ The user moves between them from the Options menu. When a drill is won it ends b
    - Bottom: steps/HR and clock as today.
 3. **Score screen during a drill:** the same as a match. Change the top label to "Drills: x - y" instead of "Sets: x - y".
 4. **Options menu** (the helper built in plan 1), in training:
-   - In free play: **Start drill ▸** *Tie-break / Super tie-break / Mini set / Set*, Unforced error, Finish.
-   - During a drill: **End drill**, Undo, Unforced error, Finish.
+   - In free play: **Start drill ▸** *Tie-break / Super tie-break / Mini set / Set*, Undo (only when there is an undo entry, e.g. right after End drill or a won drill; free-play presses push none), Unforced error, Finish.
+   - During a drill: **End drill**, **Next drill ▸** *(same drill list)*, Undo, Unforced error, Finish. *Next drill* ends the current drill (partial result marked with `*`, as for End drill) and starts the chosen one directly, without going through free play.
    - Show "Next set format" (plan 1) only outside training. In training, "Start drill" replaces it.
 5. **When a drill ends** (won): vibrate (reuse the `onTieBreakCourtChange` vibration pattern or similar) and show a banner with the result for about 2.5 s (reuse the court-change banner code in `ScoreView.onUpdate` / `GarminpadelApp.isCourtChangeBannerVisible`), then free play.
 6. **Unforced errors** count during drills and free play alike.
@@ -71,9 +72,9 @@ The user moves between them from the Options menu. When a drill is won it ends b
 - Training starts in `FREE`: `incP1` does nothing, nothing is pushed to the undo stack, and history is empty.
 - Start drill (super tie) → play to 10-7 → back in `FREE`; history `["ST 10-7"]`; P1 drills = 1.
 - Start drill (tie-break), play 4-3, `endSegment()` → history `["TB 4-3*"]`; drills unchanged; `FREE`.
-- Undo right after `endSegment()` restores the drill at 4-3.
+- Undo right after `endSegment()` restores the drill at 4-3 (Undo is reachable from the free-play menu).
 - Mini set drill starts at 2-2 and goes back to `FREE` after it is won.
-- Several drills back to back without free play in between (drill → drill).
+- Several drills back to back without free play in between (drill → drill via *Next drill*): the partial result is written with `*`, the new drill starts at 0-0 (or 2-2 for a mini set), exactly one lap is added per transition, and undo restores the previous drill.
 - The score-string / lap-field formatting stays within its limit and truncates as designed.
 
 ## Acceptance criteria

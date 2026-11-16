@@ -54,6 +54,7 @@ Store these in `MatchConfig` (`roundDurationSec`, `timeEndRule`, `totalDurationS
 5. **Time checks live in the model, the clock lives outside.**
    - Add `MatchEngine.tick(now)`: if the current segment is TIMED and `now - segmentStartTime >= roundDuration` and `!timeUp`, apply the end rule and return an event (`TIME_UP`, `ROUND_ENDED`) so the app can vibrate.
    - Tests call `tick` with made-up timestamps. **Don't read `Time.now()` inside the engine.**
+   - **Also check before every point**, not only on timer ticks: the deadline can pass between two ticks (up to 1 s, more if the timer is late), and under *Hard* a point scored in that gap must not count. `ScoreDelegate` calls `match.tick(now)` before `incP1` / `incP2`; if it returns `ROUND_ENDED`, that press is not scored. Under *Finish game* the same call sets `timeUp` first, so a game won after the deadline ends the round.
 
 ### Timer
 
@@ -92,6 +93,7 @@ Store these in `MatchConfig` (`roundDurationSec`, `timeEndRule`, `totalDurationS
 
 - `tick` before the round length: nothing happens.
 - Hard: `tick` at the round length → the round ends with the current games (`3-2`), the game in progress is thrown away, the state is `FREE`, and P1 rounds = 1.
+- Hard: a point pressed after the deadline but before the next timer tick → the round ends with the games as they were at the deadline; that point is not counted.
 - Finish game: `tick` at the length → `timeUp`, round still running; the next point that wins a game ends it; a point that doesn't win a game does not.
 - Draw `4-4` → no one's round count goes up; history `"4-4"`.
 - Undo after a Hard end → back in the round with `timeUp = true`.
