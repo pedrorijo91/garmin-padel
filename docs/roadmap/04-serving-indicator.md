@@ -119,7 +119,7 @@ What was built, and where it differs from the design above:
   - White only, no colour accent.
 - **Plan 1 not built yet:** standalone tie-breaks don't exist, so only the in-set tie-break and the deciding super tie are covered. When plan 1 lands, a standalone tie-break / super tie must add 1 to `gamesPlayed` when won; `MatchEngine.scorePoint` already does that for any set won.
 - **Tests:** `source/tests/testServing.mc` (alternation, set boundary, tie-break rotation, set after a tie-break, pro set tie-break, super tie, mini set from 2-2, undo across game/set/tie-break, unknown server, switch server, match over, `copy()`).
-- **Checked in the simulator** (SDK 9.3.0) on fenix847mm, fr265, fr255, fr245, venusq2 and instinct2: a scripted play-through (games, 6-6 tie-break, court-change banner, set won by tie-break, undo, Options), screenshots for all six devices are in PR #152; the fenix847mm ones are kept in `screenshots/serving/`.
+- **Checked in the simulator** (SDK 9.3.0) on fenix847mm, fr265, fr255, fr245, venusq2 and instinct2: a scripted play-through (games, 6-6 tie-break, court-change banner, set won by tie-break, undo, Options), screenshots for all six devices are in PR #152; the README uses `screenshots/serving/fenix847mm_us.png` and `fenix847mm_them.png`.
 
 ## Open questions
 
