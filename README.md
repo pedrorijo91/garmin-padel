@@ -148,3 +148,5 @@ available in [garmin connect app store](https://apps.garmin.com/apps/c63edba4-42
 ## Maintainer / development
 
 Release workflow and developer resource links: [RELEASING.md](RELEASING.md).
+
+Planned features (design plans with code context, test plans and open questions, for both developers and coding agents): [docs/roadmap](docs/roadmap/README.md).
