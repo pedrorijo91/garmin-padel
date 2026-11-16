@@ -130,9 +130,12 @@ function superTieP2WinsTest(logger as Logger) as Boolean {
     var res = match.incP2();
 
     var status = match.getMatchStatus();
+    var history = match.getHistoricalScores();
 
     return 
         res == true &&
+        history.size() == 3 &&
+        history[2].equals("[8-10]") &&
         status.getP1Sets() == 1 &&
         status.getP2Sets() == 2 &&
         status.getP1Games() == 0 &&

@@ -37,9 +37,11 @@ class ScoreView extends WatchUi.View {
         var gamesLabel = View.findDrawableById("gamesLabel") as Text;
         var scoreLabel = View.findDrawableById("scoreLabel") as Text;
 
-        if (match.isInSuperTieBreak()) {
+        if (!match.currentSetHasGames()) {
+            // the set is a single tie-break (deciding or chosen super tie, or a chosen tie-break): no games
             gamesLabel.setText("");
-            scoreLabel.setText("Super: " + matchStatus.getP1TieScore() + " - " + matchStatus.getP2TieScore());
+            var tieLabel = match.isInSuperTieBreak() ? "Super: " : "Tie: ";
+            scoreLabel.setText(tieLabel + matchStatus.getP1TieScore() + " - " + matchStatus.getP2TieScore());
         } else {
             gamesLabel.setText("Games: " + matchStatus.getP1Games() + " - " + matchStatus.getP2Games());
 

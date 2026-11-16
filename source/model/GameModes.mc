@@ -10,6 +10,7 @@ class GameModes {
     static const MODE_CUSTOM = :mode_custom;
 
     // Returns a new MatchConfig for the given preset, or null for Custom.
+    // Only Friendly allows switching the set format mid-match; tournament presets keep fixed rules.
     static function configForMode(modeId as Symbol) as MatchConfig or Null {
         if (modeId == MODE_TOURNAMENT) {
             var c = new MatchConfig();
@@ -41,6 +42,7 @@ class GameModes {
             c.setSetType(MatchConfig.SET_TYPE_NORMAL);
             c.setSuperTie(false);
             c.setPointRule(MatchConfig.POINT_RULE_GOLDEN);
+            c.setFormatSwitch(true);
             return c;
         }
         return null;

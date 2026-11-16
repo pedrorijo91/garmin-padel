@@ -2,29 +2,96 @@ import Toybox.Application;
 import Toybox.Lang;
 
 // Owns match state (MatchStatus, undo) and delegates point scoring to the current SetEngine.
-// Chooses default or deciding (e.g. super-tie) set engine based on set count and tie.
+// The current set's format is stored in MatchStatus (setFormat). With FORMAT_DEFAULT the config decides:
+// the default set engine, or the deciding super tie when sets are tied with one set left.
 class MatchEngine {
 
     static const MAX_UNDO = 5;
 
     private var numberOfSets as Number;
+    private var gameEngine as GameEngine;
     private var defaultSetEngine as SetEngine;
     private var decidingSetEngine as SetEngine or Null;
+
+    // engine for a format chosen mid-match (MatchStatus.setFormat), built on first use. One slot is enough.
+    private var formatEngine as SetEngine or Null;
+    private var formatEngineFormat as Number;
 
     private var matchStatus as MatchStatus;
     private var undoStack as Array<MatchStatus>;
 
+    // defaultFormat: MatchConfig.FORMAT_NORMAL / PRO / MINI (same values as SET_TYPE_*).
+    // superTie: the deciding set of a limited match is a super tie-break.
     function initialize(
         sets as Number,
-        defaultEngine as SetEngine,
-        decidingEngine as SetEngine or Null
+        engine as GameEngine,
+        defaultFormat as Number,
+        superTie as Boolean
     ) {
         self.numberOfSets = sets;
-        self.defaultSetEngine = defaultEngine;
-        self.decidingSetEngine = decidingEngine;
+        self.gameEngine = engine;
+        self.formatEngine = null;
+        self.formatEngineFormat = MatchConfig.FORMAT_DEFAULT;
+        self.defaultSetEngine = self.engineForFormat(defaultFormat);
+        self.decidingSetEngine = superTie ? self.engineForFormat(MatchConfig.FORMAT_SUPER_TIE) : null;
         self.matchStatus = MatchStatus.New();
         self.undoStack = [];
         self.applyInitialGames(self.defaultSetEngine);
+    }
+
+    private function engineForFormat(format as Number) as SetEngine {
+        if (format == MatchConfig.FORMAT_SUPER_TIE) {
+            return new SuperTieSetEngine(SuperTieSetEngine.SUPER_TIE_TARGET);
+        }
+        if (format == MatchConfig.FORMAT_TIE_BREAK) {
+            return new SuperTieSetEngine(SuperTieSetEngine.TIE_BREAK_TARGET);
+        }
+        if (format == MatchConfig.FORMAT_PRO) {
+            return new ProSetEngine(self.gameEngine);
+        }
+        if (format == MatchConfig.FORMAT_MINI) {
+            return new MiniSetEngine(self.gameEngine);
+        }
+        return new NormalSetEngine(self.gameEngine);
+    }
+
+    // Play the given format (MatchConfig.FORMAT_TIE_BREAK / SUPER_TIE / MINI, ...) now, in place of the current set.
+    // Undoable. If nothing has been played in the current set, only its format changes. Otherwise the
+    // unfinished set goes into the history with a "*" (e.g. "4-3*", "[5-3]*"), is awarded to nobody, a lap
+    // is added, and the chosen format starts from scratch (a game in progress is discarded: it doesn't count
+    // in gamesPlayed). When the chosen format finishes, the next set goes back to the match default.
+    function switchSetFormat(format as Number) as Void {
+        if (self.isMatchOver()) {
+            return;
+        }
+        self.saveMatchStatus();
+        var current = self.getCurrentSetEngine();
+        var unfinished = !current.isUntouched(self.matchStatus);
+        if (unfinished) {
+            self.matchStatus.addHistoricalScore(current.formatResult(self.matchStatus, false) + "*");
+        }
+        self.matchStatus.resetGames();
+        self.matchStatus.resetScores();
+        self.matchStatus.setSetFormat(format);
+        self.applyInitialGames(self.getCurrentSetEngine());
+        if (unfinished) {
+            Application.getApp().lapSession();
+        }
+    }
+
+    // true when points have been played in the current set, so switching format records it as unfinished
+    function isSetStarted() as Boolean {
+        return !self.getCurrentSetEngine().isUntouched(self.matchStatus);
+    }
+
+    // Result string the current set would be recorded with if switched now, e.g. "4-3*".
+    function unfinishedSetResult() as String {
+        return self.getCurrentSetEngine().formatResult(self.matchStatus, false) + "*";
+    }
+
+    // false when the current set has no games (a tie-break or super tie set)
+    function currentSetHasGames() as Boolean {
+        return self.getCurrentSetEngine().hasGames();
     }
 
     function incP1() as Boolean {
@@ -129,10 +196,23 @@ class MatchEngine {
         return self.matchStatus.copy();
     }
 
+    // Finished (and unfinished "*") sets, plus the set in progress: its games once a game has been
+    // played ("3-1"), or its points for a tie-break / super tie set ("[5-3]").
     function getHistoricalScores() as Lang.Array<Lang.String> {
         var res = self.matchStatus.getHistoricalScores();
-        if (self.matchStatus.getP1Games() != 0 || self.matchStatus.getP2Games() != 0) {
-            res.add("" + self.matchStatus.getP1Games() + "-" + self.matchStatus.getP2Games());
+        if (self.isMatchOver()) {
+            return res;
+        }
+        var setEngine = self.getCurrentSetEngine();
+        var inProgress;
+        if (setEngine.hasGames()) {
+            inProgress = self.matchStatus.getP1Games() != setEngine.getInitialP1Games()
+                || self.matchStatus.getP2Games() != setEngine.getInitialP2Games();
+        } else {
+            inProgress = self.matchStatus.getP1TieScore() != 0 || self.matchStatus.getP2TieScore() != 0;
+        }
+        if (inProgress) {
+            res.add(setEngine.formatResult(self.matchStatus, false));
         }
         return res;
     }
@@ -146,6 +226,14 @@ class MatchEngine {
     }
 
     private function getCurrentSetEngine() as SetEngine {
+        var format = self.matchStatus.getSetFormat();
+        if (format != MatchConfig.FORMAT_DEFAULT) {
+            if (self.formatEngine == null || self.formatEngineFormat != format) {
+                self.formatEngine = self.engineForFormat(format);
+                self.formatEngineFormat = format;
+            }
+            return self.formatEngine as SetEngine;
+        }
         if (self.decidingSetEngine == null) {
             return self.defaultSetEngine;
         }
@@ -183,21 +271,13 @@ class MatchEngine {
     }
 
     private function resetAfterSetFinish(setEngine as SetEngine) as Void {
-        var result;
-        if (setEngine.isInSuperTieBreak(self.matchStatus)) {
-            result = "" + self.matchStatus.getP1TieScore() + "-" + self.matchStatus.getP2TieScore();
-        } else {
-            result = "" + self.matchStatus.getP1Games() + "-" + self.matchStatus.getP2Games();
-            if (setEngine.isInTieBreak(self.matchStatus)) {
-                result += " (" + min(self.matchStatus.getP1TieScore(), self.matchStatus.getP2TieScore()) + ")";
-            }
-        }
-        self.matchStatus.addHistoricalScore(result);
+        self.matchStatus.addHistoricalScore(setEngine.formatResult(self.matchStatus, true));
         self.matchStatus.resetGames();
-        if (!setEngine.isInSuperTieBreak(self.matchStatus)) {
-            self.matchStatus.resetScores();
-        }
+        // a match that ends keeps its final tie points (e.g. the deciding super tie 10-8)
         if (!self.isMatchOver()) {
+            self.matchStatus.resetScores();
+            // a format chosen mid-match lasts one set: the next set goes back to the match default
+            self.matchStatus.setSetFormat(MatchConfig.FORMAT_DEFAULT);
             self.applyInitialGames(self.getCurrentSetEngine());
         }
     }

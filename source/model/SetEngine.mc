@@ -31,6 +31,26 @@ class SetEngine {
         return 0;
     }
 
+    // false for a set that is a single tie-break (tie-break / super tie): no games, only tie points
+    function hasGames() as Boolean {
+        return true;
+    }
+
+    // Score of the set for the history, e.g. "6-4", "7-6 (5)", "[10-8]". Called before games/scores are reset.
+    // finished = false for a set still in progress or left unfinished: games only, no tie-break detail ("6-6").
+    function formatResult(matchStatus as MatchStatus, finished as Boolean) as String {
+        return "" + matchStatus.getP1Games() + "-" + matchStatus.getP2Games();
+    }
+
+    // true when nothing has been played in the current set yet (games at the initial value, no points)
+    function isUntouched(matchStatus as MatchStatus) as Boolean {
+        return matchStatus.getP1Games() == self.getInitialP1Games()
+            && matchStatus.getP2Games() == self.getInitialP2Games()
+            && !matchStatus.hasGamePoints()
+            && matchStatus.getP1TieScore() == 0
+            && matchStatus.getP2TieScore() == 0;
+    }
+
 
     protected function incGamesForSide(side as Number, matchStatus as MatchStatus) as Void {
         if (side == Sides.SIDE_P1) {
@@ -130,6 +150,15 @@ class GamesSetEngine extends SetEngine {
     function isInSuperTieBreak(matchStatus as MatchStatus) as Boolean {
         return false;
     }
+
+    // "6-4", or "7-6 (5)" when the set was decided by a tie-break (the loser's tie points)
+    function formatResult(matchStatus as MatchStatus, finished as Boolean) as String {
+        var result = SetEngine.formatResult(matchStatus, finished);
+        if (finished && self.isInTieBreak(matchStatus)) {
+            result += " (" + min(matchStatus.getP1TieScore(), matchStatus.getP2TieScore()) + ")";
+        }
+        return result;
+    }
 }
 
 // Standard set: first to 6 games, tie-break at 6-6.
@@ -156,14 +185,19 @@ class MiniSetEngine extends GamesSetEngine {
     }
 }
 
-// Deciding set as super tie-break: first to 10 points, margin 2. No games.
+// A set that is a single tie-break, no games: first to `target` points, margin 2.
+// target 10 = super tie-break (the deciding set, or chosen mid-match); target 7 = standalone tie-break.
 class SuperTieSetEngine extends SetEngine {
 
-    private const SUPER_TIE_TARGET as Number = 10;
+    static const SUPER_TIE_TARGET as Number = 10;
+    static const TIE_BREAK_TARGET as Number = 7;
     private const MARGIN as Number = 2;
 
-    function initialize() {
+    private var target as Number;
+
+    function initialize(target as Number) {
         SetEngine.initialize();
+        self.target = target;
     }
 
     function scorePoint(side as Number, matchStatus as MatchStatus) as Boolean {
@@ -171,18 +205,28 @@ class SuperTieSetEngine extends SetEngine {
         self.incTieScoreForSide(side, matchStatus);
         var myTie = self.getTieScoreForSide(side, matchStatus);
         var oppTie = self.getTieScoreForSide(opponent, matchStatus);
-        if (myTie >= SUPER_TIE_TARGET && myTie - oppTie >= MARGIN) {
+        if (myTie >= self.target && myTie - oppTie >= MARGIN) {
             self.incSetsForSide(side, matchStatus);
             return true;
         }
         return false;
     }
 
+    // the whole set is a tie-break: a 7-point one reports isInTieBreak, a 10-point one isInSuperTieBreak
     function isInTieBreak(matchStatus as MatchStatus) as Boolean {
-        return false;
+        return self.target != SUPER_TIE_TARGET;
     }
 
     function isInSuperTieBreak(matchStatus as MatchStatus) as Boolean {
-        return true; // whole set is super tie
+        return self.target == SUPER_TIE_TARGET;
+    }
+
+    function hasGames() as Boolean {
+        return false;
+    }
+
+    // "[10-8]": brackets mark a set played as a single tie-break (the usual match tie-break notation)
+    function formatResult(matchStatus as MatchStatus, finished as Boolean) as String {
+        return "[" + matchStatus.getP1TieScore() + "-" + matchStatus.getP2TieScore() + "]";
     }
 }

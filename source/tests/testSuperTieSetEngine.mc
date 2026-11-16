@@ -3,7 +3,7 @@ import Toybox.Test;
 
 (:test)
 function superTieSetEngine_wholeSetIsSuperTie(logger as Logger) as Boolean {
-    var setEngine = new SuperTieSetEngine();
+    var setEngine = new SuperTieSetEngine(SuperTieSetEngine.SUPER_TIE_TARGET);
     var hist = [];
     var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
     return setEngine.isInSuperTieBreak(status) == true;
@@ -11,7 +11,7 @@ function superTieSetEngine_wholeSetIsSuperTie(logger as Logger) as Boolean {
 
 (:test)
 function superTieSetEngine_firstTo10Wins(logger as Logger) as Boolean {
-    var setEngine = new SuperTieSetEngine();
+    var setEngine = new SuperTieSetEngine(SuperTieSetEngine.SUPER_TIE_TARGET);
     var hist = [];
     var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
     playSuperTiePoints(setEngine, status, 10, 8);
@@ -20,7 +20,7 @@ function superTieSetEngine_firstTo10Wins(logger as Logger) as Boolean {
 
 (:test)
 function superTieSetEngine_109DoesNotWin(logger as Logger) as Boolean {
-    var setEngine = new SuperTieSetEngine();
+    var setEngine = new SuperTieSetEngine(SuperTieSetEngine.SUPER_TIE_TARGET);
     var hist = [];
     var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
     playSuperTiePoints(setEngine, status, 10, 9); // 10-9: no margin, set not won
@@ -31,7 +31,7 @@ function superTieSetEngine_109DoesNotWin(logger as Logger) as Boolean {
 
 (:test)
 function superTieSetEngine_p2Wins108(logger as Logger) as Boolean {
-    var setEngine = new SuperTieSetEngine();
+    var setEngine = new SuperTieSetEngine(SuperTieSetEngine.SUPER_TIE_TARGET);
     var hist = [];
     var status = new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, hist);
     playSuperTiePoints(setEngine, status, 8, 10);
@@ -42,7 +42,7 @@ function superTieSetEngine_p2Wins108(logger as Logger) as Boolean {
 
 (:test)
 function superTieSetEngine_initialGamesZero(logger as Logger) as Boolean {
-    var setEngine = new SuperTieSetEngine();
+    var setEngine = new SuperTieSetEngine(SuperTieSetEngine.SUPER_TIE_TARGET);
     return setEngine.getInitialP1Games() == 0 && setEngine.getInitialP2Games() == 0;
 }
 

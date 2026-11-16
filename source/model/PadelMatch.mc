@@ -5,32 +5,42 @@ import Toybox.Lang;
 class PadelMatch {
 
     private var matchEngine as MatchEngine;
+    private var formatSwitch as Boolean;
 
     function initialize(config as MatchConfig) {
-        var gameEngine = self.gameEngineForPointRule(config.getPointRule());
-        var defaultSetEngine = self.setEngineForSetType(config.getSetType(), gameEngine);
-        var decidingSetEngine = null;
-        if (config.getSuperTie()) {
-            decidingSetEngine = new SuperTieSetEngine();
-        }
+        self.formatSwitch = config.getFormatSwitch();
         self.matchEngine = new MatchEngine(
             config.getNumberOfSets(),
-            defaultSetEngine,
-            decidingSetEngine
+            self.gameEngineForPointRule(config.getPointRule()),
+            config.getSetType(), // SET_TYPE_* values are the same as MatchConfig.FORMAT_NORMAL / PRO / MINI
+            config.getSuperTie()
         );
         if (config.getWarmUp()) {
             self.matchEngine.startWarmUp();
         }
     }
 
-    private function setEngineForSetType(setType as Number, gameEngine as GameEngine) as SetEngine {
-        if (setType == MatchConfig.SET_TYPE_PRO) {
-            return new ProSetEngine(gameEngine);
-        }
-        if (setType == MatchConfig.SET_TYPE_MINI) {
-            return new MiniSetEngine(gameEngine);
-        }
-        return new NormalSetEngine(gameEngine);
+    // Whether the Options menu offers switching the set format (Friendly and Custom matches only).
+    function canSwitchSetFormat() as Boolean {
+        return self.formatSwitch;
+    }
+
+    // Play MatchConfig.FORMAT_TIE_BREAK / FORMAT_SUPER_TIE / FORMAT_MINI now. See MatchEngine.switchSetFormat.
+    function switchSetFormat(format as Number) as Void {
+        self.matchEngine.switchSetFormat(format);
+    }
+
+    // true when points have been played in the current set (switching then records it as unfinished)
+    function isSetStarted() as Boolean {
+        return self.matchEngine.isSetStarted();
+    }
+
+    function unfinishedSetResult() as String {
+        return self.matchEngine.unfinishedSetResult();
+    }
+
+    function currentSetHasGames() as Boolean {
+        return self.matchEngine.currentSetHasGames();
     }
 
     function incP1() as Boolean {

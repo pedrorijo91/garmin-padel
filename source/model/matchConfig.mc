@@ -13,15 +13,28 @@ class MatchConfig {
     public static const SET_TYPE_PRO = 1;
     public static const SET_TYPE_MINI = 2;
 
+    // Format of one set (segment) of the session. The first three match SET_TYPE_* one to one.
+    // FORMAT_DEFAULT = whatever the match config says for that set (default set type, or the deciding super tie).
+    // Later plans add more (e.g. free play, timed set).
+    public static const FORMAT_DEFAULT = -1;
+    public static const FORMAT_NORMAL = 0;
+    public static const FORMAT_PRO = 1;
+    public static const FORMAT_MINI = 2;
+    public static const FORMAT_TIE_BREAK = 3;
+    public static const FORMAT_SUPER_TIE = 4;
+
     private var superTie as Boolean;
     private var setType as Number;
     private var numberOfSets as Number;
     private var pointRule as Number;
     // start the session in a warm-up phase (its own lap). Off by default; the setup menus turn it on.
     private var warmUp as Boolean;
+    // players may switch the current set to a tie-break / super tie / mini set (Friendly and Custom only)
+    private var formatSwitch as Boolean;
 
     function initialize() {
         superTie = false;
+        formatSwitch = false;
         numberOfSets = UNLIMITED_SETS;
         pointRule = POINT_RULE_GOLDEN;
         setType = SET_TYPE_NORMAL;
@@ -76,8 +89,16 @@ class MatchConfig {
         return self.setType;
     }
 
+    function setFormatSwitch(enabled as Boolean) as Void {
+        self.formatSwitch = enabled;
+    }
+
+    function getFormatSwitch() as Boolean {
+        return self.formatSwitch;
+    }
+
     function toString() as Lang.String {
-        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets + ", pointRule: " + self.pointRule + ", setType: " + self.setType;
+        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets + ", pointRule: " + self.pointRule + ", setType: " + self.setType + ", formatSwitch: " + self.formatSwitch;
     }
 
 }

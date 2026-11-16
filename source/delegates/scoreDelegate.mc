@@ -44,6 +44,7 @@ class ScoreDelegate extends WatchUi.InputDelegate {
             pushWarmUpOptionsMenu();
             return;
         }
+        var match = Application.getApp().getMatch();
         var menu = new WatchUi.Menu2({:title=>"Options"});
         menu.addItem(
             new MenuItem("Undo last point", "", :score_option_undo, {})
@@ -59,6 +60,20 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 {}
             )
         );
+        // Friendly and Custom only: play a tie-break / super tie / mini set now
+        if (match.canSwitchSetFormat()) {
+            var sub = match.isSetStarted()
+                ? (Application.loadResource(Rez.Strings.switch_format_unfinished) as String) + match.unfinishedSetResult()
+                : Application.loadResource(Rez.Strings.switch_format_sub) as String;
+            menu.addItem(
+                new MenuItem(
+                    Application.loadResource(Rez.Strings.switch_format) as String,
+                    sub,
+                    :score_option_switch_format,
+                    {}
+                )
+            );
+        }
         menu.addItem(
             new MenuItem("Finish activity", "", :score_option_finish, {})
         );
