@@ -26,6 +26,7 @@ Keeps full padel match score: sets, games, standard **tie-breaks**, and **super 
 * **Serving indicator**: a marker along the screen edge on the serving team's half (top = us, bottom = them). It follows padel serving rules, including tie-breaks and super tie-breaks, and undo.
 * Real time **heart rate** on the score screen.
 * **Options** menu (**Enter** / **Start**, or **long press** on touch): **undo** last point, track an **unforced error**, **switch server** (fix the serving team), or **finish** the activity.
+* **Switch to** a **tie-break**, **super tie-break** or **mini set** at any moment (Friendly and Custom matches): for example a final super tie when your court time is running out, without stopping the activity.
 
 **Activity / Garmin Connect**
 
@@ -101,6 +102,7 @@ Press **`Enter`** / **`Start`** on the score screen, or **long-press** on a touc
 * **Undo last point** — asks for confirmation before reverting.
 * **Unforced error** — increments the error counter (also saved with the activity and available in garmin connect later).
 * **Switch server** — flips the serving team shown by the serving indicator from now on (the sub-label shows who is serving now). If you skipped **First serve**, this turns the indicator on with your team serving.
+* **Switch to** (Friendly and Custom matches only) — play a **Tie-break**, **Super tie-break** or **Mini set** now. See [Switching to a tie-break, super tie or mini set](#switching-to-a-tie-break-super-tie-or-mini-set).
 * **Finish activity** — **Save and exit**, **Discard**, or **Cancel** back to the score.
 
 Pressing **`Back`** from the score screen opens the same **Finish activity** menu (save, discard, or cancel).
@@ -110,6 +112,28 @@ Pressing **`Back`** from the score screen opens the same **Finish activity** men
 <p align="center"><img src="screenshots/undo.png" width="300" alt="Undo confirmation"></p>
 
 <p align="center"><img src="screenshots/finish_menu.png" width="300" alt="Finish menu"></p>
+
+### Switching to a tie-break, super tie or mini set
+
+In **Friendly** and **Custom** matches, **Options** → **Switch to** lets you play a shorter format right now, for example when your court time is running out:
+
+* **Tie-break** — first to **7** points, win by 2.
+* **Super tie-break** — first to **10** points, win by 2.
+* **Mini set** — games start at **2–2**, first to **6** games.
+
+You can switch at any moment:
+
+* **Before any point of the set** (for example right after finishing a set): the new set is simply played in the chosen format.
+* **In the middle of a set**: the unfinished set is kept in the score with a `*` (for example `4-3*`, or `[5-3]*` for an unfinished tie-break), and nobody wins it. A game in progress is dropped. The chosen format starts right away, as a new lap.
+
+The sub-label of **Switch to** shows how the current set will be kept (for example `Unfinished: 4-3*`). The switch can be undone with **Undo last point**, which brings back the unfinished set exactly; the lap that was added stays in the activity. After the chosen format finishes, the next set goes back to the match's usual set type. The serving indicator carries on as usual (a tie-break or super tie counts as one game).
+
+The tournament presets keep their fixed rules, so they don't show this option.
+
+<p align="center">
+<img src="screenshots/switch-format/fenix847mm_switch_menu.png" width="240" alt="Switch to menu">
+<img src="screenshots/switch-format/fenix847mm_super_1_0.png" width="240" alt="Super tie-break after switching">
+</p>
 
 ### After the last point (limited matches)
 
@@ -150,6 +174,23 @@ All set types use **standard padel-style game scoring** (0 → 15 → 30 → 40,
 ### Super tie-break (deciding set)
 
 When the match configuration uses a super tie for the decider, that **entire final “set”** is a **super tie-break**: **first to 10 points, win by 2**. There are no games inside that set.
+
+### Tie-break, super tie-break or mini set chosen mid-match
+
+With **Switch to** (Friendly and Custom), a set can be played as a single **tie-break** (first to **7** points, win by 2), a single **super tie-break** (first to **10**, win by 2) or a **mini set** (see the set types table). It counts as one set for whoever wins it; in a 3- or 5-set match it counts towards the sets needed to win. A set left unfinished by switching counts for nobody.
+
+### How results are written
+
+The score saved with the activity (and shown on the finish screens) lists each set, separated by ` / `:
+
+| Result | Meaning |
+|--------|---------|
+| `6-4` | set won on games |
+| `7-6 (5)` | set won in a tie-break; the number is the loser's tie-break points |
+| `[10-8]` | set played as a single **super tie-break** (deciding set or chosen), or `[7-5]` for a chosen **tie-break** |
+| `4-3*`, `[5-3]*` | set left **unfinished** by switching format; nobody won it |
+
+For example: `6-3 / 4-3* / [10-8]`.
 
 ### Point rules at deuce (40–40)
 
