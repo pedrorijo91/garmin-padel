@@ -34,6 +34,12 @@ class ScoreDelegate extends WatchUi.InputDelegate {
 
     // Long-press = options menu (Undo / Finish), for touch devices.
     function onHold(clickEvent as WatchUi.ClickEvent) as Boolean {
+        pushOptionsMenu();
+        return true;
+    }
+
+    // Options menu, opened with ENTER or a long-press.
+    private function pushOptionsMenu() as Void {
         var menu = new WatchUi.Menu2({:title=>"Options"});
         menu.addItem(
             new MenuItem("Undo last point", "", :score_option_undo, {})
@@ -42,13 +48,31 @@ class ScoreDelegate extends WatchUi.InputDelegate {
             new MenuItem("Unforced error", "", :score_option_unforced_error, {})
         );
         menu.addItem(
+            new MenuItem(
+                Application.loadResource(Rez.Strings.switch_server) as String,
+                servingSubLabel(),
+                :score_option_switch_server,
+                {}
+            )
+        );
+        menu.addItem(
             new MenuItem("Finish activity", "", :score_option_finish, {})
         );
         menu.addItem(
             new MenuItem("Cancel", "Back to score", :score_option_cancel, {})
         );
         WatchUi.pushView(menu, new ScoreOptionsMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
-        return true;
+    }
+
+    private function servingSubLabel() as String {
+        var side = Application.getApp().getMatch().getServingSide();
+        var rez = Rez.Strings.serving_off;
+        if (side == Sides.SIDE_P1) {
+            rez = Rez.Strings.serving_us;
+        } else if (side == Sides.SIDE_P2) {
+            rez = Rez.Strings.serving_them;
+        }
+        return Application.loadResource(rez) as String;
     }
 
     function onKey(keyEvent as WatchUi.KeyEvent) as Boolean {
@@ -75,20 +99,7 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 break;
             }
             case KEY_ENTER: {
-                var menu = new WatchUi.Menu2({:title=>"Options"});
-                menu.addItem(
-                    new MenuItem("Undo last point", "", :score_option_undo, {})
-                );
-                menu.addItem(
-                    new MenuItem("Unforced error", "", :score_option_unforced_error, {})
-                );
-                menu.addItem(
-                    new MenuItem("Finish activity", "", :score_option_finish, {})
-                );
-                menu.addItem(
-                    new MenuItem("Cancel", "Back to score", :score_option_cancel, {})
-                );
-                WatchUi.pushView(menu, new ScoreOptionsMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
+                pushOptionsMenu();
                 break;
             }
             case KEY_ESC: {

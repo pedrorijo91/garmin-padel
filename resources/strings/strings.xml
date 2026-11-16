@@ -15,4 +15,16 @@
     <string id="fit_unforced_errors_units">count</string>
 
     <string id="court_change_ends">Change ends</string>
+
+    <string id="first_serve_title">First serve</string>
+    <string id="serve_us">Us</string>
+    <string id="serve_them">Them</string>
+    <string id="first_serve_skip">Skip</string>
+    <string id="first_serve_us_sub">Marker on top</string>
+    <string id="first_serve_them_sub">Marker at bottom</string>
+    <string id="first_serve_skip_sub">No serve marker</string>
+    <string id="switch_server">Switch server</string>
+    <string id="serving_us">Serving: us</string>
+    <string id="serving_them">Serving: them</string>
+    <string id="serving_off">Serving: not set</string>
 </strings>
