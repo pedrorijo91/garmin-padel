@@ -16,10 +16,12 @@ Keeps full padel match score: sets, games, standard **tie-breaks**, and **super 
   * **Advantages** — classic advantage / deuce
   * **Silver point** — one advantage cycle; if it returns to deuce again, the next point wins the game
   * **Star point** (FIP-style) — up to two advantage cycles, then a decisive point at deuce
+* **Warm-up**: start with a **warm-up** that is recorded as its own lap (on by default), or turn it off to start scoring straight away.
 * **First serve**: choose which team serves first (**Us** / **Them**), or **Skip** to play without the serving indicator.
 
 **During play**
 
+* **Warm-up phase**: the activity starts recording during the warm-up, with a warm-up timer on screen. The first **Up** / **Down** press (or tap) starts the match **without scoring a point**.
 * Score with **Up** / **Down** (or top / bottom half of the screen on touch devices).
 * **Serving indicator**: a marker along the screen edge on the serving team's half (top = us, bottom = them). It follows padel serving rules, including tie-breaks and super tie-breaks, and undo.
 * Real time **heart rate** on the score screen.
@@ -27,7 +29,8 @@ Keeps full padel match score: sets, games, standard **tie-breaks**, and **super 
 
 **Activity / Garmin Connect**
 
-* Records a **padel** activity; on save, writes **match score** (full history string), **steps** during the session, **unforced errors** count, and **app version** into the activity for Connect / FIT.
+* Records a **padel** activity; on save, writes **match score** (full history string), **steps** during the session, **unforced errors** count, **warm-up length** (when there was a warm-up) and **app version** into the activity for Connect / FIT.
+* **Laps**: with a warm-up, **lap 1 is the warm-up** and each set after it is its own lap (lap 2 = set 1, lap 3 = set 2, ...). Without a warm-up, lap 1 is set 1.
 
 ## How to use
 
@@ -39,8 +42,8 @@ When you open the app, the initial screen appears. Press `Enter` / `Start`, or t
 
 You’ll see the **Game Mode** menu first:
 
-* **Tournament**, **Tournament (super)**, **Pro Set Tournament**, or **Friendly** — pick one, review the summary, then choose **Start match**.
-* **Custom** — walk through **Sets** (1 / 3 / 5 / Unlimited) → **Set type** (Normal / Pro set / Mini) → **Super tie** (only for 3 or 5 sets) → **Score** rule (Golden / Star / Advantages / Silver).
+* **Tournament**, **Tournament (super)**, **Pro Set Tournament**, or **Friendly** — pick one, review the summary, then choose **Start match**. The summary has a **Warm-up: Yes / No** line; select it to switch the warm-up on or off.
+* **Custom** — walk through **Sets** (1 / 3 / 5 / Unlimited) → **Set type** (Normal / Pro set / Mini) → **Super tie** (only for 3 or 5 sets) → **Score** rule (Golden / Star / Advantages / Silver) → **Warm-up** (Yes / No).
 * Both end with **First serve**: pick **Us** or **Them** for the team serving the first game, or **Skip** if you don't want the serving indicator. The match starts right after.
 
 Use `Up` / `Down` to move in menus and `Enter` to select. For exact scoring mechanics (set lengths, tie-breaks, deuce rules), see [Match rules reference](#match-rules-reference).
@@ -51,6 +54,14 @@ Use `Up` / `Down` to move in menus and `Enter` to select. For exact scoring mech
 <p align="center"><img src="screenshots/tournament_mode_details.png" width="300" alt="Tournament mode details"></p>
 
 <p align="center"><img src="screenshots/custom_score_config.png" width="300" alt="Custom mode score configuration"></p>
+
+### Warm-up
+
+With **Warm-up: Yes**, the activity starts recording when you finish the setup, but the score screen first shows **Warm-up**, **Press to start** and a timer with the warm-up's length. Nothing is scored yet and the serving indicator is hidden.
+
+When you're ready to play, press **`Up`** or **`Down`** (or tap the screen) once. This starts the match **without scoring a point**: the watch vibrates briefly and shows **Match started**. You can also use **Options** → **Start match**. The next press scores as usual.
+
+The warm-up is saved as **lap 1** of the activity, so in Garmin Connect lap 1 is the warm-up and lap 2 is the first set. Undo can't go back into the warm-up. During the warm-up, **Options** has **Start match**, **Switch server** and **Finish activity**.
 
 ### During the match
 
@@ -99,7 +110,9 @@ If the match ends because a player/team has won the required sets, a **summary**
 
 ### Garmin Connect
 
-After syncing, open the saved **padel** activity in Garmin Connect to see the recorded **score**, **steps** during the session, **unforced errors**, and **app version** in the activity details (exact layout depends on Connect / device).
+After syncing, open the saved **padel** activity in Garmin Connect to see the recorded **score**, **steps** during the session, **unforced errors**, **warm-up** length (in seconds) and **app version** in the activity details (exact layout depends on Connect / device).
+
+The activity's **laps** follow the match: with a warm-up, **lap 1 is the warm-up**, then one lap per set. Laps can't be named from a watch app, so Connect shows them as Lap 1, Lap 2, ...
 
 <p align="center"><img src="screenshots/connect.jpeg" width="300" alt="Garmin connect activity details"></p>
 
