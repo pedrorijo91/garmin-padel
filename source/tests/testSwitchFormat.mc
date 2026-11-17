@@ -113,46 +113,47 @@ function switchSuperTieEndsBestOf3Test(logger as Logger) as Boolean {
 }
 
 (:test)
-function switchMidSetRecordsUnfinishedTest(logger as Logger) as Boolean {
+function switchMidSetDropsSetTest(logger as Logger) as Boolean {
     var match = friendlyMatch();
     match.setFirstServer(Sides.SIDE_P1);
     playAlternatingGames(match, 7);
     match.incP1(); // 4-3, 15-0
     var ok = expectTrue(logger, match.isSetStarted(), "set started");
-    ok = ok && expectTrue(logger, match.unfinishedSetResult().equals("4-3*"), "unfinished result " + match.unfinishedSetResult());
+    ok = ok && expectTrue(logger, match.currentSetResult().equals("4-3"), "current set result " + match.currentSetResult());
     match.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
     var status = match.getMatchStatus();
-    ok = ok && expectHistory(logger, match, ["4-3*"], "unfinished set recorded");
+    ok = ok && expectHistory(logger, match, [], "dropped set not recorded");
     // awarded to nobody, games and points reset; the game in progress doesn't count
     ok = ok && expectTrue(logger, status.getP1Sets() == 0 && status.getP2Sets() == 0, "no set awarded");
     ok = ok && expectTrue(logger, status.getP1Games() == 0 && status.getP2Games() == 0, "games reset");
     ok = ok && expectTrue(logger, status.getP1Score() == 0 && status.getP2Score() == 0, "points reset");
     ok = ok && expectTrue(logger, status.getGamesPlayed() == 7, "games played " + status.getGamesPlayed());
     ok = ok && expectTrue(logger, match.isInSuperTieBreak(), "in super tie");
-    // switching again from the chosen super tie: recorded with its points
+    // switching again from the chosen super tie: dropped too
     playPointsP1(match, 5);
     playPointsP2(match, 3);
-    ok = ok && expectHistory(logger, match, ["4-3*", "[5-3]"], "super tie in progress");
+    ok = ok && expectHistory(logger, match, ["[5-3]"], "super tie in progress");
     match.switchSetFormat(MatchConfig.FORMAT_TIE_BREAK);
-    ok = ok && expectHistory(logger, match, ["4-3*", "[5-3]*"], "unfinished super tie recorded");
+    ok = ok && expectHistory(logger, match, [], "dropped super tie not recorded");
     ok = ok && expectTrue(logger, match.isInTieBreak() && match.getMatchStatus().getP1TieScore() == 0, "fresh tie-break");
     playPointsP1(match, 7);
     status = match.getMatchStatus();
-    ok = ok && expectHistory(logger, match, ["4-3*", "[5-3]*", "[7-0]"], "tie-break won");
+    ok = ok && expectHistory(logger, match, ["[7-0]"], "tie-break won");
     return ok && expectTrue(logger, status.getP1Sets() == 1 && status.getP2Sets() == 0, "only the finished tie-break counts");
 }
 
 (:test)
-function switchUnfinishedTieBreakAndMiniTest(logger as Logger) as Boolean {
-    // a set left inside its tie-break is recorded by its games
+function switchDropsTieBreakAndMiniTest(logger as Logger) as Boolean {
+    // a set left inside its tie-break is dropped
     var match = friendlyMatch();
     playSetTo6All(match);
     playPointsP1(match, 3);
     playPointsP2(match, 2);
+    var ok = expectTrue(logger, match.currentSetResult().equals("6-6"), "current set 6-6");
     match.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
-    var ok = expectHistory(logger, match, ["6-6*"], "unfinished 6-6 tie-break");
+    ok = ok && expectHistory(logger, match, [], "dropped 6-6 tie-break");
 
-    // mini set match: 2-2 with no points is not started; with a point it is ("2-2*")
+    // mini set match: 2-2 with no points is not started; with a point it is
     var config = GameModes.configForMode(GameModes.MODE_FRIENDLY) as MatchConfig;
     config.setSetType(MatchConfig.SET_TYPE_MINI);
     var mini = new PadelMatch(config);
@@ -163,8 +164,9 @@ function switchUnfinishedTieBreakAndMiniTest(logger as Logger) as Boolean {
     ok = ok && expectHistory(logger, mini, [], "nothing recorded");
     mini.switchSetFormat(MatchConfig.FORMAT_MINI);
     mini.incP2();
+    ok = ok && expectTrue(logger, mini.isSetStarted(), "mini started after a point");
     mini.switchSetFormat(MatchConfig.FORMAT_TIE_BREAK);
-    return ok && expectHistory(logger, mini, ["2-2*"], "unfinished mini at 2-2");
+    return ok && expectHistory(logger, mini, [], "dropped mini at 2-2");
 }
 
 (:test)
@@ -176,10 +178,10 @@ function switchUndoTest(logger as Logger) as Boolean {
     var servingBefore = match.getServingSide();
     match.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
     match.undo();
-    // undo restores the unfinished set exactly
+    // undo restores the dropped set exactly
     var status = match.getMatchStatus();
     var ok = expectTrue(logger, status.getP1Games() == 4 && status.getP2Games() == 3 && status.getP1Score() == 15, "4-3 15-0 restored");
-    ok = ok && expectHistory(logger, match, ["4-3"], "no unfinished entry after undo");
+    ok = ok && expectHistory(logger, match, ["4-3"], "set back in progress after undo");
     ok = ok && expectTrue(logger, status.getSetFormat() == MatchConfig.FORMAT_DEFAULT && match.currentSetHasGames(), "format restored");
     ok = ok && expectTrue(logger, status.getGamesPlayed() == 7 && match.getServingSide() == servingBefore, "serving restored");
 
@@ -217,13 +219,13 @@ function switchAbandonedSetCountsForNobodyTest(logger as Logger) as Boolean {
     playPointsP2(match, 7);
     var status = match.getMatchStatus();
     var ok = expectTrue(logger, status.getP1Sets() == 1 && status.getP2Sets() == 1, "sets 1-1");
-    ok = ok && expectHistory(logger, match, ["6-0", "1-1*", "[0-7]"], "abandoned set recorded");
+    ok = ok && expectHistory(logger, match, ["6-0", "[0-7]"], "abandoned set not recorded");
     // 1-1 with one set left: back to the default, which is the deciding super tie
     ok = ok && expectTrue(logger, match.isInSuperTieBreak(), "deciding super tie");
     playPointsP1(match, 9);
     var over = match.incP1();
     return ok && expectTrue(logger, over, "match over")
-        && expectHistory(logger, match, ["6-0", "1-1*", "[0-7]", "[10-0]"], "final history");
+        && expectHistory(logger, match, ["6-0", "[0-7]", "[10-0]"], "final history");
 }
 
 (:test)

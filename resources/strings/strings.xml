@@ -44,7 +44,7 @@
     <string id="fit_warm_up_units">s</string>
     <string id="switch_format">Switch to</string>
     <string id="switch_format_sub">Tie / super tie / mini</string>
-    <string id="switch_format_unfinished">Unfinished: </string>
+    <string id="switch_format_drops">Drops </string>
     <string id="format_tie_break">Tie-break</string>
     <string id="format_tie_break_sub">First to 7</string>
     <string id="format_super_tie">Super tie-break</string>

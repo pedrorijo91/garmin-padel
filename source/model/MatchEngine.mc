@@ -57,36 +57,32 @@ class MatchEngine {
 
     // Play the given format (MatchConfig.FORMAT_TIE_BREAK / SUPER_TIE / MINI, ...) now, in place of the current set.
     // Undoable. If nothing has been played in the current set, only its format changes. Otherwise the
-    // unfinished set goes into the history with a "*" (e.g. "4-3*", "[5-3]*"), is awarded to nobody, a lap
-    // is added, and the chosen format starts from scratch (a game in progress is discarded: it doesn't count
-    // in gamesPlayed). When the chosen format finishes, the next set goes back to the match default.
+    // current set is dropped (not written to the score, awarded to nobody), a lap is added, and the chosen
+    // format starts from scratch (a game in progress is discarded: it doesn't count in gamesPlayed).
+    // When the chosen format finishes, the next set goes back to the match default.
     function switchSetFormat(format as Number) as Void {
         if (self.isMatchOver()) {
             return;
         }
         self.saveMatchStatus();
-        var current = self.getCurrentSetEngine();
-        var unfinished = !current.isUntouched(self.matchStatus);
-        if (unfinished) {
-            self.matchStatus.addHistoricalScore(current.formatResult(self.matchStatus, false) + "*");
-        }
+        var dropped = self.isSetStarted();
         self.matchStatus.resetGames();
         self.matchStatus.resetScores();
         self.matchStatus.setSetFormat(format);
         self.applyInitialGames(self.getCurrentSetEngine());
-        if (unfinished) {
+        if (dropped) {
             Application.getApp().lapSession();
         }
     }
 
-    // true when points have been played in the current set, so switching format records it as unfinished
+    // true when points have been played in the current set, so switching format drops it
     function isSetStarted() as Boolean {
         return !self.getCurrentSetEngine().isUntouched(self.matchStatus);
     }
 
-    // Result string the current set would be recorded with if switched now, e.g. "4-3*".
-    function unfinishedSetResult() as String {
-        return self.getCurrentSetEngine().formatResult(self.matchStatus, false) + "*";
+    // The current set's score, e.g. "4-3" or "[5-3]" (shown in Options as what switching drops).
+    function currentSetResult() as String {
+        return self.getCurrentSetEngine().formatResult(self.matchStatus, false);
     }
 
     // false when the current set has no games (a tie-break or super tie set)
@@ -196,7 +192,7 @@ class MatchEngine {
         return self.matchStatus.copy();
     }
 
-    // Finished (and unfinished "*") sets, plus the set in progress: its games once a game has been
+    // Finished sets, plus the set in progress: its games once a game has been
     // played ("3-1"), or its points for a tie-break / super tie set ("[5-3]").
     function getHistoricalScores() as Lang.Array<Lang.String> {
         var res = self.matchStatus.getHistoricalScores();

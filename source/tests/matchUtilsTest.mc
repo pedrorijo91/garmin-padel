@@ -22,8 +22,8 @@ function testFitStringShortUnchanged(logger as Logger) as Boolean {
 
 (:test)
 function testFitStringTruncated(logger as Logger) as Boolean {
-  // six switched sets: 6 * 5 chars + 5 * 3 separators = 45; add two more sets to go past 49
-  var s = "[1-0]* / [1-0]* / [1-0]* / [1-0]* / [1-0]* / [1-0]* / [1-0]*";
+  // a long friendly: 10 sets = 10 * 3 chars + 9 * 3 separators = 57
+  var s = "6-4 / 4-6 / 6-3 / 3-6 / 7-5 / 5-7 / 6-2 / 2-6 / 6-1 / 1-6";
   var r = fitString(s, FIT_STRING_MAX);
   return r.length() == FIT_STRING_MAX && s.find(r) == 0;
 }

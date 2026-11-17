@@ -30,13 +30,13 @@ class PadelMatch {
         self.matchEngine.switchSetFormat(format);
     }
 
-    // true when points have been played in the current set (switching then records it as unfinished)
+    // true when points have been played in the current set (switching then drops it)
     function isSetStarted() as Boolean {
         return self.matchEngine.isSetStarted();
     }
 
-    function unfinishedSetResult() as String {
-        return self.matchEngine.unfinishedSetResult();
+    function currentSetResult() as String {
+        return self.matchEngine.currentSetResult();
     }
 
     function currentSetHasGames() as Boolean {

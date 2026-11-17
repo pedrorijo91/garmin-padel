@@ -124,9 +124,9 @@ In **Friendly** and **Custom** matches, **Options** → **Switch to** lets you p
 You can switch at any moment:
 
 * **Before any point of the set** (for example right after finishing a set): the new set is simply played in the chosen format.
-* **In the middle of a set**: the unfinished set is kept in the score with a `*` (for example `4-3*`, or `[5-3]*` for an unfinished tie-break), and nobody wins it. A game in progress is dropped. The chosen format starts right away, as a new lap.
+* **In the middle of a set**: the current set is dropped. It isn't written to the score and nobody wins it; a game in progress is dropped too. The chosen format starts right away, as a new lap.
 
-The sub-label of **Switch to** shows how the current set will be kept (for example `Unfinished: 4-3*`). The switch can be undone with **Undo last point**, which brings back the unfinished set exactly; the lap that was added stays in the activity. After the chosen format finishes, the next set goes back to the match's usual set type. The serving indicator carries on as usual (a tie-break or super tie counts as one game).
+The sub-label of **Switch to** shows the set that switching would drop (for example `Drops 4-3`). The switch can be undone with **Undo last point**, which brings back the dropped set exactly; the lap that was added stays in the activity. After the chosen format finishes, the next set goes back to the match's usual set type. The serving indicator carries on as usual (a tie-break or super tie counts as one game).
 
 The tournament presets keep their fixed rules, so they don't show this option.
 
@@ -177,7 +177,7 @@ When the match configuration uses a super tie for the decider, that **entire fin
 
 ### Tie-break, super tie-break or mini set chosen mid-match
 
-With **Switch to** (Friendly and Custom), a set can be played as a single **tie-break** (first to **7** points, win by 2), a single **super tie-break** (first to **10**, win by 2) or a **mini set** (see the set types table). It counts as one set for whoever wins it; in a 3- or 5-set match it counts towards the sets needed to win. A set left unfinished by switching counts for nobody.
+With **Switch to** (Friendly and Custom), a set can be played as a single **tie-break** (first to **7** points, win by 2), a single **super tie-break** (first to **10**, win by 2) or a **mini set** (see the set types table). It counts as one set for whoever wins it; in a 3- or 5-set match it counts towards the sets needed to win. A set dropped by switching counts for nobody and isn't written to the score.
 
 ### How results are written
 
@@ -188,9 +188,10 @@ The score saved with the activity (and shown on the finish screens) lists each s
 | `6-4` | set won on games |
 | `7-6 (5)` | set won in a tie-break; the number is the loser's tie-break points |
 | `[10-8]` | set played as a single **super tie-break** (deciding set or chosen), or `[7-5]` for a chosen **tie-break** |
-| `4-3*`, `[5-3]*` | set left **unfinished** by switching format; nobody won it |
 
-For example: `6-3 / 4-3* / [10-8]`.
+For example: `6-3 / [10-8]` (a set dropped by switching isn't listed).
+
+The saved score holds up to 49 characters; in a very long match the last sets are cut off.
 
 ### Point rules at deuce (40–40)
 

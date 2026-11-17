@@ -63,7 +63,7 @@ class ScoreDelegate extends WatchUi.InputDelegate {
         // Friendly and Custom only: play a tie-break / super tie / mini set now
         if (match.canSwitchSetFormat()) {
             var sub = match.isSetStarted()
-                ? (Application.loadResource(Rez.Strings.switch_format_unfinished) as String) + match.unfinishedSetResult()
+                ? (Application.loadResource(Rez.Strings.switch_format_drops) as String) + match.currentSetResult()
                 : Application.loadResource(Rez.Strings.switch_format_sub) as String;
             menu.addItem(
                 new MenuItem(

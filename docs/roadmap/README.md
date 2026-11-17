@@ -26,7 +26,7 @@ Update the **Status** column and the plan's own "Status" section when work start
 ```
 
 1. ~~**Plan 4 (team level)**~~: done in #152.
-2. ~~**Plan 1**~~: built (PR for #146). It introduced the key refactor: the format of the current set lives in `MatchStatus.setFormat` (`MatchConfig.FORMAT_*`) and is no longer derived from the fixed config. Plans 2 and 3 are built on it. The switch already works mid-set (recording the partial set with `*`), which plan 2 needs.
+2. ~~**Plan 1**~~: built (PR for #146). It introduced the key refactor: the format of the current set lives in `MatchStatus.setFormat` (`MatchConfig.FORMAT_*`) and is no longer derived from the fixed config. Plans 2 and 3 are built on it. The switch already works mid-set (the partial set is dropped, not recorded), which plan 2 needs.
 3. ~~**Plan 5 (warm-up lap)**~~: shipped (#154). Its warm-up phase (`MatchStatus.PHASE_WARM_UP`) is meant to be replaced by a `FREE` segment in plan 2.
 4. **Plan 2** adds the unscored "free" segment and "end drill".
 5. **Plan 3** reuses the free segment as the break between rounds and adds the timer.
@@ -38,7 +38,7 @@ Today a match is "N sets of one type, plus an optional super-tie decider". All o
 
 > A session is a sequence of **segments**. Each segment has a **format**: normal set, pro set, mini set, tie-break (7), super tie-break (10), timed set, or free play / break / warm-up (no score).
 
-- Plan 1 lets the user switch the **current** segment to another format at any moment (built; the unfinished segment is recorded with `*`).
+- Plan 1 lets the user switch the **current** segment to another format at any moment (built; the unfinished segment is dropped, not recorded).
 - Plan 2 adds the `FREE` format and makes "choose next format" the main way to use the app.
 - Plan 3 adds the `TIMED` format and uses `FREE` for breaks.
 - Plan 5 starts every match with a warm-up, which is a `FREE` segment once plan 2 exists.
@@ -57,7 +57,7 @@ Monkey C (Garmin Connect IQ) watch app. `minApiLevel` 2.4.0, about 78 devices in
 - `GameModes`: the presets (Tournament, Tournament super, Pro set, Friendly) mapped to a `MatchConfig`, plus the summary lines shown on the confirm screen.
 - `MatchEngine`: owns `MatchStatus` and the undo stack (`MAX_UNDO = 5`, each entry is a full `MatchStatus.copy()`).
   - `getCurrentSetEngine()` uses `MatchStatus.setFormat` when it isn't `FORMAT_DEFAULT` (plan 1). Otherwise it picks `decidingSetEngine` (super tie) when sets are tied with one set left, or `defaultSetEngine`. Engines are built by `engineForFormat(format)`.
-  - `switchSetFormat(format)` (plan 1): undoable; records an unfinished set with `*`, resets games and points, adds a lap.
+  - `switchSetFormat(format)` (plan 1): undoable; drops a started set (not recorded), resets games and points, adds a lap.
   - `scorePoint()` delegates to the set engine. Right after that call (before any set cleanup) it adds 1 to `gamesPlayed` if the games total changed or a set was won. When a set is won it then calls `resetAfterSetFinish()`, which writes the result string (`SetEngine.formatResult`), resets games and scores, sets the format back to default, applies initial games (mini set 2-2), and then calls `Application.getApp().lapSession()`.
   - Court-change vibration in tie-breaks: every 6 tie points, through `onTieBreakCourtChange()`.
   - Serving (plan 4, team level): `setFirstServer(side)`, `switchServer()` (undoable) and `getServingSide()`, which returns -1 when the server is unknown or the match is over. The serve turn is `gamesPlayed`, plus `(tiePoints + 1) / 2` while `isInTieBreak()` or `isInSuperTieBreak()`.
