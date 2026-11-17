@@ -18,10 +18,10 @@ class GarminpadelApp extends Application.AppBase {
     private var bannerText as ResourceId;
     // laps added this session (test seam for the warm-up lap, plan 5)
     private var lapCount as Number;
-    // System.getTimer() when the warm-up started, or -1 if the match has no warm-up
-    private var warmUpStartedAt as Number;
-    // System.getTimer() when the warm-up ended, or -1 while it runs
-    private var warmUpEndedAt as Number;
+    // System.getTimer() when the warm-up started, or null if the match has no warm-up
+    private var warmUpStartedAt as Number or Null;
+    // System.getTimer() when the warm-up ended, or null while it runs
+    private var warmUpEndedAt as Number or Null;
 
     function initialize() {
         AppBase.initialize();
@@ -32,8 +32,8 @@ class GarminpadelApp extends Application.AppBase {
         courtChangeBannerUntil = 0;
         bannerText = Rez.Strings.court_change_ends;
         lapCount = 0;
-        warmUpStartedAt = -1;
-        warmUpEndedAt = -1;
+        warmUpStartedAt = null;
+        warmUpEndedAt = null;
     }
 
     function onStart(state as Dictionary?) as Void {
@@ -53,8 +53,8 @@ class GarminpadelApp extends Application.AppBase {
         self.session = ActivityRecording.createSession({:sport => Activity.SPORT_RACKET, :subSport => Activity.SUB_SPORT_PADEL, :name => "Padel match"});
         self.session.start();
         self.courtChangeBannerUntil = 0;
-        self.warmUpStartedAt = self.matchConfig.getWarmUp() ? System.getTimer() : -1;
-        self.warmUpEndedAt = -1;
+        self.warmUpStartedAt = self.matchConfig.getWarmUp() ? System.getTimer() : null;
+        self.warmUpEndedAt = null;
     }
 
     function getMatch() as PadelMatch {
@@ -109,11 +109,17 @@ class GarminpadelApp extends Application.AppBase {
 
     // Length of the warm-up in seconds (still counting while it runs), or -1 if the match has no warm-up.
     function getWarmUpSeconds() as Number {
-        if (self.warmUpStartedAt < 0) {
+        // null = unset: System.getTimer() is signed and can be negative after it wraps, so no sign checks
+        var start = self.warmUpStartedAt;
+        if (start == null) {
             return -1;
         }
-        var end = self.warmUpEndedAt >= 0 ? self.warmUpEndedAt : System.getTimer();
-        return (end - self.warmUpStartedAt) / 1000;
+        var end = self.warmUpEndedAt;
+        if (end == null) {
+            end = System.getTimer();
+        }
+        // 32-bit subtraction gives the right interval even across the timer wrap
+        return (end - start) / 1000;
     }
 
     function getBannerText() as String {
