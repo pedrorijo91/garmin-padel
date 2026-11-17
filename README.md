@@ -59,9 +59,19 @@ Use `Up` / `Down` to move in menus and `Enter` to select. For exact scoring mech
 
 With **Warm-up: Yes**, the activity starts recording when you finish the setup, but the score screen first shows **Warm-up**, **Press to start** and a timer with the warm-up's length. Nothing is scored yet and the serving indicator is hidden.
 
+<p align="center">
+<img src="screenshots/warm_up/fenix847mm_setup.png" width="240" alt="Warm-up: Yes on the setup screen">
+<img src="screenshots/warm_up/fenix847mm_warm_up.png" width="240" alt="Warm-up screen with timer">
+</p>
+
 When you're ready to play, press **`Up`** or **`Down`** (or tap the screen) once. This starts the match **without scoring a point**: the watch vibrates briefly and shows **Match started**. You can also use **Options** → **Start match**. The next press scores as usual.
 
 The warm-up is saved as **lap 1** of the activity, so in Garmin Connect lap 1 is the warm-up and lap 2 is the first set. Undo can't go back into the warm-up. During the warm-up, **Options** has **Start match**, **Switch server** and **Finish activity**.
+
+<p align="center">
+<img src="screenshots/warm_up/fenix847mm_options.png" width="240" alt="Options during the warm-up">
+<img src="screenshots/warm_up/fenix847mm_match_started.png" width="240" alt="Match started banner">
+</p>
 
 ### During the match
 
