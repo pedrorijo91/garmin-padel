@@ -146,7 +146,7 @@ class GarminpadelApp extends Application.AppBase {
         }
 
         var scoreField = session.createField("game_score", 0, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "points", :count => 50});
-        var score = self.getScoreString();
+        var score = fitString(self.getScoreString(), FIT_STRING_MAX);
         scoreField.setData(score);
 
         var stepsField = session.createField("steps", 1, FitContributor.DATA_TYPE_UINT32, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "steps"});
