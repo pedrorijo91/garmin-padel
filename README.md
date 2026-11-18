@@ -179,20 +179,6 @@ When the match configuration uses a super tie for the decider, that **entire fin
 
 With **Switch to** (Friendly and Custom), a set can be played as a single **tie-break** (first to **7** points, win by 2), a single **super tie-break** (first to **10**, win by 2) or a **mini set** (see the set types table). It counts as one set for whoever wins it; in a 3- or 5-set match it counts towards the sets needed to win. A set dropped by switching counts for nobody and isn't written to the score.
 
-### How results are written
-
-The score saved with the activity (and shown on the finish screens) lists each set, separated by ` / `:
-
-| Result | Meaning |
-|--------|---------|
-| `6-4` | set won on games |
-| `7-6 (5)` | set won in a tie-break; the number is the loser's tie-break points |
-| `[10-8]` | set played as a single **super tie-break** (deciding set or chosen), or `[7-5]` for a chosen **tie-break** |
-
-For example: `6-3 / [10-8]` (a set dropped by switching isn't listed).
-
-The saved score holds up to 49 characters; in a very long match the last sets are cut off.
-
 ### Point rules at deuce (40–40)
 
 These options only change what happens when a game reaches **40–40** (deuce):
