@@ -28,6 +28,7 @@ class MenuGameModeDelegate extends WatchUi.Menu2InputDelegate {
             appConfig.setSuperTie(presetConfig.getSuperTie());
             appConfig.setPointRule(presetConfig.getPointRule());
             appConfig.setWarmUp(MenuWarmUpDelegate.WARM_UP_DEFAULT);
+            appConfig.setFormatSwitch(presetConfig.getFormatSwitch());
             var lines = GameModes.summaryLines(id);
             self.pushModeConfirmMenu(
                 GameModes.title(id),

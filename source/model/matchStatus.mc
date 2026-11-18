@@ -38,6 +38,9 @@ class MatchStatus {
 
     // PHASE_MATCH (scoring) or PHASE_WARM_UP (before the first point: Up/Down end it instead of scoring)
     private var phase as Number;
+    // format of the current set (MatchConfig.FORMAT_*), chosen mid-match by the players.
+    // FORMAT_DEFAULT = the match config decides. Goes back to FORMAT_DEFAULT when the set finishes.
+    private var setFormat as Number;
 
     static function New() as MatchStatus {
         return new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, []);
@@ -69,6 +72,7 @@ class MatchStatus {
         self.firstServer = -1;
         self.gamesPlayed = 0;
         self.phase = PHASE_MATCH;
+        self.setFormat = MatchConfig.FORMAT_DEFAULT;
     }
 
     function getPhase() as Number {
@@ -77,6 +81,19 @@ class MatchStatus {
 
     function setPhase(phase as Number) as Void {
         self.phase = phase;
+    }
+
+    function getSetFormat() as Number {
+        return self.setFormat;
+    }
+
+    function setSetFormat(format as Number) as Void {
+        self.setFormat = format;
+    }
+
+    // true when a point of the current game has been played (score other than 0-0)
+    function hasGamePoints() as Boolean {
+        return self.p1ScoreIdx != 0 || self.p2ScoreIdx != 0;
     }
 
     function getFirstServer() as Number {
@@ -231,6 +248,7 @@ class MatchStatus {
         s.setFirstServer(self.firstServer);
         s.setGamesPlayed(self.gamesPlayed);
         s.setPhase(self.phase);
+        s.setSetFormat(self.setFormat);
         return s;
     }
 }

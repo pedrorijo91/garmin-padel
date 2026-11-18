@@ -1,6 +1,6 @@
 # Plan 1: Switch set format mid-match (final tie-break / super tie / mini set)
 
-- **Status:** Not started
+- **Status:** **Built**, in review in [#155](https://github.com/pedrorijo91/garmin-padel/pull/155) (for [#146](https://github.com/pedrorijo91/garmin-padel/issues/146)), not merged or released yet. Rebased on the warm-up lap (plan 5, #154). The user's decisions below changed the design: the switch works at any moment of the match, not only at the start of a set. See [User decisions](#user-decisions-override-the-design-below) and [Implementation notes](#implementation-notes).
 - **Size:** Small–medium
 - **Depends on:** nothing
 - **Needed by:** [Plan 2: Training mode](02-training-mode.md), [Plan 3: Timed tournament](03-timed-tournament.md)
@@ -20,6 +20,22 @@ Issue #146 adds that players sometimes choose a **tie-break**, a **super tie-bre
   - A standalone 7-point tie-break would be recorded as `"0-0 (5)"`.
   - After a super tie it **skips `resetScores()`**. That is fine today, because a super tie always ends the match. In an Unlimited match that continues afterwards, the tie points would carry into the next set.
 - No standalone 7-point tie-break engine exists. `GamesSetEngine` has a tie-break only *inside* a set.
+
+## User decisions (override the design below)
+
+Made by the maintainer before the build. Where they differ from the design sections below, these win.
+
+1. **Only in Friendly and Custom matches.** The tournament presets (Tournament, Tournament super, Pro Set Tournament) don't show the option. It is a `MatchConfig` flag set by `GameModes` and the custom flow, not a check on the mode name in the UI.
+2. **Only three formats:** Tie-break (first to 7, win by 2), Super tie-break (first to 10, win by 2), Mini set (starts 2-2). No Normal / Pro / Default items.
+3. **Available at any moment of the match**, not only at the start of a set. The Options item is "Switch to", not "Next set format".
+   - If the current set has no points played yet (games at the engine's initial value, points 0, tie points 0): only the current set's format changes. Nothing is recorded.
+   - Otherwise: the unfinished set is **dropped**: nothing is written to the score, and it is **not** awarded to anyone (sets unchanged). Games and points are reset, a lap is added (`lapSession()`) and the chosen format starts immediately. (First built as a `"4-3*"` entry in the score; the user then asked for nothing to be stored on a switch.)
+   - A game in progress is discarded and doesn't count in `gamesPlayed`.
+   - The switch pushes an undo entry first, so undo restores the dropped set exactly. A lap can't be removed once added; that is accepted.
+   - After the chosen format finishes, the next set goes back to the match's default format.
+   - Switching again while in a switched format is allowed, with the same rules.
+   - **Assumption:** switching mid-set *replaces* the current set; it doesn't *decide* it. See [Open questions](#open-questions).
+4. **Super tie results use brackets everywhere:** `"[10-8]"`, including the existing best-of-3 super tie decider. A standalone 7-point tie-break also uses brackets: `"[7-5]"`.
 
 ## Design
 
@@ -91,7 +107,29 @@ The serving indicator must stay correct with the new formats:
 - Undo behaves as described above.
 - README "Functionalities", "How to use" and "Match rules reference" are updated.
 
+## Implementation notes
+
+What was built, and where it differs from the design above (mostly because of the [user decisions](#user-decisions-override-the-design-below)):
+
+- **Format constants:** `MatchConfig.FORMAT_DEFAULT (-1)`, `FORMAT_NORMAL (0)`, `FORMAT_PRO (1)`, `FORMAT_MINI (2)` (the same values as `SET_TYPE_*`), `FORMAT_TIE_BREAK (3)`, `FORMAT_SUPER_TIE (4)`. Plans 2 and 3 add `FORMAT_FREE` / `FORMAT_TIMED` here.
+- **State:** `MatchStatus.setFormat` (setter, copied in `copy()`), named for the *current* set, not `nextSetFormat`, because the switch applies now. `FORMAT_DEFAULT` = the config decides (the default set type, or the deciding super tie at 1-1 / 2-2 with one set left). `resetAfterSetFinish()` puts it back to `FORMAT_DEFAULT`.
+- **Engines:** `MatchEngine` now takes `(sets, gameEngine, defaultFormat, superTie)` and builds every engine with `engineForFormat(format)`. The engine for a chosen format is built on first use and cached in one slot. `PadelMatch` no longer builds set engines.
+  - `SuperTieSetEngine(target)`: 10 = super tie (`isInSuperTieBreak` true), 7 = standalone tie-break (`isInTieBreak` true). Both are true for the whole set, so the serving rotation and the court-change vibration (every 6 tie points) work unchanged.
+  - New `SetEngine` methods: `hasGames()` (false for the tie-break sets), `isUntouched(status)` (games at the initial value, no game points, no tie points) and `formatResult(status, finished)`: `"6-4"`, `"7-6 (5)"` (only when `finished`), `"[10-8]"`.
+- **`MatchEngine.switchSetFormat(format)`** (exposed on `PadelMatch`): returns if the match is over; pushes an undo entry; resets games and scores (a started set is dropped, nothing recorded); sets the format; applies the new engine's initial games (mini set 2-2, or back to 0-0); adds a lap only if the set had started (`isSetStarted()`, i.e. not `isUntouched`). `gamesPlayed` is never changed by it.
+- **`resetAfterSetFinish()`** now always resets scores unless the match is over. Before, it skipped `resetScores()` after any super tie, which would have carried tie points into the next set of an Unlimited match. A match that ends still keeps its final tie points (as before).
+- **`getHistoricalScores()`** (used for the finish menu, end screen and the saved `game_score`) adds the set in progress: its games once they differ from the initial games (so a mini set at an untouched 2-2 is no longer listed as `"2-2"`), or `"[a-b]"` for a tie-break set with points. Before, a deciding super tie in progress wasn't listed at all.
+- **Flag:** `MatchConfig.formatSwitch`, off by default. `GameModes` sets it for Friendly; `MenuGameModeDelegate` copies it from the preset; `MenuNumberSetsDelegate` (first step of the custom flow) sets it on. `PadelMatch.canSwitchSetFormat()` reads it.
+- **UI:** Options → **Switch to** (sub-label `Tie / super tie / mini`, or `Drops 4-3` once points are played, from `currentSetResult()`). Its submenu has *Tie-break* (`First to 7`), *Super tie-break* (`First to 10`) and *Mini set* (`Starts 2-2`). The submenu is handled by `ScoreOptionsMenuDelegate` too, to avoid a new class on low-memory devices. No confirmation step: undo covers mistakes. Strings are in `resources/strings/strings.xml`.
+- **Score screen:** for a set without games (`!currentSetHasGames()`) the games line is empty and the score line is `Super: x - y` or `Tie: x - y`. No layout changes.
+- **No "Next: …" note** on the score screen: the switch applies immediately, so the score screen already shows the new format.
+- **Tests:** `source/tests/testSwitchFormat.mc` (12 tests: super tie after a set and back to the default format; tie-break win by 2; mini set (starts 2-2, an untouched 2-2 isn't "started", switching away resets it); a chosen super tie ending a best of 3; a mid-set switch drops the set (games, and a switched super tie); undo (of the switch, of the first point after it, across the end of a chosen super tie); an abandoned set in a Custom best of 3 falls back to the deciding super tie; no switch after the match ends; serving in a switched tie-break (the abandoned game doesn't count) and after a mini switch; preset flags; with the warm-up (laps, undo never back into it)), plus `testHistory.mc` (`7-6 (5)`, super tie `[3-2]` in progress and `[10-8]` final) and `fitString` in `matchUtilsTest.mc`. Overlapping checks were trimmed after review. 136/136 pass with `-l 3` on fenix847mm, fr245, instinct2 and venusq2.
+- **Court-change vibration:** not unit-tested (it calls the app directly; no test hook was added). Checked in the simulator: the banner shows at 3-3 in a switched super tie.
+
 ## Open questions
 
-- Bracket notation for super tie results (`[10-8]`): adopt it everywhere, or keep `10-8`?
-- Should *Pro set* / *Normal set* be in the submenu, or only the short formats?
+- ~~Bracket notation for super tie results (`[10-8]`)~~: adopted everywhere, including the deciding super tie and the standalone 7-point tie-break.
+- ~~Should *Pro set* / *Normal set* be in the submenu?~~ No, only the three short formats.
+- **Replace or decide?** Switching mid-set *replaces* the current set: the unfinished set counts for nobody. The user may have meant "decide the current set with a tie-break now" (e.g. at 4-3, play a tie-break and the winner takes the set, recorded as `5-3` or `4-3 [7-5]`). Not built; confirm with users.
+- **Lap after undo:** undoing a mid-set switch restores the score, but the lap added by the switch stays in the FIT file.
+- **FIT string length:** `game_score` is created with `:count => 50`, so it holds 49 characters. A longer string makes `setData` fail with a System Error that `try/catch` can't catch (checked in the simulator: 49 work, 50 crash), so the app stopped and the activity wasn't saved. A long Friendly (about 9 sets) could hit it, even before this plan. `saveSession` now cuts the string to 49 characters with `fitString` (`source/model/fitUtils.mc`), keeping the earliest sets; the later sets are then missing from the saved score. Plan 2's per-lap field would keep them all.

@@ -1,6 +1,6 @@
 # Plan 5: Warm-up as its own lap
 
-- **Status:** **Built**, in review on branch `claude/warm-up-lap-e5c273` (PR to `master`, not merged yet). The default (Yes or No) and the `warmup_seconds` field still need the maintainer's decision; see [Implementation notes](#implementation-notes) and [Open questions](#open-questions).
+- **Status:** **Done**, merged to `master` in [#154](https://github.com/pedrorijo91/garmin-padel/pull/154) (`a0e4cef`); not in a release yet. The default (currently Yes) and the `warmup_seconds` field are still open for the maintainer to confirm; see [Implementation notes](#implementation-notes) and [Open questions](#open-questions).
 - **Size:** Small
 - **Depends on:** nothing. Can be built on its own now. Once [plan 2](02-training-mode.md) lands, the warm-up becomes just a `FREE` segment (see "Relation to other plans").
 - **GitHub:** none yet
@@ -60,7 +60,7 @@
 
 - **Plan 2 (training):** a warm-up is just a `FREE` segment at the start. If plan 2 is built first, this plan is mostly "a match session starts with a FREE segment, and the first press ends it". If this plan is built first, design `phase` so it can later be swapped for the segment format, with the same lap and undo rules.
 - **Plan 3 (timed tournament):** the session should also start with a warm-up before round 1, using the same mechanism.
-- **Plan 1:** no conflict; the next-set-format override only applies in the match phase.
+- **Plan 1:** no conflict. **Switch to** is not in the warm-up Options menu, and a switch right after the warm-up (nothing played yet) adds no extra lap. `testSwitchFormat.mc` (`switchWithWarmUpTest`) checks both together.
 
 ## Test plan
 

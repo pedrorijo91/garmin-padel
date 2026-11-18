@@ -42,4 +42,13 @@
     <string id="warm_up_toggle_sub">Select to change</string>
     <string id="fit_warm_up_label">Warm-up</string>
     <string id="fit_warm_up_units">s</string>
+    <string id="switch_format">Switch to</string>
+    <string id="switch_format_sub">Tie / super tie / mini</string>
+    <string id="switch_format_drops">Drops </string>
+    <string id="format_tie_break">Tie-break</string>
+    <string id="format_tie_break_sub">First to 7</string>
+    <string id="format_super_tie">Super tie-break</string>
+    <string id="format_super_tie_sub">First to 10</string>
+    <string id="format_mini">Mini set</string>
+    <string id="format_mini_sub">Starts 2-2</string>
 </strings>
