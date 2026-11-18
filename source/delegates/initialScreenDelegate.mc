@@ -32,6 +32,7 @@ class InitialScreenDelegate extends WatchUi.InputDelegate {
         menu.addItem(new MenuItem("Tournament (super)", "", GameModes.MODE_TOURNAMENT_SUPER, {}));
         menu.addItem(new MenuItem("Pro Set Tournament", "", GameModes.MODE_PRO_SET_TOURNAMENT, {}));
         menu.addItem(new MenuItem("Friendly", "", GameModes.MODE_FRIENDLY, {}));
+        menu.addItem(new MenuItem(GameModes.title(GameModes.MODE_TRAINING), "", GameModes.MODE_TRAINING, {}));
         menu.addItem(new MenuItem("Custom", "", GameModes.MODE_CUSTOM, {}));
         WatchUi.pushView(menu, new MenuGameModeDelegate(), WatchUi.SLIDE_BLINK);
     }

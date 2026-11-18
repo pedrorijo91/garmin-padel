@@ -32,7 +32,9 @@ class ScoreView extends WatchUi.View {
         var matchStatus = match.getMatchStatus();
 
         var setsLabel = View.findDrawableById("setsLabel") as Text;
-        setsLabel.setText("Sets: " + matchStatus.getP1Sets() + " - " + matchStatus.getP2Sets());
+        var training = match.isTraining();
+        var setsPrefix = training ? Application.loadResource(Rez.Strings.drills) as String : "Sets: ";
+        setsLabel.setText(setsPrefix + matchStatus.getP1Sets() + " - " + matchStatus.getP2Sets());
 
         var gamesLabel = View.findDrawableById("gamesLabel") as Text;
         var scoreLabel = View.findDrawableById("scoreLabel") as Text;
@@ -50,6 +52,16 @@ class ScoreView extends WatchUi.View {
             } else {
                 scoreLabel.setText("Score: " + matchStatus.getP1Score() + " - " + matchStatus.getP2Score());
             }
+        }
+
+        // Training free play (plan 2): "Training" (or the drills won so far), "Free play", time in this segment
+        if (training && match.isFreePlay()) {
+            if (matchStatus.getP1Sets() + matchStatus.getP2Sets() == 0) {
+                setsLabel.setText(Application.loadResource(Rez.Strings.training) as String);
+            }
+            gamesLabel.setText(Application.loadResource(Rez.Strings.free_play) as String);
+            var secs = match.getSegmentSeconds();
+            scoreLabel.setText((secs / 60) + ":" + (secs % 60).format("%02d"));
         }
 
         // Warm-up (plan 5): no score yet, show its length and how to start the match

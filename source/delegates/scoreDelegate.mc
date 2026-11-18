@@ -40,11 +40,15 @@ class ScoreDelegate extends WatchUi.InputDelegate {
 
     // Options menu, opened with ENTER or a long-press.
     private function pushOptionsMenu() as Void {
-        if (Application.getApp().getMatch().isWarmingUp()) {
+        var match = Application.getApp().getMatch();
+        if (match.isWarmingUp()) {
             pushWarmUpOptionsMenu();
             return;
         }
-        var match = Application.getApp().getMatch();
+        if (match.isTraining()) {
+            pushTrainingOptionsMenu(match);
+            return;
+        }
         var menu = new WatchUi.Menu2({:title=>"Options"});
         menu.addItem(
             new MenuItem("Undo last point", "", :score_option_undo, {})
@@ -81,6 +85,39 @@ class ScoreDelegate extends WatchUi.InputDelegate {
             new MenuItem("Cancel", "Back to score", :score_option_cancel, {})
         );
         WatchUi.pushView(menu, new ScoreOptionsMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    // Options in training (plan 2). Free play: Start drill, Undo (only when there is something to undo, e.g.
+    // right after End drill or a won drill), Unforced error, Finish. During a drill: End drill, Next drill,
+    // Undo, Unforced error, Switch server (the serve marker is off until set here), Finish.
+    private function pushTrainingOptionsMenu(match as PadelMatch) as Void {
+        var menu = new WatchUi.Menu2({:title=>"Options"});
+        var free = match.isFreePlay();
+        if (free) {
+            menu.addItem(new MenuItem(rez(Rez.Strings.start_drill), rez(Rez.Strings.start_drill_sub), :score_option_switch_format, {}));
+            if (match.canUndo()) {
+                menu.addItem(new MenuItem(rez(Rez.Strings.undo), "", :score_option_undo, {}));
+            }
+        } else {
+            // an unfinished drill is not recorded: say what ending it drops
+            var sub = match.isSetStarted()
+                ? rez(Rez.Strings.switch_format_drops) + match.currentSetResult()
+                : rez(Rez.Strings.end_drill_sub);
+            menu.addItem(new MenuItem(rez(Rez.Strings.end_drill), sub, :score_option_end_drill, {}));
+            menu.addItem(new MenuItem(rez(Rez.Strings.next_drill), rez(Rez.Strings.start_drill_sub), :score_option_switch_format, {}));
+            menu.addItem(new MenuItem("Undo last point", "", :score_option_undo, {}));
+        }
+        menu.addItem(new MenuItem("Unforced error", "", :score_option_unforced_error, {}));
+        if (!free) {
+            menu.addItem(new MenuItem(rez(Rez.Strings.switch_server), servingSubLabel(), :score_option_switch_server, {}));
+        }
+        menu.addItem(new MenuItem("Finish activity", "", :score_option_finish, {}));
+        menu.addItem(new MenuItem("Cancel", "Back to score", :score_option_cancel, {}));
+        WatchUi.pushView(menu, new ScoreOptionsMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    private function rez(id as ResourceId) as String {
+        return Application.loadResource(id) as String;
     }
 
     // Options during the warm-up (plan 5): no Undo or Unforced error (nothing to undo, no points yet).

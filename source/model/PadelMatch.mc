@@ -1,23 +1,64 @@
 import Toybox.Lang;
+import Toybox.Time;
 
 // Thin facade: builds MatchEngine from MatchConfig and delegates all scoring/state to it.
-// Keeps the same public API for views and delegates.
+// Keeps the same public API for views and delegates. It reads the clock (Time.now()) and passes it to
+// MatchEngine, so the engine itself can be tested with any time.
 class PadelMatch {
 
     private var matchEngine as MatchEngine;
     private var formatSwitch as Boolean;
 
     function initialize(config as MatchConfig) {
-        self.formatSwitch = config.getFormatSwitch();
+        var training = config.getTraining();
+        self.formatSwitch = config.getFormatSwitch() && !training;
         self.matchEngine = new MatchEngine(
-            config.getNumberOfSets(),
+            training ? MatchConfig.UNLIMITED_SETS : config.getNumberOfSets(),
             self.gameEngineForPointRule(config.getPointRule()),
-            config.getSetType(), // SET_TYPE_* values are the same as MatchConfig.FORMAT_NORMAL / PRO / MINI
-            config.getSuperTie()
+            // SET_TYPE_* values are the same as MatchConfig.FORMAT_NORMAL / PRO / MINI
+            training ? MatchConfig.FORMAT_FREE : config.getSetType(),
+            config.getSuperTie() && !training
         );
+        self.matchEngine.startSession(now());
+        // training already starts in free play, which is its warm-up
         if (config.getWarmUp()) {
             self.matchEngine.startWarmUp();
         }
+    }
+
+    private static function now() as Number {
+        return Time.now().value();
+    }
+
+    // --- Training (plan 2) ---
+
+    function isTraining() as Boolean {
+        return self.matchEngine.isTraining();
+    }
+
+    // Training between drills (no score), or the warm-up of a match
+    function isFreePlay() as Boolean {
+        return self.matchEngine.isFreePlay();
+    }
+
+    // Training: Options -> End drill. The drill's score is not recorded; back to free play. Undoable.
+    function endDrill() as Void {
+        self.matchEngine.switchSetFormat(MatchConfig.FORMAT_FREE, now());
+    }
+
+    // Seconds since the current segment (set, drill, free play) started
+    function getSegmentSeconds() as Number {
+        var secs = now() - self.matchEngine.getMatchStatus().getSegmentStartTime();
+        return secs < 0 ? 0 : secs;
+    }
+
+    // FIT lap label for the segment in progress when the activity is saved ("Free", "TB ended")
+    function segmentLabel() as String {
+        return self.matchEngine.segmentLabel();
+    }
+
+    function canUndo() as Boolean {
+        return self.matchEngine.canUndo();
     }
 
     // Whether the Options menu offers switching the set format (Friendly and Custom matches only).
@@ -26,8 +67,9 @@ class PadelMatch {
     }
 
     // Play MatchConfig.FORMAT_TIE_BREAK / FORMAT_SUPER_TIE / FORMAT_MINI now. See MatchEngine.switchSetFormat.
+    // Training: Start drill / Next drill (also FORMAT_NORMAL, a full set).
     function switchSetFormat(format as Number) as Void {
-        self.matchEngine.switchSetFormat(format);
+        self.matchEngine.switchSetFormat(format, now());
     }
 
     // true when points have been played in the current set (switching then drops it)
@@ -44,11 +86,11 @@ class PadelMatch {
     }
 
     function incP1() as Boolean {
-        return self.matchEngine.incP1();
+        return self.matchEngine.incP1(now());
     }
 
     function incP2() as Boolean {
-        return self.matchEngine.incP2();
+        return self.matchEngine.incP2(now());
     }
 
     function addUnforcedError() as Void {
@@ -79,7 +121,7 @@ class PadelMatch {
 
     // Options -> Start match: ends the warm-up (adds a lap) without scoring.
     function endWarmUp() as Void {
-        self.matchEngine.endWarmUp();
+        self.matchEngine.endWarmUp(now());
     }
 
     function getMatchStatus() as MatchStatus {

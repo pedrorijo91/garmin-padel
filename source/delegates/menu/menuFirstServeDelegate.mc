@@ -26,6 +26,11 @@ class MenuFirstServeDelegate extends WatchUi.Menu2InputDelegate {
         } else if (id == :first_serve_them) {
             side = Sides.SIDE_P2;
         }
+        startMatch(side);
+    }
+
+    // Starts recording and shows the score screen. side: first server, or -1 for no serve marker.
+    static function startMatch(side as Number) as Void {
         var app = Application.getApp();
         app.initMatch();
         app.getMatch().setFirstServer(side);

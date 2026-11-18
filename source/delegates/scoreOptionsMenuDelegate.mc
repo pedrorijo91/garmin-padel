@@ -33,6 +33,13 @@ class ScoreOptionsMenuDelegate extends WatchUi.Menu2InputDelegate {
             switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
         } else if (item.getId() == :format_mini) {
             switchSetFormat(MatchConfig.FORMAT_MINI);
+        } else if (item.getId() == :format_normal) {
+            // training only: a full set as a drill
+            switchSetFormat(MatchConfig.FORMAT_NORMAL);
+        } else if (item.getId() == :score_option_end_drill) {
+            // training: back to free play; the drill's score is not recorded (undo brings it back)
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+            Application.getApp().getMatch().endDrill();
         } else if (item.getId() == :score_option_finish) {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             var score = Application.getApp().getScoreString();
@@ -54,12 +61,22 @@ class ScoreOptionsMenuDelegate extends WatchUi.Menu2InputDelegate {
         }
     }
 
-    // "Switch to" submenu. Its items are handled by this delegate too (saves a class on low-memory devices).
+    // "Switch to" submenu, or "Start drill" / "Next drill" in training (with a full Set too).
+    // Its items are handled by this delegate too (saves a class on low-memory devices).
     private function pushSwitchFormatMenu() as Void {
-        var menu = new WatchUi.Menu2({:title=>Application.loadResource(Rez.Strings.switch_format) as String});
+        var match = Application.getApp().getMatch();
+        var training = match.isTraining();
+        var title = Rez.Strings.switch_format;
+        if (training) {
+            title = match.isFreePlay() ? Rez.Strings.start_drill : Rez.Strings.next_drill;
+        }
+        var menu = new WatchUi.Menu2({:title=>Application.loadResource(title) as String});
         menu.addItem(new MenuItem(Application.loadResource(Rez.Strings.format_tie_break) as String, Application.loadResource(Rez.Strings.format_tie_break_sub) as String, :format_tie_break, {}));
         menu.addItem(new MenuItem(Application.loadResource(Rez.Strings.format_super_tie) as String, Application.loadResource(Rez.Strings.format_super_tie_sub) as String, :format_super_tie, {}));
         menu.addItem(new MenuItem(Application.loadResource(Rez.Strings.format_mini) as String, Application.loadResource(Rez.Strings.format_mini_sub) as String, :format_mini, {}));
+        if (training) {
+            menu.addItem(new MenuItem(Application.loadResource(Rez.Strings.format_set) as String, Application.loadResource(Rez.Strings.format_set_sub) as String, :format_normal, {}));
+        }
         WatchUi.pushView(menu, new ScoreOptionsMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 

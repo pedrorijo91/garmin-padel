@@ -35,5 +35,12 @@
                 dataLabel="@Strings.fit_warm_up_label"
                 unitLabel="@Strings.fit_warm_up_units"
             />
+            <fitField id="5"
+                displayInActivityLaps="true"
+                sortOrder = "5"
+                precision="0"
+                dataLabel="@Strings.fit_lap_score_label"
+                unitLabel="@Strings.fit_lap_score_units"
+            />
     </fitContributions>
 </resources>

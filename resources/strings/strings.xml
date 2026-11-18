@@ -51,4 +51,18 @@
     <string id="format_super_tie_sub">First to 10</string>
     <string id="format_mini">Mini set</string>
     <string id="format_mini_sub">Starts 2-2</string>
+    <string id="format_set">Set</string>
+    <string id="format_set_sub">First to 6</string>
+
+    <string id="training">Training</string>
+    <string id="drills">Drills: </string>
+    <string id="free_play">Free play</string>
+    <string id="start_drill">Start drill</string>
+    <string id="start_drill_sub">TB / ST / mini / set</string>
+    <string id="next_drill">Next drill</string>
+    <string id="end_drill">End drill</string>
+    <string id="end_drill_sub">Back to free play</string>
+    <string id="undo">Undo</string>
+    <string id="fit_lap_score_label">Lap Score</string>
+    <string id="fit_lap_score_units"> </string>
 </strings>

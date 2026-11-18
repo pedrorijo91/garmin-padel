@@ -15,13 +15,14 @@ class MatchConfig {
 
     // Format of one set (segment) of the session. The first three match SET_TYPE_* one to one.
     // FORMAT_DEFAULT = whatever the match config says for that set (default set type, or the deciding super tie).
-    // Later plans add more (e.g. free play, timed set).
+    // FORMAT_FREE = free play (training, warm-up): no score, Up/Down do nothing. Plan 3 adds a timed set.
     public static const FORMAT_DEFAULT = -1;
     public static const FORMAT_NORMAL = 0;
     public static const FORMAT_PRO = 1;
     public static const FORMAT_MINI = 2;
     public static const FORMAT_TIE_BREAK = 3;
     public static const FORMAT_SUPER_TIE = 4;
+    public static const FORMAT_FREE = 5;
 
     private var superTie as Boolean;
     private var setType as Number;
@@ -31,9 +32,12 @@ class MatchConfig {
     private var warmUp as Boolean;
     // players may switch the current set to a tie-break / super tie / mini set (Friendly and Custom only)
     private var formatSwitch as Boolean;
+    // training session: free play by default, scored drills started from Options, never ends by itself
+    private var training as Boolean;
 
     function initialize() {
         superTie = false;
+        training = false;
         formatSwitch = false;
         numberOfSets = UNLIMITED_SETS;
         pointRule = POINT_RULE_GOLDEN;
@@ -97,8 +101,16 @@ class MatchConfig {
         return self.formatSwitch;
     }
 
+    function setTraining(enabled as Boolean) as Void {
+        self.training = enabled;
+    }
+
+    function getTraining() as Boolean {
+        return self.training;
+    }
+
     function toString() as Lang.String {
-        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets + ", pointRule: " + self.pointRule + ", setType: " + self.setType + ", formatSwitch: " + self.formatSwitch;
+        return "matchConfig: " + "superTie: " + self.superTie + ", sets: " + self.numberOfSets + ", pointRule: " + self.pointRule + ", setType: " + self.setType + ", formatSwitch: " + self.formatSwitch + ", training: " + self.training;
     }
 
 }
