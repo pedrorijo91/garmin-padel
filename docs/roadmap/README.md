@@ -54,7 +54,7 @@ Monkey C (Garmin Connect IQ) watch app. `minApiLevel` 2.4.0, about 78 devices in
 **Model (`source/model/`)**
 - `PadelMatch`: thin facade used by views and delegates. Builds a `MatchEngine` from a `MatchConfig`.
 - `MatchConfig`: number of sets (`UNLIMITED_SETS = 20`), set type (normal / pro / mini), super tie on or off, point rule (golden / advantage / silver / star), `FORMAT_*` constants and the `formatSwitch` flag (plan 1), the `warmUp` flag (plan 5), the `training` flag (plan 2).
-- `GameModes`: the presets (Tournament, Tournament super, Pro set, Friendly, Training) mapped to a `MatchConfig`, plus the summary lines shown on the confirm screen.
+- `GameModes`: the presets (Tournament, Tournament super, Pro set, Friendly, Training) mapped to a `MatchConfig`, plus the summary lines shown on the confirm screen (Training has none: it starts at once).
 - `MatchEngine`: owns `MatchStatus` and the undo stack (`MAX_UNDO = 5`, each entry is a full `MatchStatus.copy()`).
   - `getCurrentSetEngine()` uses `MatchStatus.setFormat` when it isn't `FORMAT_DEFAULT` (plan 1). Otherwise it picks `decidingSetEngine` (super tie) when sets are tied with one set left, or `defaultSetEngine`. Engines are built by `engineForFormat(format)`.
   - `switchSetFormat(format)` (plan 1): undoable; drops a started set (not recorded), resets games and points, adds a lap.

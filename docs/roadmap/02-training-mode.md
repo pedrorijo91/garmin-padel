@@ -59,7 +59,7 @@ The user moves between them from the Options menu. When a drill is won it ends b
 
 ### UI
 
-1. **Game mode menu** (`GameModes`, `MenuGameModeDelegate`): add **"Training"**. Its confirm screen shows e.g. "Free play + drills", "Score: Golden Point".
+1. **Game mode menu** (`GameModes`, `MenuGameModeDelegate`): add **"Training"**. Its confirm screen shows e.g. "Free play + drills", "Score: Golden Point". (Built without a confirm screen: see Implementation notes.)
 2. **Score screen in free play** (`ScoreView`):
    - Top: "Training" (or "Drills: 2 - 1" once at least one drill has finished).
    - Middle: "Free play" and the time elapsed in this segment (store the segment start time; see below).
