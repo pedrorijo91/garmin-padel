@@ -32,19 +32,3 @@ function fitString(s as String, max as Number) as String {
     return s.substring(0, end) as String;
 }
 
-
-// The score shown in the finish menu and end screen and saved in game_score, e.g. "6-4 / 3-6 / [10-8]".
-// Training (shown on the watch only, not saved): "Drills 2-1: TB [7-5] / ST [8-10] / MS 6-4".
-function scoreString(match as PadelMatch) as String {
-    var historicalScores = match.getHistoricalScores();
-    var score = "";
-    for (var i = 0; i < historicalScores.size(); i++) {
-        score += (i > 0 ? " / " : "") + historicalScores[i];
-    }
-    if (match.isTraining()) {
-        var status = match.getMatchStatus();
-        var drills = "Drills " + status.getP1Sets() + "-" + status.getP2Sets();
-        score = historicalScores.size() > 0 ? drills + ": " + score : drills;
-    }
-    return score;
-}

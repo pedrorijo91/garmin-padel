@@ -16,7 +16,7 @@ class EndView extends WatchUi.View {
 
     function onUpdate(dc as Dc) as Void {        
         var view = View.findDrawableById("resultLabel") as Text;
-        var score = Application.getApp().getScoreString();
+        var score = Application.getApp().getMatch().getScoreString();
         view.setText(score);
 
         View.onUpdate(dc);

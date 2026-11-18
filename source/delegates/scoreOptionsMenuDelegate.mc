@@ -42,7 +42,7 @@ class ScoreOptionsMenuDelegate extends WatchUi.Menu2InputDelegate {
             Application.getApp().getMatch().endDrill();
         } else if (item.getId() == :score_option_finish) {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-            var score = Application.getApp().getScoreString();
+            var score = Application.getApp().getMatch().getScoreString();
             var menu = new WatchUi.Menu2({:title=>"Finish Activity"});
             menu.addItem(
                 new MenuItem("Save and exit", score, :finish_save_exit, {})

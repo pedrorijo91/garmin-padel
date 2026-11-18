@@ -51,7 +51,7 @@ function trainingStartsInFreePlayTest(logger as Logger) as Boolean {
     }
     // no serving marker in free play, even if one was set
     match.setFirstServer(Sides.SIDE_P1);
-    return match.getServingSide() == -1 && scoreString(match).equals("Drills 0-0");
+    return match.getServingSide() == -1 && match.getScoreString().equals("Drills 0-0");
 }
 
 (:test)
@@ -78,7 +78,7 @@ function trainingSuperTieDrillTest(logger as Logger) as Boolean {
     }
     // back in free play: presses do nothing again
     match.incP1();
-    return match.getMatchStatus().getP1TieScore() == 0 && scoreString(match).equals("Drills 1-0: ST [10-7]");
+    return match.getMatchStatus().getP1TieScore() == 0 && match.getScoreString().equals("Drills 1-0: ST [10-7]");
 }
 
 (:test)
@@ -103,8 +103,8 @@ function trainingEndDrillRecordsScoreSoFarTest(logger as Logger) as Boolean {
         return false;
     }
     if (status.getP1TieScore() != 0 || status.getP2TieScore() != 0 || lapsSince(lapsBefore) != 1 || !lastLap().equals("TB [4-3]")
-            || !scoreString(match).equals("Drills 0-0: TB [4-3]")) {
-        logger.error("laps=" + lapsSince(lapsBefore) + " label=" + lastLap() + " score=" + scoreString(match));
+            || !match.getScoreString().equals("Drills 0-0: TB [4-3]")) {
+        logger.error("laps=" + lapsSince(lapsBefore) + " label=" + lastLap() + " score=" + match.getScoreString());
         return false;
     }
     // a drill ended before any point isn't written to the score (its lap is still labelled)
@@ -165,7 +165,7 @@ function trainingSetDrillHasNoPrefixTest(logger as Logger) as Boolean {
     playSet(match, 6, 0); // 6-3
     match.switchSetFormat(MatchConfig.FORMAT_TIE_BREAK);
     playPointsP2(match, 7);
-    var s = scoreString(match);
+    var s = match.getScoreString();
     if (!s.equals("Drills 1-1: 6-3 / TB [0-7]")) {
         logger.error("score=" + s);
         return false;

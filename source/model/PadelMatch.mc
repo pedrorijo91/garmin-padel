@@ -132,6 +132,22 @@ class PadelMatch {
         return self.matchEngine.getHistoricalScores();
     }
 
+    // The score shown in the finish menu and end screen and saved in game_score, e.g. "6-4 / 3-6 / [10-8]".
+    // Training (shown on the watch only, not saved): "Drills 2-1: TB [7-5] / ST [8-10] / MS 6-4".
+    function getScoreString() as String {
+        var historicalScores = self.getHistoricalScores();
+        var score = "";
+        for (var i = 0; i < historicalScores.size(); i++) {
+            score += (i > 0 ? " / " : "") + historicalScores[i];
+        }
+        if (self.isTraining()) {
+            var status = self.getMatchStatus();
+            var drills = "Drills " + status.getP1Sets() + "-" + status.getP2Sets();
+            score = historicalScores.size() > 0 ? drills + ": " + score : drills;
+        }
+        return score;
+    }
+
     function isInTieBreak() as Boolean {
         return self.matchEngine.isInTieBreak();
     }

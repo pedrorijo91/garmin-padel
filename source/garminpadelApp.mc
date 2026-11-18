@@ -84,10 +84,6 @@ class GarminpadelApp extends Application.AppBase {
         return self.session;
     }
 
-    function getScoreString() as String {
-        return scoreString(self.getMatch());
-    }
-
     // Ends the current lap. label: the result of the segment that ends ("TB [7-5]", "Free", or "TB [4-3]" for a drill ended early),
     // written to the lap's score field in training; ignored in a match (null is fine).
     function lapSession(label as String or Null) as Void {
@@ -182,7 +178,7 @@ class GarminpadelApp extends Application.AppBase {
         // training: no session score; each drill's result is on its own lap (lap_score), which never runs out of room
         if (!self.getMatch().isTraining()) {
             var scoreField = session.createField("game_score", 0, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "points", :count => 50});
-            var score = fitString(self.getScoreString(), FIT_STRING_MAX);
+            var score = fitString(self.getMatch().getScoreString(), FIT_STRING_MAX);
             scoreField.setData(score);
         }
 
