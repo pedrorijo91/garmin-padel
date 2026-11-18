@@ -31,7 +31,7 @@ Keeps full padel match score: sets, games, standard **tie-breaks**, and **super 
 **Activity / Garmin Connect**
 
 * Records a **padel** activity; on save, writes **match score** (full history string), **steps** during the session, **unforced errors** count, **warm-up length** (when there was a warm-up) and **app version** into the activity for Connect / FIT.
-* **Laps**: with a warm-up, **lap 1 is the warm-up** and each set after it is its own lap (lap 2 = set 1, lap 3 = set 2, ...). Without a warm-up, lap 1 is set 1.
+* **Laps**: with a warm-up, **lap 1 is the warm-up** and each set after it is its own lap (lap 2 = set 1, lap 3 = set 2, ...). Without a warm-up, lap 1 is set 1. Switching format in the middle of a set (**Switch to**) also starts a new lap.
 
 ## How to use
 

@@ -1,3 +1,4 @@
+import Toybox.Application;
 import Toybox.Lang;
 import Toybox.Test;
 
@@ -304,4 +305,28 @@ function switchAllowedOnlyInFriendlyAndCustomTest(logger as Logger) as Boolean {
         && expectTrue(logger, !t.getFormatSwitch() && !ts.getFormatSwitch() && !pro.getFormatSwitch(), "tournaments don't")
         && expectTrue(logger, !new PadelMatch(t).canSwitchSetFormat(), "tournament match doesn't")
         && expectTrue(logger, !(new MatchConfig()).getFormatSwitch(), "off by default");
+}
+
+(:test)
+function switchWithWarmUpTest(logger as Logger) as Boolean {
+    // plan 5 + plan 1: warm-up lap first, then a mid-set switch adds one more lap; a switch with nothing played adds none
+    var config = GameModes.configForMode(GameModes.MODE_FRIENDLY) as MatchConfig;
+    var match = warmUpMatch(config);
+    var app = Application.getApp();
+    var laps0 = app.getLapCount();
+    match.incP1(); // ends the warm-up, no point scored
+    var ok = expectTrue(logger, !match.isWarmingUp() && app.getLapCount() - laps0 == 1, "warm-up lap");
+    ok = ok && expectTrue(logger, !match.isSetStarted(), "nothing played after the warm-up");
+    match.switchSetFormat(MatchConfig.FORMAT_TIE_BREAK);
+    ok = ok && expectTrue(logger, app.getLapCount() - laps0 == 1, "switch at 0-0 adds no lap");
+    match.switchSetFormat(MatchConfig.FORMAT_DEFAULT);
+    playAlternatingGames(match, 7);
+    match.incP1();
+    match.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
+    ok = ok && expectTrue(logger, app.getLapCount() - laps0 == 2, "mid-set switch adds a lap");
+    ok = ok && expectTrue(logger, !match.isWarmingUp() && match.isInSuperTieBreak(), "super tie, not back in warm-up");
+    // undo goes back to 4-3 but never into the warm-up
+    match.undo();
+    var status = match.getMatchStatus();
+    return ok && expectTrue(logger, !match.isWarmingUp() && status.getP1Games() == 4 && status.getP2Games() == 3, "undo to 4-3");
 }
