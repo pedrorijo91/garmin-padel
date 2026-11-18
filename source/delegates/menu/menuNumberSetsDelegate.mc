@@ -28,6 +28,7 @@ class MenuNumberSetsDelegate extends WatchUi.Menu2InputDelegate {
         config.setNumberOfSets(nbrSets);
         // first step of the Custom flow: custom matches may switch the set format mid-match
         config.setFormatSwitch(true);
+        config.setTraining(false);
 
         var menu = new WatchUi.Menu2({:title=>"Set Type"});
         menu.addItem(new MenuItem("Normal", "", :set_type_normal, {}));

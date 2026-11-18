@@ -33,9 +33,14 @@ class ScoreOptionsMenuDelegate extends WatchUi.Menu2InputDelegate {
             switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
         } else if (item.getId() == :format_mini) {
             switchSetFormat(MatchConfig.FORMAT_MINI);
+        } else if (item.getId() == :format_normal) {
+            switchSetFormat(MatchConfig.FORMAT_NORMAL);
+        } else if (item.getId() == :score_option_end_drill) {
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+            Application.getApp().getMatch().endDrill();
         } else if (item.getId() == :score_option_finish) {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-            var score = Application.getApp().getScoreString();
+            var score = Application.getApp().getMatch().getScoreString();
             var menu = new WatchUi.Menu2({:title=>"Finish Activity"});
             menu.addItem(
                 new MenuItem("Save and exit", score, :finish_save_exit, {})
@@ -48,18 +53,27 @@ class ScoreOptionsMenuDelegate extends WatchUi.Menu2InputDelegate {
             );
             WatchUi.pushView(menu, new FinishActivityMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
         } else if (item.getId() == :score_option_start_match) {
-            // warm-up only (plan 5): end it without scoring
+            // warm-up only: end it without scoring
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             Application.getApp().getMatch().endWarmUp();
         }
     }
 
-    // "Switch to" submenu. Its items are handled by this delegate too (saves a class on low-memory devices).
+    // Its items are handled by this delegate too (saves a class on low-memory devices).
     private function pushSwitchFormatMenu() as Void {
-        var menu = new WatchUi.Menu2({:title=>Application.loadResource(Rez.Strings.switch_format) as String});
+        var match = Application.getApp().getMatch();
+        var training = match.isTraining();
+        var title = Rez.Strings.switch_format;
+        if (training) {
+            title = match.isFreePlay() ? Rez.Strings.start_drill : Rez.Strings.next_drill;
+        }
+        var menu = new WatchUi.Menu2({:title=>Application.loadResource(title) as String});
         menu.addItem(new MenuItem(Application.loadResource(Rez.Strings.format_tie_break) as String, Application.loadResource(Rez.Strings.format_tie_break_sub) as String, :format_tie_break, {}));
         menu.addItem(new MenuItem(Application.loadResource(Rez.Strings.format_super_tie) as String, Application.loadResource(Rez.Strings.format_super_tie_sub) as String, :format_super_tie, {}));
         menu.addItem(new MenuItem(Application.loadResource(Rez.Strings.format_mini) as String, Application.loadResource(Rez.Strings.format_mini_sub) as String, :format_mini, {}));
+        if (training) {
+            menu.addItem(new MenuItem(Application.loadResource(Rez.Strings.format_set) as String, Application.loadResource(Rez.Strings.format_set_sub) as String, :format_normal, {}));
+        }
         WatchUi.pushView(menu, new ScoreOptionsMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 

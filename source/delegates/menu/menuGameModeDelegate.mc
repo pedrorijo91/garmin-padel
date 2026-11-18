@@ -27,8 +27,14 @@ class MenuGameModeDelegate extends WatchUi.Menu2InputDelegate {
             appConfig.setSetType(presetConfig.getSetType());
             appConfig.setSuperTie(presetConfig.getSuperTie());
             appConfig.setPointRule(presetConfig.getPointRule());
-            appConfig.setWarmUp(MenuWarmUpDelegate.WARM_UP_DEFAULT);
+            var training = presetConfig.getTraining();
+            appConfig.setWarmUp(training ? false : MenuWarmUpDelegate.WARM_UP_DEFAULT);
             appConfig.setFormatSwitch(presetConfig.getFormatSwitch());
+            appConfig.setTraining(training);
+            if (training) {
+                MenuFirstServeDelegate.startMatch(-1);
+                return;
+            }
             var lines = GameModes.summaryLines(id);
             self.pushModeConfirmMenu(
                 GameModes.title(id),

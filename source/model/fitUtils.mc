@@ -2,6 +2,8 @@ import Toybox.Lang;
 
 // FIT string fields are created with :count => 50, which includes the null terminator.
 const FIT_STRING_MAX = 49;
+// Training lap score field ("TB [12-10]", "MS 7-6 (10)", "Free"): 15 characters plus the terminator.
+const LAP_STRING_MAX = 15;
 
 // A longer string makes setData fail with a System Error ("setData string too long for allocated space")
 // that try/catch can't catch: the app stops and the activity isn't saved. Checked in the simulator:
@@ -29,3 +31,4 @@ function fitString(s as String, max as Number) as String {
     }
     return s.substring(0, end) as String;
 }
+

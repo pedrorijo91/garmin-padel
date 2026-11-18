@@ -1,23 +1,60 @@
 import Toybox.Lang;
+import Toybox.Time;
 
 // Thin facade: builds MatchEngine from MatchConfig and delegates all scoring/state to it.
-// Keeps the same public API for views and delegates.
+// Keeps the same public API for views and delegates. It reads the clock (Time.now()) and passes it to
+// MatchEngine, so the engine itself can be tested with any time.
 class PadelMatch {
 
     private var matchEngine as MatchEngine;
     private var formatSwitch as Boolean;
 
     function initialize(config as MatchConfig) {
-        self.formatSwitch = config.getFormatSwitch();
+        var training = config.getTraining();
+        self.formatSwitch = config.getFormatSwitch() && !training;
         self.matchEngine = new MatchEngine(
-            config.getNumberOfSets(),
+            training ? MatchConfig.UNLIMITED_SETS : config.getNumberOfSets(),
             self.gameEngineForPointRule(config.getPointRule()),
-            config.getSetType(), // SET_TYPE_* values are the same as MatchConfig.FORMAT_NORMAL / PRO / MINI
-            config.getSuperTie()
+            // SET_TYPE_* values are the same as MatchConfig.FORMAT_NORMAL / PRO / MINI
+            training ? MatchConfig.FORMAT_FREE : config.getSetType(),
+            config.getSuperTie() && !training
         );
+        self.matchEngine.startSession(now());
+        // training already starts in free play, which is its warm-up
         if (config.getWarmUp()) {
             self.matchEngine.startWarmUp();
         }
+    }
+
+    private static function now() as Number {
+        return Time.now().value();
+    }
+
+    // --- Training ---
+
+    function isTraining() as Boolean {
+        return self.matchEngine.isTraining();
+    }
+
+    function isFreePlay() as Boolean {
+        return self.matchEngine.isFreePlay();
+    }
+
+    function endDrill() as Void {
+        self.matchEngine.switchSetFormat(MatchConfig.FORMAT_FREE, now());
+    }
+
+    function getSegmentSeconds() as Number {
+        var secs = now() - self.matchEngine.getMatchStatus().getSegmentStartTime();
+        return secs < 0 ? 0 : secs;
+    }
+
+    function segmentLabel() as String {
+        return self.matchEngine.segmentLabel();
+    }
+
+    function canUndo() as Boolean {
+        return self.matchEngine.canUndo();
     }
 
     // Whether the Options menu offers switching the set format (Friendly and Custom matches only).
@@ -27,7 +64,7 @@ class PadelMatch {
 
     // Play MatchConfig.FORMAT_TIE_BREAK / FORMAT_SUPER_TIE / FORMAT_MINI now. See MatchEngine.switchSetFormat.
     function switchSetFormat(format as Number) as Void {
-        self.matchEngine.switchSetFormat(format);
+        self.matchEngine.switchSetFormat(format, now());
     }
 
     // true when points have been played in the current set (switching then drops it)
@@ -44,11 +81,11 @@ class PadelMatch {
     }
 
     function incP1() as Boolean {
-        return self.matchEngine.incP1();
+        return self.matchEngine.incP1(now());
     }
 
     function incP2() as Boolean {
-        return self.matchEngine.incP2();
+        return self.matchEngine.incP2(now());
     }
 
     function addUnforcedError() as Void {
@@ -72,14 +109,14 @@ class PadelMatch {
         return self.matchEngine.getServingSide();
     }
 
-    // Warm-up phase (plan 5): Up/Down end it without scoring.
+    // Warm-up phase: Up/Down end it without scoring.
     function isWarmingUp() as Boolean {
         return self.matchEngine.isWarmingUp();
     }
 
     // Options -> Start match: ends the warm-up (adds a lap) without scoring.
     function endWarmUp() as Void {
-        self.matchEngine.endWarmUp();
+        self.matchEngine.endWarmUp(now());
     }
 
     function getMatchStatus() as MatchStatus {
@@ -88,6 +125,22 @@ class PadelMatch {
 
     function getHistoricalScores() as Lang.Array<Lang.String> {
         return self.matchEngine.getHistoricalScores();
+    }
+
+    // The score shown in the finish menu and end screen and saved in game_score, e.g. "6-4 / 3-6 / [10-8]".
+    // Training (shown on the watch only, not saved): "Drills 2-1: TB [7-5] / ST [8-10] / MS 6-4".
+    function getScoreString() as String {
+        var historicalScores = self.getHistoricalScores();
+        var score = "";
+        for (var i = 0; i < historicalScores.size(); i++) {
+            score += (i > 0 ? " / " : "") + historicalScores[i];
+        }
+        if (self.isTraining()) {
+            var status = self.getMatchStatus();
+            var drills = "Drills " + status.getP1Sets() + "-" + status.getP2Sets();
+            score = historicalScores.size() > 0 ? drills + ": " + score : drills;
+        }
+        return score;
     }
 
     function isInTieBreak() as Boolean {

@@ -7,6 +7,7 @@ class GameModes {
     static const MODE_TOURNAMENT_SUPER = :mode_tournament_super;
     static const MODE_PRO_SET_TOURNAMENT = :mode_pro_set_tournament;
     static const MODE_FRIENDLY = :mode_friendly;
+    static const MODE_TRAINING = :mode_training;
     static const MODE_CUSTOM = :mode_custom;
 
     // Returns a new MatchConfig for the given preset, or null for Custom.
@@ -45,6 +46,15 @@ class GameModes {
             c.setFormatSwitch(true);
             return c;
         }
+        if (modeId == MODE_TRAINING) {
+            var c = new MatchConfig();
+            c.setNumberOfSets(MatchConfig.UNLIMITED_SETS);
+            c.setSetType(MatchConfig.SET_TYPE_NORMAL);
+            c.setSuperTie(false);
+            c.setPointRule(MatchConfig.POINT_RULE_GOLDEN);
+            c.setTraining(true);
+            return c;
+        }
         return null;
     }
 
@@ -60,6 +70,9 @@ class GameModes {
         }
         if (modeId == MODE_FRIENDLY) {
             return "Friendly";
+        }
+        if (modeId == MODE_TRAINING) {
+            return "Training";
         }
         return "Game Mode";
     }

@@ -4,11 +4,6 @@ class MatchStatus {
 
     static const AVAILABLE_POINTS = [0, 15, 30, 40, 'A'];
 
-    // Phase of the session (plan 5). Once plan 2 lands, the warm-up becomes a FREE segment and this
-    // can be replaced by the current segment's format, with the same lap and undo rules.
-    static const PHASE_MATCH = 0;
-    static const PHASE_WARM_UP = 1;
-
     private var p1Sets as Number;
     private var p2Sets as Number;
 
@@ -36,11 +31,11 @@ class MatchStatus {
     // Used to work out the serving team, which alternates every game.
     private var gamesPlayed as Number;
 
-    // PHASE_MATCH (scoring) or PHASE_WARM_UP (before the first point: Up/Down end it instead of scoring)
-    private var phase as Number;
-    // format of the current set (MatchConfig.FORMAT_*), chosen mid-match by the players.
-    // FORMAT_DEFAULT = the match config decides. Goes back to FORMAT_DEFAULT when the set finishes.
+    // MatchConfig.FORMAT_*; FORMAT_DEFAULT = the match config decides. Goes back to FORMAT_DEFAULT when the set finishes.
     private var setFormat as Number;
+    // when the current segment (set, drill, free play) started, in seconds (Time.now().value()); 0 = not set.
+    // Passed in by the caller, so the model never reads the clock. Kept here so undo restores it.
+    private var segmentStartTime as Number;
 
     static function New() as MatchStatus {
         return new MatchStatus(0, 0, 0, 0, 0, 0, 0, 0, []);
@@ -71,16 +66,16 @@ class MatchStatus {
         self.deuceRevertCount = 0;
         self.firstServer = -1;
         self.gamesPlayed = 0;
-        self.phase = PHASE_MATCH;
         self.setFormat = MatchConfig.FORMAT_DEFAULT;
+        self.segmentStartTime = 0;
     }
 
-    function getPhase() as Number {
-        return self.phase;
+    function getSegmentStartTime() as Number {
+        return self.segmentStartTime;
     }
 
-    function setPhase(phase as Number) as Void {
-        self.phase = phase;
+    function setSegmentStartTime(t as Number) as Void {
+        self.segmentStartTime = t;
     }
 
     function getSetFormat() as Number {
@@ -247,8 +242,8 @@ class MatchStatus {
         s.setDeuceRevertCount(self.deuceRevertCount);
         s.setFirstServer(self.firstServer);
         s.setGamesPlayed(self.gamesPlayed);
-        s.setPhase(self.phase);
         s.setSetFormat(self.setFormat);
+        s.setSegmentStartTime(self.segmentStartTime);
         return s;
     }
 }

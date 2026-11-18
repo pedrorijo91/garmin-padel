@@ -10,7 +10,7 @@ Keeps full padel match score: sets, games, standard **tie-breaks**, and **super 
 
 **Setup**
 
-* **Quick presets**: Tournament (best of 3, golden point, no super tie), Tournament with super tie, **Pro set** tournament (single pro set), **Friendly** (unlimited sets), or **Custom** to tune everything.
+* **Quick presets**: Tournament (best of 3, golden point, no super tie), Tournament with super tie, **Pro set** tournament (single pro set), **Friendly** (unlimited sets), **Training** (free play plus scored drills), or **Custom** to tune everything.
 * **Custom match**: number of sets (**1**, **3**, **5**, or **unlimited**), **set type** (normal, pro set, or mini set), optional **super tie-break** (when using 3 or 5 sets), and **point rule**:
   * **Golden point** — deuce is decided by the next point
   * **Advantages** — classic advantage / deuce
@@ -27,6 +27,7 @@ Keeps full padel match score: sets, games, standard **tie-breaks**, and **super 
 * Real time **heart rate** on the score screen.
 * **Options** menu (**Enter** / **Start**, or **long press** on touch): **undo** last point, track an **unforced error**, **switch server** (fix the serving team), or **finish** the activity.
 * **Switch to** a **tie-break**, **super tie-break** or **mini set** at any moment (Friendly and Custom matches): for example a final super tie when your court time is running out, without stopping the activity.
+* **Training**: practise without a score (**free play**, with a timer), and start a scored **drill** (tie-break, super tie-break, mini set or set) from Options whenever you want. A won drill goes back to free play by itself. See [Training](#training).
 
 **Activity / Garmin Connect**
 
@@ -46,6 +47,7 @@ You’ll see the **Game Mode** menu first:
 * **Tournament**, **Tournament (super)**, **Pro Set Tournament**, or **Friendly** — pick one, review the summary, then choose **Start match**. The summary has a **Warm-up: Yes / No** line; select it to switch the warm-up on or off.
 * **Custom** — walk through **Sets** (1 / 3 / 5 / Unlimited) → **Set type** (Normal / Pro set / Mini) → **Super tie** (only for 3 or 5 sets) → **Score** rule (Golden / Star / Advantages / Silver) → **Warm-up** (Yes / No).
 * Both end with **First serve**: pick **Us** or **Them** for the team serving the first game, or **Skip** if you don't want the serving indicator. The match starts right after.
+* **Training** — starts right away (see [Training](#training)).
 
 Use `Up` / `Down` to move in menus and `Enter` to select. For exact scoring mechanics (set lengths, tie-breaks, deuce rules), see [Match rules reference](#match-rules-reference).
 
@@ -135,6 +137,23 @@ The tournament presets keep their fixed rules, so they don't show this option.
 <img src="screenshots/switch-format/fenix847mm_super_1_0.png" width="240" alt="Super tie-break after switching">
 </p>
 
+### Training
+
+**Training** starts in **free play**: nothing is scored, and the screen shows how long you've been playing. Free play is also your warm-up.
+
+To play for points, open **Options** → **Start drill** and pick a **tie-break**, **super tie-break**, **mini set** or **set**. The drill is scored like a match, and **Drills: x - y** at the top counts the drills won. A won drill goes back to free play by itself; **End drill** stops one early (its score so far is kept) and **Next drill** goes straight to another.
+
+Each free-play period and each drill is its own lap in the activity, with the drill's result on it.
+
+<p align="center">
+<img src="screenshots/training/fenix847mm_free_play.png" width="240" alt="Training in free play with a timer">
+<img src="screenshots/training/fenix847mm_options_free.png" width="240" alt="Options in free play: Start drill">
+</p>
+<p align="center">
+<img src="screenshots/training/fenix847mm_options_drill.png" width="240" alt="Options during a drill: End drill and Next drill">
+<img src="screenshots/training/fenix847mm_banner_won.png" width="240" alt="A won super tie-break, back to free play">
+</p>
+
 ### After the last point (limited matches)
 
 If the match ends because a player/team has won the required sets, a **summary** screen is shown. Press **`Enter`** or tap to open **Finish activity** and save or discard as above.
@@ -178,6 +197,10 @@ When the match configuration uses a super tie for the decider, that **entire fin
 ### Tie-break, super tie-break or mini set chosen mid-match
 
 With **Switch to** (Friendly and Custom), a set can be played as a single **tie-break** (first to **7** points, win by 2), a single **super tie-break** (first to **10**, win by 2) or a **mini set** (see the set types table). It counts as one set for whoever wins it; in a 3- or 5-set match it counts towards the sets needed to win. A set dropped by switching counts for nobody and isn't written to the score.
+
+### Training drills
+
+In **Training**, drills use the same rules: **tie-break** (first to 7, win by 2), **super tie-break** (first to 10, win by 2), **mini set** and **set** (see the set types table), with golden point. A won drill counts as one drill for the winner (**Drills: x - y**). Results say which drill it was: `TB` = tie-break, `ST` = super tie-break, `MS` = mini set, no prefix = set. Tie-break results are written in brackets, for example `TB [7-5]`. A drill ended early is written with its score so far (`TB [4-3]`, `MS 4-3`) but counts for nobody; such a score can't be a finished drill, so it needs no marker.
 
 ### Point rules at deuce (40–40)
 

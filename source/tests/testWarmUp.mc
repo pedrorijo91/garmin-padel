@@ -2,7 +2,7 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.Test;
 
-// Warm-up phase (plan 5): the session starts with a warm-up lap; the first press ends it without scoring.
+// Warm-up phase: the session starts with a warm-up lap; the first press ends it without scoring.
 
 function warmUpMatch(config as MatchConfig) as PadelMatch {
     config.setWarmUp(true);
@@ -14,7 +14,7 @@ function warmUpOffByDefaultTest(logger as Logger) as Boolean {
     // existing tests and "Warm-up: No" start straight in the match phase, as before
     var match = new PadelMatch(getConfig());
     var status = match.getMatchStatus();
-    var ok = !match.isWarmingUp() && status.getPhase() == MatchStatus.PHASE_MATCH;
+    var ok = !match.isWarmingUp() && status.getSetFormat() == MatchConfig.FORMAT_DEFAULT;
     match.incP1();
     return ok && match.getMatchStatus().getP1Score() == 15;
 }
@@ -22,7 +22,7 @@ function warmUpOffByDefaultTest(logger as Logger) as Boolean {
 (:test)
 function warmUpStartsInWarmUpTest(logger as Logger) as Boolean {
     var match = warmUpMatch(getConfig());
-    return match.isWarmingUp() && match.getMatchStatus().getPhase() == MatchStatus.PHASE_WARM_UP;
+    return match.isWarmingUp() && match.getMatchStatus().getSetFormat() == MatchConfig.FORMAT_FREE;
 }
 
 (:test)
@@ -82,7 +82,7 @@ function warmUpUndoDoesNotGoBackTest(logger as Logger) as Boolean {
     match.undo();
     match.undo();
     var status = match.getMatchStatus();
-    return ok && !match.isWarmingUp() && status.getP1Score() == 0 && status.getPhase() == MatchStatus.PHASE_MATCH;
+    return ok && !match.isWarmingUp() && status.getP1Score() == 0 && status.getSetFormat() == MatchConfig.FORMAT_DEFAULT;
 }
 
 (:test)

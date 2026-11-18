@@ -274,7 +274,7 @@ function switchAllowedOnlyInFriendlyAndCustomTest(logger as Logger) as Boolean {
 
 (:test)
 function switchWithWarmUpTest(logger as Logger) as Boolean {
-    // plan 5 + plan 1: warm-up lap first, then a mid-set switch adds one more lap; a switch with nothing played adds none
+    // warm-up lap first, then a mid-set switch adds one more lap; a switch with nothing played adds none
     var config = GameModes.configForMode(GameModes.MODE_FRIENDLY) as MatchConfig;
     var match = warmUpMatch(config);
     var app = Application.getApp();

@@ -23,7 +23,7 @@ class EndOfMatchDelegate extends WatchUi.InputDelegate {
     }
 
     private function showFinishMenu() as Void {
-        var score = Application.getApp().getScoreString();
+        var score = Application.getApp().getMatch().getScoreString();
         var menu = new WatchUi.Menu2({:title=>"Finish Activity"});
         menu.addItem(
             new MenuItem("Save and exit", score, :finish_save_exit, {})
