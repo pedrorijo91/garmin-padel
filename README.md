@@ -31,7 +31,7 @@ Keeps full padel match score: sets, games, standard **tie-breaks**, and **super 
 
 **Activity / Garmin Connect**
 
-* Records a **padel** activity; on save, writes **match score** (full history string), **steps** during the session, **unforced errors** count, **warm-up length** (when there was a warm-up) and **app version** into the activity for Connect / FIT.
+* Records a **padel** activity; on save, writes **match score** (full history string; not in Training, where each lap has its own result), **steps** during the session, **unforced errors** count, **warm-up length** (when there was a warm-up) and **app version** into the activity for Connect / FIT.
 * **Laps**: with a warm-up, **lap 1 is the warm-up** and each set after it is its own lap (lap 2 = set 1, lap 3 = set 2, ...). Without a warm-up, lap 1 is set 1. Switching format in the middle of a set (**Switch to**) also starts a new lap. In **Training**, every free-play period and every drill is its own lap, with the drill's result saved on that lap.
 
 ## How to use
@@ -167,7 +167,7 @@ A drill that you end early (with **End drill**, **Next drill** or **Finish activ
 
 The serving indicator is **off** in training, because players usually decide who serves for each drill. During a drill, **Options** → **Switch server** turns it on with your team serving. Each new drill starts with it off again.
 
-**What is saved:** every free-play period and every drill is its own **lap**, and each lap has a **Lap Score**: the drill's result (`TB [7-5]`, `ST [10-8]`, `MS 6-4`, `6-3` for a set), `Free` for free play, including a drill ended early (for example `TB [4-3]`). The activity's **score** is a summary, for example `Drills 2-1: TB [7-5] / ST [8-10] / MS 6-4` (drills won by us - them, then each drill). The score field holds 49 characters, so after about 3 or 4 drills it keeps only the first ones; the laps always have all of them. A lap can't be changed once it is saved: if you undo the winning point of a drill (or undo **End drill** / **Next drill**), the lap already saved for it stays, and the drill gets a second lap when it ends again. The activity's score is always right.
+**What is saved:** every free-play period and every drill is its own **lap**, and each lap has a **Lap Score**: the drill's result (`TB [7-5]`, `ST [10-8]`, `MS 6-4`, `6-3` for a set), `Free` for free play, and the score so far of a drill ended early (for example `TB [4-3]`). Training activities have **no activity score**: the score field holds only 49 characters, too few for a whole training, so the laps are the record. On the watch, **Finish activity** shows a summary such as `Drills 2-1: TB [7-5] / ST [8-10] / MS 6-4` (drills won by us - them, then each drill). A lap can't be changed once it is saved: if you undo the winning point of a drill (or undo **End drill** / **Next drill**), the lap already saved for it stays, and the drill gets a second lap when it ends again.
 
 ### After the last point (limited matches)
 

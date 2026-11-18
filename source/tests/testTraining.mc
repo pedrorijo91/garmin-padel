@@ -293,25 +293,8 @@ function trainingUnforcedErrorsCountEverywhereTest(logger as Logger) as Boolean 
 }
 
 (:test)
-function trainingScoreStringLimitsTest(logger as Logger) as Boolean {
-    // eight drills overflow the 49-character session field: cut on a whole result
-    var match = trainingMatch();
-    for (var i = 0; i < 8; i++) {
-        match.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
-        playPointsP2(match, 8);
-        playPointsP1(match, 10);
-        match.switchSetFormat(MatchConfig.FORMAT_TIE_BREAK); // TB [7-5]
-        playPointsP2(match, 5);
-        playPointsP1(match, 7);
-    }
-    var full = scoreString(match);
-    var cut = fitString(full, FIT_STRING_MAX);
-    // "Drills 16-0: ST [10-8] / TB [7-5] / ST [10-8]" = 44 characters
-    if (!cut.equals("Drills 16-0: ST [10-8] / TB [7-5] / ST [10-8]")) {
-        logger.error("cut=" + cut + " full=" + full);
-        return false;
-    }
-    // every drill's result fits its lap field
+function trainingLapLabelLimitsTest(logger as Logger) as Boolean {
+    // every drill result fits the 15-character lap field (training saves no session score)
     var longest = ["MS 7-6 (12)", "ST [12-10]", "Free"];
     for (var i = 0; i < longest.size(); i++) {
         if (!fitString(longest[i], LAP_STRING_MAX).equals(longest[i])) {
@@ -319,5 +302,6 @@ function trainingScoreStringLimitsTest(logger as Logger) as Boolean {
             return false;
         }
     }
+    // a longer label is cut on purpose, never left to the platform
     return fitString("1234567890123456789", LAP_STRING_MAX).length() == LAP_STRING_MAX;
 }
