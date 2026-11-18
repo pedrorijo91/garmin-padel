@@ -30,7 +30,7 @@ class PadelMatch {
         return Time.now().value();
     }
 
-    // --- Training (plan 2) ---
+    // --- Training ---
 
     function isTraining() as Boolean {
         return self.matchEngine.isTraining();

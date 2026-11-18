@@ -15,7 +15,7 @@ class MatchConfig {
 
     // Format of one set (segment) of the session. The first three match SET_TYPE_* one to one.
     // FORMAT_DEFAULT = whatever the match config says for that set (default set type, or the deciding super tie).
-    // FORMAT_FREE = free play (training, warm-up): no score, Up/Down do nothing. Plan 3 adds a timed set.
+    // FORMAT_FREE = free play (training, warm-up): nothing is scored.
     public static const FORMAT_DEFAULT = -1;
     public static const FORMAT_NORMAL = 0;
     public static const FORMAT_PRO = 1;

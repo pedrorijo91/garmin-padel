@@ -54,7 +54,6 @@ class ScoreView extends WatchUi.View {
             }
         }
 
-        // Training free play (plan 2): "Training" (or the drills won so far), "Free play", time in this segment
         if (training && match.isFreePlay()) {
             if (matchStatus.getP1Sets() + matchStatus.getP2Sets() == 0) {
                 setsLabel.setText(Application.loadResource(Rez.Strings.training) as String);

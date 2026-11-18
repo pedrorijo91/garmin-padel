@@ -2,7 +2,7 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.Test;
 
-// Training mode (plan 2): free play, with scored drills started from Options.
+// Training mode: free play, with scored drills started from Options.
 
 function trainingMatch() as PadelMatch {
     return new PadelMatch(GameModes.configForMode(GameModes.MODE_TRAINING) as MatchConfig);

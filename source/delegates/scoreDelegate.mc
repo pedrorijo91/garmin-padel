@@ -87,9 +87,6 @@ class ScoreDelegate extends WatchUi.InputDelegate {
         WatchUi.pushView(menu, new ScoreOptionsMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 
-    // Options in training (plan 2). Free play: Start drill, Undo (only when there is something to undo, e.g.
-    // right after End drill or a won drill), Unforced error, Finish. During a drill: End drill, Next drill,
-    // Undo, Unforced error, Switch server (the serve marker is off until set here), Finish.
     private function pushTrainingOptionsMenu(match as PadelMatch) as Void {
         var menu = new WatchUi.Menu2({:title=>"Options"});
         var free = match.isFreePlay();

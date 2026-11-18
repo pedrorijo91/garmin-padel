@@ -4,10 +4,7 @@ import Toybox.Lang;
 // Owns match state (MatchStatus, undo) and delegates point scoring to the current SetEngine.
 // The current set's format is stored in MatchStatus (setFormat). With FORMAT_DEFAULT the config decides:
 // the default set engine, or the deciding super tie when sets are tied with one set left.
-// A session is a sequence of segments (sets, drills, free play). FORMAT_FREE is free play: no score.
-// Training (defaultFormat = FORMAT_FREE): free play by default, drills chosen from Options, back to free
-// play when a drill is won. A match with a warm-up starts with a FREE segment.
-// Methods that start a segment take `now` (seconds, Time.now().value()): the model never reads the clock.
+// Methods that start a segment (set, drill, free play) take `now` in seconds, so the model never reads the clock.
 class MatchEngine {
 
     static const MAX_UNDO = 5;
@@ -70,10 +67,8 @@ class MatchEngine {
     // current set is dropped (not written to the score, awarded to nobody), a lap is added, and the chosen
     // format starts from scratch (a game in progress is discarded: it doesn't count in gamesPlayed).
     // When the chosen format finishes, the next set goes back to the match default.
-    // Training: Start drill (from free play), Next drill (drill -> drill) and End drill (format FORMAT_FREE).
-    // Every change is a new segment with its own lap; the serving team is reset (off until Switch server).
-    // A drill left unfinished is recorded with its score so far ("TB [4-3]") but counts for nobody.
-    // Leaving free play clears the undo stack: a lap can't be removed, so undo never goes back into it.
+    // In training every change is a new segment, and a drill left unfinished is recorded but counts for nobody.
+    // Leaving free play clears the undo stack: its lap can't be removed, so undo never goes back into it.
     function switchSetFormat(format as Number, now as Number) as Void {
         var training = self.isTraining();
         var fromFree = self.isFreePlay();
@@ -104,18 +99,16 @@ class MatchEngine {
         }
     }
 
-    // The first segment starts when the session starts (no undo entry)
     function startSession(now as Number) as Void {
         self.matchStatus.setSegmentStartTime(now);
     }
 
-    // Training: each drill decides its own server (Options -> Switch server), so a drill starts with none
+    // Training: each drill starts with no server (set with Switch server)
     private function resetServing() as Void {
         self.matchStatus.setFirstServer(-1);
         self.matchStatus.setGamesPlayed(0);
     }
 
-    // Format being played now: the chosen one, or the match default (FORMAT_FREE in training).
     // Doesn't resolve the deciding super tie of a match (it reports the default set type then).
     function currentFormat() as Number {
         var format = self.matchStatus.getSetFormat();
@@ -126,7 +119,6 @@ class MatchEngine {
         return self.defaultFormat == MatchConfig.FORMAT_FREE;
     }
 
-    // free play: training between drills, or the warm-up of a match. Up/Down don't score.
     function isFreePlay() as Boolean {
         return self.currentFormat() == MatchConfig.FORMAT_FREE;
     }
@@ -135,7 +127,6 @@ class MatchEngine {
         return self.undoStack.size() > 0;
     }
 
-    // Short name of a drill format, used in results ("TB [7-5]") and lap labels
     static function drillName(format as Number) as String {
         if (format == MatchConfig.FORMAT_TIE_BREAK) {
             return "TB";
@@ -152,8 +143,7 @@ class MatchEngine {
         return "Set";
     }
 
-    // Label for the FIT lap of the segment in progress: "Free" (or "Warm-up"), or the drill's score so far,
-    // e.g. "TB [4-3]" for a drill stopped early.
+    // Lap label of the segment in progress: "Free", "Warm-up", or the drill's score so far ("TB [4-3]")
     function segmentLabel() as String {
         var format = self.currentFormat();
         if (format == MatchConfig.FORMAT_FREE) {
@@ -162,8 +152,7 @@ class MatchEngine {
         return self.drillResult(self.getCurrentSetEngine(), false);
     }
 
-    // A drill's score with its prefix: "TB [7-5]", "ST [10-8]", "MS 6-4"; a full set has none ("6-3").
-    // finished = false: the score so far ("TB [4-3]", "MS 4-3").
+    // Training results say which drill it was ("TB [7-5]", "MS 6-4"); a full set has no prefix ("6-3").
     private function drillResult(setEngine as SetEngine, finished as Boolean) as String {
         var result = setEngine.formatResult(self.matchStatus, finished);
         var format = self.matchStatus.getSetFormat();
@@ -231,7 +220,7 @@ class MatchEngine {
         self.matchStatus.setFirstServer(parity == 0 ? target : Sides.other(target));
     }
 
-    // Team serving the current point: Sides.SIDE_P1, Sides.SIDE_P2, or -1 if unknown, in training free play or the match is over.
+    // Team serving the current point: Sides.SIDE_P1, Sides.SIDE_P2, or -1 if unknown or the match is over.
     // Serve alternates every game; a tie-break / super tie counts as one game in that alternation.
     // Inside a tie-break the team due to serve serves point 1, then serve changes every 2 points.
     function getServingSide() as Number {
@@ -257,7 +246,7 @@ class MatchEngine {
     // The session starts recording in warm-up; the first Up/Down press (or Options -> Start match) ends it
     // without scoring and adds a lap, so lap 1 is the warm-up. A FIT lap can't be removed, so ending the
     // warm-up clears the undo stack: undo never goes back into the warm-up.
-    // The warm-up is a FREE segment (plan 2) in a match whose default format is a scored set.
+    // The warm-up is a FREE segment.
 
     function startWarmUp() as Void {
         if (!self.isTraining()) {
@@ -299,7 +288,7 @@ class MatchEngine {
         if (self.isMatchOver() || self.isFreePlay()) {
             return res;
         }
-        // training: a drill in progress is listed with its prefix once a point is played ("TB [4-3]")
+        // training: a drill in progress is listed once a point is played
         if (self.isTraining()) {
             if (self.isSetStarted()) {
                 res.add(self.segmentLabel());
@@ -378,7 +367,6 @@ class MatchEngine {
 
     // Records the finished set and prepares the next one. Returns the result written to the history.
     private function resetAfterSetFinish(setEngine as SetEngine, now as Number) as String {
-        // training: say which drill it was ("TB [7-5]"); a match result has no prefix
         var result = self.drillResult(setEngine, true);
         var training = self.isTraining();
         self.matchStatus.addHistoricalScore(result);
@@ -390,7 +378,6 @@ class MatchEngine {
             self.matchStatus.setSetFormat(MatchConfig.FORMAT_DEFAULT);
             self.applyInitialGames(self.getCurrentSetEngine());
             self.matchStatus.setSegmentStartTime(now);
-            // training: a won drill goes back to free play, with no server for the next drill
             if (training) {
                 self.resetServing();
             }
