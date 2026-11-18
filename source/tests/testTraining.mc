@@ -82,25 +82,35 @@ function trainingSuperTieDrillTest(logger as Logger) as Boolean {
 }
 
 (:test)
-function trainingEndDrillDropsItTest(logger as Logger) as Boolean {
+function trainingEndDrillRecordsScoreSoFarTest(logger as Logger) as Boolean {
     var match = trainingMatch();
     match.switchSetFormat(MatchConfig.FORMAT_TIE_BREAK);
     playPointsP1(match, 4);
     playPointsP2(match, 3);
-    // Finish during a drill: the drill in progress isn't in the score
-    if (match.getHistoricalScores().size() != 0 || !match.segmentLabel().equals("TB ended")) {
-        logger.error("in progress listed: " + match.getHistoricalScores() + " label=" + match.segmentLabel());
+    // Finish during a drill: its score so far is in the score
+    var history = match.getHistoricalScores();
+    if (history.size() != 1 || !history[0].equals("TB [4-3]") || !match.segmentLabel().equals("TB [4-3]")) {
+        logger.error("in progress: " + history + " label=" + match.segmentLabel());
         return false;
     }
     var lapsBefore = Application.getApp().getLapCount();
     match.endDrill();
     var status = match.getMatchStatus();
-    if (!match.isFreePlay() || match.getHistoricalScores().size() != 0 || status.getP1Sets() + status.getP2Sets() != 0) {
+    history = match.getHistoricalScores();
+    // recorded as 4-3, but counts for nobody
+    if (!match.isFreePlay() || history.size() != 1 || !history[0].equals("TB [4-3]") || status.getP1Sets() + status.getP2Sets() != 0) {
         logger.error("after end: free=" + match.isFreePlay() + " " + printMatchStatus(status));
         return false;
     }
-    return status.getP1TieScore() == 0 && status.getP2TieScore() == 0 && lapsSince(lapsBefore) == 1
-        && lastLap().equals("TB ended");
+    if (status.getP1TieScore() != 0 || status.getP2TieScore() != 0 || lapsSince(lapsBefore) != 1 || !lastLap().equals("TB [4-3]")
+            || !scoreString(match).equals("Drills 0-0: TB [4-3]")) {
+        logger.error("laps=" + lapsSince(lapsBefore) + " label=" + lastLap() + " score=" + scoreString(match));
+        return false;
+    }
+    // a drill ended before any point isn't written to the score (its lap is still labelled)
+    match.switchSetFormat(MatchConfig.FORMAT_MINI);
+    match.endDrill();
+    return match.getHistoricalScores().size() == 1 && lastLap().equals("MS 2-2");
 }
 
 (:test)
@@ -169,19 +179,21 @@ function trainingNextDrillTest(logger as Logger) as Boolean {
     match.switchSetFormat(MatchConfig.FORMAT_TIE_BREAK);
     playPointsP1(match, 4);
     playPointsP2(match, 3);
-    // Next drill: straight to a super tie, no free play in between, one lap
+    // Next drill: straight to a super tie, no free play in between, one lap; the tie-break is kept as 4-3
     var lapsBefore = Application.getApp().getLapCount();
     match.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
     var status = match.getMatchStatus();
     if (match.isFreePlay() || !match.isInSuperTieBreak() || status.getP1TieScore() != 0 || status.getP2TieScore() != 0
-            || lapsSince(lapsBefore) != 1 || !lastLap().equals("TB ended") || match.getHistoricalScores().size() != 0) {
+            || lapsSince(lapsBefore) != 1 || !lastLap().equals("TB [4-3]") || match.getHistoricalScores().size() != 1) {
         logger.error("next ST: laps=" + lapsSince(lapsBefore) + " label=" + lastLap() + " " + printMatchStatus(status));
         return false;
     }
     // an untouched drill is still its own segment: a lap even with no points
     match.switchSetFormat(MatchConfig.FORMAT_MINI);
     status = match.getMatchStatus();
-    if (status.getP1Games() != 2 || status.getP2Games() != 2 || lapsSince(lapsBefore) != 2 || !lastLap().equals("ST ended")) {
+    // the untouched super tie isn't written to the score
+    if (status.getP1Games() != 2 || status.getP2Games() != 2 || lapsSince(lapsBefore) != 2 || !lastLap().equals("ST [0-0]")
+            || match.getHistoricalScores().size() != 1) {
         logger.error("next MS: laps=" + lapsSince(lapsBefore) + " " + printMatchStatus(status));
         return false;
     }
@@ -300,7 +312,7 @@ function trainingScoreStringLimitsTest(logger as Logger) as Boolean {
         return false;
     }
     // every drill's result fits its lap field
-    var longest = ["MS 7-6 (12)", "ST [12-10]", "Set ended", "Free"];
+    var longest = ["MS 7-6 (12)", "ST [12-10]", "Free"];
     for (var i = 0; i < longest.size(); i++) {
         if (!fitString(longest[i], LAP_STRING_MAX).equals(longest[i])) {
             logger.error("lap label cut: " + longest[i]);

@@ -52,7 +52,7 @@ class PadelMatch {
         return secs < 0 ? 0 : secs;
     }
 
-    // FIT lap label for the segment in progress when the activity is saved ("Free", "TB ended")
+    // FIT lap label for the segment in progress when the activity is saved ("Free", "TB [4-3]")
     function segmentLabel() as String {
         return self.matchEngine.segmentLabel();
     }

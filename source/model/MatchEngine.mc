@@ -72,6 +72,7 @@ class MatchEngine {
     // When the chosen format finishes, the next set goes back to the match default.
     // Training: Start drill (from free play), Next drill (drill -> drill) and End drill (format FORMAT_FREE).
     // Every change is a new segment with its own lap; the serving team is reset (off until Switch server).
+    // A drill left unfinished is recorded with its score so far ("TB [4-3]") but counts for nobody.
     // Leaving free play clears the undo stack: a lap can't be removed, so undo never goes back into it.
     function switchSetFormat(format as Number, now as Number) as Void {
         var training = self.isTraining();
@@ -80,11 +81,15 @@ class MatchEngine {
             return;
         }
         var label = self.segmentLabel();
-        var newSegment = training || self.isSetStarted();
+        var started = self.isSetStarted();
+        var newSegment = training || started;
         if (fromFree) {
             self.undoStack = [];
         } else {
             self.saveMatchStatus();
+        }
+        if (training && !fromFree && started) {
+            self.matchStatus.addHistoricalScore(label);
         }
         self.matchStatus.resetGames();
         self.matchStatus.resetScores();
@@ -147,14 +152,25 @@ class MatchEngine {
         return "Set";
     }
 
-    // Label for the FIT lap of the segment being left without a result: "Free" (or "Warm-up"), or e.g.
-    // "TB ended" for a drill stopped early (its score isn't recorded, as for a dropped set).
+    // Label for the FIT lap of the segment in progress: "Free" (or "Warm-up"), or the drill's score so far,
+    // e.g. "TB [4-3]" for a drill stopped early.
     function segmentLabel() as String {
         var format = self.currentFormat();
         if (format == MatchConfig.FORMAT_FREE) {
             return self.isTraining() ? "Free" : "Warm-up";
         }
-        return drillName(format) + " ended";
+        return self.drillResult(self.getCurrentSetEngine(), false);
+    }
+
+    // A drill's score with its prefix: "TB [7-5]", "ST [10-8]", "MS 6-4"; a full set has none ("6-3").
+    // finished = false: the score so far ("TB [4-3]", "MS 4-3").
+    private function drillResult(setEngine as SetEngine, finished as Boolean) as String {
+        var result = setEngine.formatResult(self.matchStatus, finished);
+        var format = self.matchStatus.getSetFormat();
+        if (self.isTraining() && format != MatchConfig.FORMAT_NORMAL) {
+            result = drillName(format) + " " + result;
+        }
+        return result;
     }
 
     // true when points have been played in the current set, so switching format drops it
@@ -280,8 +296,14 @@ class MatchEngine {
     // played ("3-1"), or its points for a tie-break / super tie set ("[5-3]").
     function getHistoricalScores() as Lang.Array<Lang.String> {
         var res = self.matchStatus.getHistoricalScores();
-        // training: a drill in progress isn't listed (an unfinished drill is never recorded)
-        if (self.isMatchOver() || self.isTraining()) {
+        if (self.isMatchOver() || self.isFreePlay()) {
+            return res;
+        }
+        // training: a drill in progress is listed with its prefix once a point is played ("TB [4-3]")
+        if (self.isTraining()) {
+            if (self.isSetStarted()) {
+                res.add(self.segmentLabel());
+            }
             return res;
         }
         var setEngine = self.getCurrentSetEngine();
@@ -356,15 +378,9 @@ class MatchEngine {
 
     // Records the finished set and prepares the next one. Returns the result written to the history.
     private function resetAfterSetFinish(setEngine as SetEngine, now as Number) as String {
-        var result = setEngine.formatResult(self.matchStatus, true);
+        // training: say which drill it was ("TB [7-5]"); a match result has no prefix
+        var result = self.drillResult(setEngine, true);
         var training = self.isTraining();
-        if (training) {
-            // say which drill it was: "TB [7-5]", "ST [10-8]", "MS 6-4"; a full set stays "6-3"
-            var format = self.matchStatus.getSetFormat();
-            if (format != MatchConfig.FORMAT_NORMAL) {
-                result = drillName(format) + " " + result;
-            }
-        }
         self.matchStatus.addHistoricalScore(result);
         self.matchStatus.resetGames();
         // a match that ends keeps its final tie points (e.g. the deciding super tie 10-8)

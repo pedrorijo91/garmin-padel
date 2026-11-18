@@ -88,7 +88,7 @@ class GarminpadelApp extends Application.AppBase {
         return scoreString(self.getMatch());
     }
 
-    // Ends the current lap. label: the result of the segment that ends ("TB [7-5]", "Free", "TB ended"),
+    // Ends the current lap. label: the result of the segment that ends ("TB [7-5]", "Free", or "TB [4-3]" for a drill ended early),
     // written to the lap's score field in training; ignored in a match (null is fine).
     function lapSession(label as String or Null) as Void {
         self.setLapLabel(label);

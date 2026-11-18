@@ -99,9 +99,9 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 menu.addItem(new MenuItem(rez(Rez.Strings.undo), "", :score_option_undo, {}));
             }
         } else {
-            // an unfinished drill is not recorded: say what ending it drops
+            // an unfinished drill is saved with its score so far (counting for nobody): say what is saved
             var sub = match.isSetStarted()
-                ? rez(Rez.Strings.switch_format_drops) + match.currentSetResult()
+                ? rez(Rez.Strings.end_drill_saves) + match.currentSetResult()
                 : rez(Rez.Strings.end_drill_sub);
             menu.addItem(new MenuItem(rez(Rez.Strings.end_drill), sub, :score_option_end_drill, {}));
             menu.addItem(new MenuItem(rez(Rez.Strings.next_drill), rez(Rez.Strings.start_drill_sub), :score_option_switch_format, {}));

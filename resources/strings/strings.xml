@@ -62,6 +62,7 @@
     <string id="next_drill">Next drill</string>
     <string id="end_drill">End drill</string>
     <string id="end_drill_sub">Back to free play</string>
+    <string id="end_drill_saves">Saves </string>
     <string id="undo">Undo</string>
     <string id="fit_lap_score_label">Lap Score</string>
     <string id="fit_lap_score_units"> </string>

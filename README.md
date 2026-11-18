@@ -154,7 +154,7 @@ During a drill the score screen looks like a match, with **Drills: x - y** (dril
 * **In free play**: **Start drill**, **Undo** (only when there is something to undo, for example right after ending or winning a drill), **Unforced error**, **Finish activity**.
 * **During a drill**: **End drill** (back to free play), **Next drill** (go straight to another drill), **Undo last point**, **Unforced error**, **Switch server**, **Finish activity**.
 
-A drill that you end early (with **End drill**, **Next drill** or **Finish activity**) is **not recorded** and counts for nobody, like a set dropped with **Switch to**. Its sub-label says what it drops (for example `Drops [4-3]`). **Undo** right after **End drill** or **Next drill** brings the drill back exactly. Undo never goes back into a free-play period once a drill has started from it (that free-play period is already saved as a lap).
+A drill that you end early (with **End drill**, **Next drill** or **Finish activity**) is **saved with its score so far**, for example `TB [4-3]`, but counts for nobody in **Drills: x - y**. The sub-label of **End drill** shows what will be saved (for example `Saves [4-3]`). A drill ended before any point is played isn't written to the score. **Undo** right after **End drill** or **Next drill** brings the drill back exactly. Undo never goes back into a free-play period once a drill has started from it (that free-play period is already saved as a lap).
 
 <p align="center">
 <img src="screenshots/training/fenix847mm_free_play.png" width="240" alt="Training in free play with a timer">
@@ -167,7 +167,7 @@ A drill that you end early (with **End drill**, **Next drill** or **Finish activ
 
 The serving indicator is **off** in training, because players usually decide who serves for each drill. During a drill, **Options** → **Switch server** turns it on with your team serving. Each new drill starts with it off again.
 
-**What is saved:** every free-play period and every drill is its own **lap**, and each lap has a **Lap Score**: the drill's result (`TB [7-5]`, `ST [10-8]`, `MS 6-4`, `6-3` for a set), `Free` for free play, or for example `TB ended` for a drill that was ended early. The activity's **score** is a summary, for example `Drills 2-1: TB [7-5] / ST [8-10] / MS 6-4` (drills won by us - them, then each drill). The score field holds 49 characters, so after about 4 drills it keeps only the first ones; the laps always have all of them.
+**What is saved:** every free-play period and every drill is its own **lap**, and each lap has a **Lap Score**: the drill's result (`TB [7-5]`, `ST [10-8]`, `MS 6-4`, `6-3` for a set), `Free` for free play, including a drill ended early (for example `TB [4-3]`). The activity's **score** is a summary, for example `Drills 2-1: TB [7-5] / ST [8-10] / MS 6-4` (drills won by us - them, then each drill). The score field holds 49 characters, so after about 3 or 4 drills it keeps only the first ones; the laps always have all of them.
 
 ### After the last point (limited matches)
 
@@ -215,7 +215,7 @@ With **Switch to** (Friendly and Custom), a set can be played as a single **tie-
 
 ### Training drills
 
-In **Training**, drills use the same rules: **tie-break** (first to 7, win by 2), **super tie-break** (first to 10, win by 2), **mini set** and **set** (see the set types table), with golden point. A won drill counts as one drill for the winner (**Drills: x - y**). Results say which drill it was: `TB` = tie-break, `ST` = super tie-break, `MS` = mini set, no prefix = set. Tie-break results are written in brackets, for example `TB [7-5]`. A drill ended early counts for nobody and isn't written to the score.
+In **Training**, drills use the same rules: **tie-break** (first to 7, win by 2), **super tie-break** (first to 10, win by 2), **mini set** and **set** (see the set types table), with golden point. A won drill counts as one drill for the winner (**Drills: x - y**). Results say which drill it was: `TB` = tie-break, `ST` = super tie-break, `MS` = mini set, no prefix = set. Tie-break results are written in brackets, for example `TB [7-5]`. A drill ended early is written with its score so far (`TB [4-3]`, `MS 4-3`) but counts for nobody; such a score can't be a finished drill, so it needs no marker.
 
 ### Point rules at deuce (40–40)
 
