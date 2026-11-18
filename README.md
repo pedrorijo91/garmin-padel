@@ -167,7 +167,7 @@ A drill that you end early (with **End drill**, **Next drill** or **Finish activ
 
 The serving indicator is **off** in training, because players usually decide who serves for each drill. During a drill, **Options** → **Switch server** turns it on with your team serving. Each new drill starts with it off again.
 
-**What is saved:** every free-play period and every drill is its own **lap**, and each lap has a **Lap Score**: the drill's result (`TB [7-5]`, `ST [10-8]`, `MS 6-4`, `6-3` for a set), `Free` for free play, including a drill ended early (for example `TB [4-3]`). The activity's **score** is a summary, for example `Drills 2-1: TB [7-5] / ST [8-10] / MS 6-4` (drills won by us - them, then each drill). The score field holds 49 characters, so after about 3 or 4 drills it keeps only the first ones; the laps always have all of them.
+**What is saved:** every free-play period and every drill is its own **lap**, and each lap has a **Lap Score**: the drill's result (`TB [7-5]`, `ST [10-8]`, `MS 6-4`, `6-3` for a set), `Free` for free play, including a drill ended early (for example `TB [4-3]`). The activity's **score** is a summary, for example `Drills 2-1: TB [7-5] / ST [8-10] / MS 6-4` (drills won by us - them, then each drill). The score field holds 49 characters, so after about 3 or 4 drills it keeps only the first ones; the laps always have all of them. A lap can't be changed once it is saved: if you undo the winning point of a drill (or undo **End drill** / **Next drill**), the lap already saved for it stays, and the drill gets a second lap when it ends again. The activity's score is always right.
 
 ### After the last point (limited matches)
 
