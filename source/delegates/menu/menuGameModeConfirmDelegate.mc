@@ -18,7 +18,6 @@ class MenuGameModeConfirmDelegate extends WatchUi.Menu2InputDelegate {
             return;
         }
         // MatchConfig was already populated in MenuGameModeDelegate. Last step: who serves first (starts the match).
-        // Training skips it: the serve marker is off until Options -> Switch server during a drill.
         if (Application.getApp().getMatchConfig().getTraining()) {
             MenuFirstServeDelegate.startMatch(-1);
             return;

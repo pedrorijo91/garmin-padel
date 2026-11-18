@@ -28,7 +28,6 @@ class MenuGameModeDelegate extends WatchUi.Menu2InputDelegate {
             appConfig.setSuperTie(presetConfig.getSuperTie());
             appConfig.setPointRule(presetConfig.getPointRule());
             var training = presetConfig.getTraining();
-            // training starts in free play, which already is the warm-up
             appConfig.setWarmUp(training ? false : MenuWarmUpDelegate.WARM_UP_DEFAULT);
             appConfig.setFormatSwitch(presetConfig.getFormatSwitch());
             appConfig.setTraining(training);

@@ -32,7 +32,6 @@ class MatchConfig {
     private var warmUp as Boolean;
     // players may switch the current set to a tie-break / super tie / mini set (Friendly and Custom only)
     private var formatSwitch as Boolean;
-    // training session: free play by default, scored drills started from Options, never ends by itself
     private var training as Boolean;
 
     function initialize() {

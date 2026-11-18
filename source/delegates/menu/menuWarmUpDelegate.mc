@@ -2,7 +2,7 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-// Warm-up setup choice (plan 5). "Yes": the match starts in a warm-up phase recorded as its own lap (lap 1);
+// Warm-up setup choice. "Yes": the match starts in a warm-up phase recorded as its own lap (lap 1);
 // the first Up/Down press starts the match without scoring. "No": scoring starts at once, as before.
 // Custom flow: its own step after the score rule. Presets: a toggle line on the confirm screen.
 class MenuWarmUpDelegate extends WatchUi.Menu2InputDelegate {

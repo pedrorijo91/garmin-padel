@@ -2,7 +2,7 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.Test;
 
-// Warm-up phase (plan 5): the session starts with a warm-up lap; the first press ends it without scoring.
+// Warm-up phase: the session starts with a warm-up lap; the first press ends it without scoring.
 
 function warmUpMatch(config as MatchConfig) as PadelMatch {
     config.setWarmUp(true);

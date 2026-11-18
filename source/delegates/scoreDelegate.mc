@@ -96,7 +96,6 @@ class ScoreDelegate extends WatchUi.InputDelegate {
                 menu.addItem(new MenuItem(rez(Rez.Strings.undo), "", :score_option_undo, {}));
             }
         } else {
-            // an unfinished drill is saved with its score so far (counting for nobody): say what is saved
             var sub = match.isSetStarted()
                 ? rez(Rez.Strings.end_drill_saves) + match.currentSetResult()
                 : rez(Rez.Strings.end_drill_sub);
@@ -117,7 +116,7 @@ class ScoreDelegate extends WatchUi.InputDelegate {
         return Application.loadResource(id) as String;
     }
 
-    // Options during the warm-up (plan 5): no Undo or Unforced error (nothing to undo, no points yet).
+    // Options during the warm-up: no Undo or Unforced error (nothing to undo, no points yet).
     private function pushWarmUpOptionsMenu() as Void {
         var menu = new WatchUi.Menu2({:title=>"Options"});
         menu.addItem(

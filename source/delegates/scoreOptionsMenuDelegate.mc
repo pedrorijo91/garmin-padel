@@ -34,10 +34,8 @@ class ScoreOptionsMenuDelegate extends WatchUi.Menu2InputDelegate {
         } else if (item.getId() == :format_mini) {
             switchSetFormat(MatchConfig.FORMAT_MINI);
         } else if (item.getId() == :format_normal) {
-            // training only: a full set as a drill
             switchSetFormat(MatchConfig.FORMAT_NORMAL);
         } else if (item.getId() == :score_option_end_drill) {
-            // training: back to free play; the drill's score is not recorded (undo brings it back)
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             Application.getApp().getMatch().endDrill();
         } else if (item.getId() == :score_option_finish) {
@@ -55,13 +53,12 @@ class ScoreOptionsMenuDelegate extends WatchUi.Menu2InputDelegate {
             );
             WatchUi.pushView(menu, new FinishActivityMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
         } else if (item.getId() == :score_option_start_match) {
-            // warm-up only (plan 5): end it without scoring
+            // warm-up only: end it without scoring
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             Application.getApp().getMatch().endWarmUp();
         }
     }
 
-    // "Switch to" submenu, or "Start drill" / "Next drill" in training (with a full Set too).
     // Its items are handled by this delegate too (saves a class on low-memory devices).
     private function pushSwitchFormatMenu() as Void {
         var match = Application.getApp().getMatch();

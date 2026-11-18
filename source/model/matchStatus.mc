@@ -31,9 +31,7 @@ class MatchStatus {
     // Used to work out the serving team, which alternates every game.
     private var gamesPlayed as Number;
 
-    // format of the current set / segment (MatchConfig.FORMAT_*), chosen by the players: a drill, a switched set,
-    // or FORMAT_FREE for the warm-up. FORMAT_DEFAULT = the match config decides (free play in training).
-    // Goes back to FORMAT_DEFAULT when the set finishes.
+    // MatchConfig.FORMAT_*; FORMAT_DEFAULT = the match config decides. Goes back to FORMAT_DEFAULT when the set finishes.
     private var setFormat as Number;
     // when the current segment (set, drill, free play) started, in seconds (Time.now().value()); 0 = not set.
     // Passed in by the caller, so the model never reads the clock. Kept here so undo restores it.

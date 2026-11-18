@@ -36,23 +36,19 @@ class PadelMatch {
         return self.matchEngine.isTraining();
     }
 
-    // Training between drills (no score), or the warm-up of a match
     function isFreePlay() as Boolean {
         return self.matchEngine.isFreePlay();
     }
 
-    // Training: Options -> End drill. The drill's score is not recorded; back to free play. Undoable.
     function endDrill() as Void {
         self.matchEngine.switchSetFormat(MatchConfig.FORMAT_FREE, now());
     }
 
-    // Seconds since the current segment (set, drill, free play) started
     function getSegmentSeconds() as Number {
         var secs = now() - self.matchEngine.getMatchStatus().getSegmentStartTime();
         return secs < 0 ? 0 : secs;
     }
 
-    // FIT lap label for the segment in progress when the activity is saved ("Free", "TB [4-3]")
     function segmentLabel() as String {
         return self.matchEngine.segmentLabel();
     }
@@ -67,7 +63,6 @@ class PadelMatch {
     }
 
     // Play MatchConfig.FORMAT_TIE_BREAK / FORMAT_SUPER_TIE / FORMAT_MINI now. See MatchEngine.switchSetFormat.
-    // Training: Start drill / Next drill (also FORMAT_NORMAL, a full set).
     function switchSetFormat(format as Number) as Void {
         self.matchEngine.switchSetFormat(format, now());
     }
@@ -114,7 +109,7 @@ class PadelMatch {
         return self.matchEngine.getServingSide();
     }
 
-    // Warm-up phase (plan 5): Up/Down end it without scoring.
+    // Warm-up phase: Up/Down end it without scoring.
     function isWarmingUp() as Boolean {
         return self.matchEngine.isWarmingUp();
     }

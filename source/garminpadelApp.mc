@@ -15,16 +15,15 @@ class GarminpadelApp extends Application.AppBase {
     private var initialSetps as Number;
     private var initialDay as Number; // we need to check if the activity crossed the day to correctly compute steps
     private var courtChangeBannerUntil as Number;
-    // text of the banner shown until courtChangeBannerUntil ("Change ends", "Match started" after the warm-up,
-    // or a won drill's result in training)
+    // text of the banner shown until courtChangeBannerUntil
     private var bannerText as ResourceId or String;
-    // laps added this session (test seam for the warm-up lap, plan 5)
+    // laps added this session (test seam)
     private var lapCount as Number;
     // System.getTimer() when the warm-up started, or null if the match has no warm-up
     private var warmUpStartedAt as Number or Null;
     // System.getTimer() when the warm-up ended, or null while it runs
     private var warmUpEndedAt as Number or Null;
-    // training: per-lap score field (each segment's result on its own lap), or null in a match
+    // null outside training
     private var lapScoreField as FitContributor.Field or Null;
     // label written to the last lap (test seam)
     private var lastLapLabel as String or Null;
@@ -61,8 +60,7 @@ class GarminpadelApp extends Application.AppBase {
         var training = self.matchConfig.getTraining();
         var session = ActivityRecording.createSession({:sport => Activity.SPORT_RACKET, :subSport => Activity.SUB_SPORT_PADEL, :name => training ? "Padel training" : "Padel match"});
         self.session = session;
-        // training: each segment's result goes on its own lap, so no drill is lost to the session field's 49 characters.
-        // A lap message has its own 256-byte budget; this field takes 16.
+        // a lap message has its own 256-byte developer-data budget; this field takes 16
         self.lapScoreField = training
             ? session.createField("lap_score", 5, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_LAP, :units => "", :count => LAP_STRING_MAX + 1})
             : null;
@@ -84,8 +82,7 @@ class GarminpadelApp extends Application.AppBase {
         return self.session;
     }
 
-    // Ends the current lap. label: the result of the segment that ends ("TB [7-5]", "Free", or "TB [4-3]" for a drill ended early),
-    // written to the lap's score field in training; ignored in a match (null is fine).
+    // label: the result of the segment that ends; only written in training
     function lapSession(label as String or Null) as Void {
         self.setLapLabel(label);
         var session = getSession();
@@ -107,7 +104,6 @@ class GarminpadelApp extends Application.AppBase {
         return self.lastLapLabel;
     }
 
-    // Training: a drill was won. Vibrate and show its result for a moment; the session is back in free play.
     function onDrillWon(result as String) as Void {
         self.bannerText = result;
         self.courtChangeBannerUntil = System.getTimer() + 2500;
@@ -120,7 +116,7 @@ class GarminpadelApp extends Application.AppBase {
         return self.lapCount;
     }
 
-    // --- Warm-up (plan 5) ---
+    // --- Warm-up ---
 
     // Called by MatchEngine when the warm-up ends: lap 1 = warm-up, then a short vibration and a banner.
     function onWarmUpEnd() as Void {
@@ -175,7 +171,7 @@ class GarminpadelApp extends Application.AppBase {
             return;
         }
 
-        // training: no session score; each drill's result is on its own lap (lap_score), which never runs out of room
+        // training: the results are on the laps (lap_score)
         if (!self.getMatch().isTraining()) {
             var scoreField = session.createField("game_score", 0, FitContributor.DATA_TYPE_STRING, {:mesgType => FitContributor.MESG_TYPE_SESSION, :units => "points", :count => 50});
             var score = fitString(self.getMatch().getScoreString(), FIT_STRING_MAX);

@@ -63,7 +63,7 @@ class ScoreView extends WatchUi.View {
             scoreLabel.setText((secs / 60) + ":" + (secs % 60).format("%02d"));
         }
 
-        // Warm-up (plan 5): no score yet, show its length and how to start the match
+        // Warm-up: no score yet, show its length and how to start the match
         if (match.isWarmingUp()) {
             var secs = Application.getApp().getWarmUpSeconds();
             if (secs < 0) {

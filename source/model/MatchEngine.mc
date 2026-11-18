@@ -103,7 +103,6 @@ class MatchEngine {
         self.matchStatus.setSegmentStartTime(now);
     }
 
-    // Training: each drill starts with no server (set with Switch server)
     private function resetServing() as Void {
         self.matchStatus.setFirstServer(-1);
         self.matchStatus.setGamesPlayed(0);
@@ -242,7 +241,7 @@ class MatchEngine {
         return turns;
     }
 
-    // --- Warm-up phase (plan 5) ---
+    // --- Warm-up phase ---
     // The session starts recording in warm-up; the first Up/Down press (or Options -> Start match) ends it
     // without scoring and adds a lap, so lap 1 is the warm-up. A FIT lap can't be removed, so ending the
     // warm-up clears the undo stack: undo never goes back into the warm-up.
@@ -288,7 +287,6 @@ class MatchEngine {
         if (self.isMatchOver() || self.isFreePlay()) {
             return res;
         }
-        // training: a drill in progress is listed once a point is played
         if (self.isTraining()) {
             if (self.isSetStarted()) {
                 res.add(self.segmentLabel());

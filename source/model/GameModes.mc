@@ -47,7 +47,6 @@ class GameModes {
             return c;
         }
         if (modeId == MODE_TRAINING) {
-            // free play, with scored drills started from Options; never ends by itself
             var c = new MatchConfig();
             c.setNumberOfSets(MatchConfig.UNLIMITED_SETS);
             c.setSetType(MatchConfig.SET_TYPE_NORMAL);
