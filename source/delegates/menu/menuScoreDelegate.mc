@@ -20,6 +20,6 @@ class MenuScoreDelegate extends WatchUi.Menu2InputDelegate {
             rule = MatchConfig.POINT_RULE_STAR;
         }
         Application.getApp().getMatchConfig().setPointRule(rule);
-        MenuFirstServeDelegate.pushMenu();
+        MenuWarmUpDelegate.pushMenu();
     }
 }

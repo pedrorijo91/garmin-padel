@@ -10,7 +10,7 @@ Written 2026-11-16 against `master` at v2.6.0 (`f77f3e7`); updated after the tea
 | 2 | [Training mode](02-training-mode.md) (free play + scored drills) | M | 1 | — | Not started |
 | 3 | [Timed tournament](03-timed-tournament.md) (time-limited sets, breaks) | M–L | 1, 2 (free/break segment) | [#27](https://github.com/pedrorijo91/garmin-padel/issues/27) (closed; "timed tournament" item never built) | Not started |
 | 4 | [Serving indicator](04-serving-indicator.md) (which team serves, then which player) | team S–M, player M | none | [#66](https://github.com/pedrorijo91/garmin-padel/issues/66), [#101](https://github.com/pedrorijo91/garmin-padel/issues/101) (both closed by #152) | **Team level done**, merged in [#152](https://github.com/pedrorijo91/garmin-padel/pull/152) (not released yet; last release v2.6.0). Player level (which of the two partners serves) not started, and no open issue tracks it. |
-| 5 | [Warm-up as its own lap](05-warm-up-lap.md) | S | none (becomes a `FREE` segment once 2 lands) | — | Not started |
+| 5 | [Warm-up as its own lap](05-warm-up-lap.md) | S | none (becomes a `FREE` segment once 2 lands) | — | **Built**, in review (branch `claude/warm-up-lap-e5c273`); default Yes/No still to decide |
 
 Update the **Status** column and the plan's own "Status" section when work starts or lands.
 
@@ -27,7 +27,7 @@ Update the **Status** column and the plan's own "Status" section when work start
 
 1. ~~**Plan 4 (team level)**~~: done in #152.
 2. **Plan 1 next.** It introduces the key refactor: the format of the current set lives in `MatchStatus` and is no longer derived from the fixed config. Plans 2 and 3 are built on it. It must keep the serving indicator right for standalone tie-breaks (see plan 1).
-3. **Plan 5 (warm-up lap)** is small and independent. It can be built at any time. If it lands before plan 2, design its warm-up phase so plan 2 can replace it with a `FREE` segment.
+3. **Plan 5 (warm-up lap)**: built, in review. Its warm-up phase (`MatchStatus.PHASE_WARM_UP`) is meant to be replaced by a `FREE` segment in plan 2.
 4. **Plan 2** adds the unscored "free" segment and "end drill".
 5. **Plan 3** reuses the free segment as the break between rounds and adds the timer.
 6. **Plan 4 (player level)**: show which of the serving team's two players serves, not only which team. Partners alternate their service games and may change the order between sets (see the plan's "Design: player level"). It builds directly on the team-level code and can be done at any time.

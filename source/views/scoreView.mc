@@ -50,6 +50,17 @@ class ScoreView extends WatchUi.View {
             }
         }
 
+        // Warm-up (plan 5): no score yet, show its length and how to start the match
+        if (match.isWarmingUp()) {
+            var secs = Application.getApp().getWarmUpSeconds();
+            if (secs < 0) {
+                secs = 0;
+            }
+            setsLabel.setText(Application.loadResource(Rez.Strings.warm_up) as String);
+            gamesLabel.setText(Application.loadResource(Rez.Strings.warm_up_press_to_start) as String);
+            scoreLabel.setText((secs / 60) + ":" + (secs % 60).format("%02d"));
+        }
+
         var steps = ActivityMonitor.getInfo().steps;
 
         var heartRateIterator = ActivityMonitor.getHeartRateHistory(1, true);
@@ -69,7 +80,7 @@ class ScoreView extends WatchUi.View {
 
         View.onUpdate(dc);
 
-        drawServingIndicator(dc, match.getServingSide());
+        drawServingIndicator(dc, match.isWarmingUp() ? -1 : match.getServingSide());
 
         if (Application.getApp().isCourtChangeBannerVisible()) {
             var w = dc.getWidth();
@@ -82,7 +93,7 @@ class ScoreView extends WatchUi.View {
             dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_DK_GRAY);
             dc.fillRectangle(padX, boxTop, w - 2 * padX, boxH);
             dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
-            var msg = Application.loadResource(Rez.Strings.court_change_ends) as String;
+            var msg = Application.getApp().getBannerText();
             var textY = boxTop + (boxH - fh) / 2;
             dc.drawText(w / 2, textY, Graphics.FONT_MEDIUM, msg, Graphics.TEXT_JUSTIFY_CENTER);
         }

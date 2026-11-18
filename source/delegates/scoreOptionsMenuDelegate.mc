@@ -38,6 +38,10 @@ class ScoreOptionsMenuDelegate extends WatchUi.Menu2InputDelegate {
                 new MenuItem("Cancel", "Back to score", :finish_cancel, {})
             );
             WatchUi.pushView(menu, new FinishActivityMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        } else if (item.getId() == :score_option_start_match) {
+            // warm-up only (plan 5): end it without scoring
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+            Application.getApp().getMatch().endWarmUp();
         }
     }
 

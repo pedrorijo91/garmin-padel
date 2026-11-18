@@ -40,12 +40,44 @@ class ScoreDelegate extends WatchUi.InputDelegate {
 
     // Options menu, opened with ENTER or a long-press.
     private function pushOptionsMenu() as Void {
+        if (Application.getApp().getMatch().isWarmingUp()) {
+            pushWarmUpOptionsMenu();
+            return;
+        }
         var menu = new WatchUi.Menu2({:title=>"Options"});
         menu.addItem(
             new MenuItem("Undo last point", "", :score_option_undo, {})
         );
         menu.addItem(
             new MenuItem("Unforced error", "", :score_option_unforced_error, {})
+        );
+        menu.addItem(
+            new MenuItem(
+                Application.loadResource(Rez.Strings.switch_server) as String,
+                servingSubLabel(),
+                :score_option_switch_server,
+                {}
+            )
+        );
+        menu.addItem(
+            new MenuItem("Finish activity", "", :score_option_finish, {})
+        );
+        menu.addItem(
+            new MenuItem("Cancel", "Back to score", :score_option_cancel, {})
+        );
+        WatchUi.pushView(menu, new ScoreOptionsMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    // Options during the warm-up (plan 5): no Undo or Unforced error (nothing to undo, no points yet).
+    private function pushWarmUpOptionsMenu() as Void {
+        var menu = new WatchUi.Menu2({:title=>"Options"});
+        menu.addItem(
+            new MenuItem(
+                Application.loadResource(Rez.Strings.start_match) as String,
+                Application.loadResource(Rez.Strings.start_match_sub) as String,
+                :score_option_start_match,
+                {}
+            )
         );
         menu.addItem(
             new MenuItem(

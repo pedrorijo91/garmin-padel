@@ -1,6 +1,6 @@
 # Plan 5: Warm-up as its own lap
 
-- **Status:** Not started
+- **Status:** **Built**, in review on branch `claude/warm-up-lap-e5c273` (PR to `master`, not merged yet). The default (Yes or No) and the `warmup_seconds` field still need the maintainer's decision; see [Implementation notes](#implementation-notes) and [Open questions](#open-questions).
 - **Size:** Small
 - **Depends on:** nothing. Can be built on its own now. Once [plan 2](02-training-mode.md) lands, the warm-up becomes just a `FREE` segment (see "Relation to other plans").
 - **GitHub:** none yet
@@ -78,8 +78,27 @@
 - "Warm-up: No" behaves exactly like today.
 - README updated (warm-up phase, what lap 1 means).
 
+## Implementation notes
+
+What was built, and where it differs from the design above:
+
+- **Model:** `MatchStatus.phase` (`PHASE_MATCH = 0`, `PHASE_WARM_UP = 1`), set with a setter and copied in `copy()`. The new constructor sets `PHASE_MATCH`, so tests and "Warm-up: No" behave exactly as before. `MatchConfig.warmUp` defaults to `false`; only the setup menus turn it on, and `PadelMatch` then calls `MatchEngine.startWarmUp()`.
+- **Ending the warm-up:** `MatchEngine.incP1` / `incP2` start with `if (isWarmingUp()) { endWarmUp(); return false; }`, so the press doesn't score. `endWarmUp()` (also behind Options → **Start match**) sets `PHASE_MATCH`, **clears the undo stack**, and calls `GarminpadelApp.onWarmUpEnd()`. That adds the lap, a 300 ms vibration and a 2 s "Match started" banner (it reuses the court-change banner, whose text is now a resource id held by the app). A second call does nothing.
+- **Undo:** never goes back into the warm-up, as designed. Unlike the design, **Switch server stays usable during the warm-up**, and its undo entry is dropped when the warm-up ends. So the plan's "`getServingSide()` returns -1 in warm-up" became: `getServingSide()` is unchanged (so the Switch server sub-label and the flip work), and `ScoreView` doesn't draw the indicator while `isWarmingUp()`.
+- **Timing:** the model holds no clock. `GarminpadelApp` stores `System.getTimer()` at `initMatch()` (only when warm-up is on) and when the warm-up ends. `getWarmUpSeconds()` is still counting during the warm-up, fixed after it ends, and -1 without a warm-up.
+- **Screen:** `ScoreView.onUpdate` reuses the existing labels after the normal score text is set: `setsLabel` = "Warm-up", `gamesLabel` = "Press to start", `scoreLabel` = elapsed `m:ss` in the large font (the timer is the main number on screen). No layout files changed.
+- **Options during the warm-up:** a separate builder, `ScoreDelegate.pushWarmUpOptionsMenu()`: Start match, Switch server, Finish activity, Cancel. `pushOptionsMenu()` only gained an early `return` into it. That keeps the change small next to plan 1, which edits the same builder.
+- **Setup:** `MenuWarmUpDelegate` (new file). Presets: a line **"Warm-up: Yes / No"** on the confirm screen, above "Start match"; selecting it flips the value. Custom flow: its own step, **Warm-up: Yes / No**, after the score rule and before First serve. `MenuWarmUpDelegate.WARM_UP_DEFAULT` (currently `true`) is the only place the default is set. Presets apply it in `MenuGameModeDelegate`, and the custom step uses it for the menu focus.
+- **First serve:** unchanged, still the last setup step before recording starts. During the warm-up the indicator is hidden; it appears with the first match point.
+- **FIT:** built the optional session field **`warmup_seconds`** (ID 4, UINT16, unit `s`, label "Warm-up"). It is only written when the match had a warm-up; if saved during the warm-up it holds the time so far.
+- **Tests:** `source/tests/testWarmUp.mc` (9): off by default; starts in warm-up; Up / Down end it without scoring and add exactly one lap (seam: `GarminpadelApp.getLapCount()`); Options → Start match (and a second call does nothing); undo after the warm-up doesn't go back (including a Switch server made during the warm-up); serving kept and switchable in warm-up; mini set 2-2 after warm-up; full 6-4 6-3 match = 3 laps and an unchanged score string.
+- **Checked in the simulator** (SDK 9.3.0) on fenix847mm, fr265, fr255, instinct2 and venusq2 with a temporary harness (not committed) that calls the real setup, score and Options delegates and draws `ScoreView` into an off-screen bitmap with each device's layout. All warm-up texts and the banner fit on every device. An app-mode run on fenix847mm saved a FIT file with lap 1 = warm-up (42 s), lap 2 = set 1, lap 3 = set 2, `game_score` `6-4 / 6-3`, `warmup_seconds` 41. **No screenshots yet:** the Mac's screen was locked, so the simulator window couldn't be captured.
+- **Plan 2:** `PHASE_WARM_UP` is the placeholder for a `FREE` segment. When plan 2 lands, `isWarmingUp()` becomes "current segment format is FREE", and `endWarmUp()` becomes ending a FREE segment, with the same lap and undo rules.
+
 ## Open questions
 
-- Default "Warm-up: Yes" or "No"? Yes changes behaviour for existing users: their first press won't score. That needs a clear screen ("Warm-up — press to start") and a note in the release notes.
-- Should the first press end warm-up *and* score? (Proposal: no.)
-- Is a `warmup_seconds` field worth it, or are laps enough?
+- Default "Warm-up: Yes" or "No"? Built as **Yes** (one constant to flip). Yes changes behaviour for existing users: their first press won't score. The screen says "Press to start", but it needs a note in the release notes.
+- Should the first press end warm-up *and* score? Built as **no**.
+- Is the `warmup_seconds` field worth it, or are laps enough? Built (cheap). Removing it means dropping one `createField` block and the `fitField id="4"` entry.
+- Remember the last Warm-up choice between matches (`Application.Storage`) instead of resetting to the default each time? Not built.
+- Move "First serve" to the end of the warm-up (teams often decide then)? Not built; Options → Switch server works during the warm-up.
