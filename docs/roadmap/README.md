@@ -2,11 +2,11 @@
 
 This folder holds design plans for planned features. Each plan is meant to be picked up later, by a human developer or a coding agent, without needing the conversation that produced it. Each one includes the user need, the relevant code, the design decisions with reasons, open questions, a test plan and acceptance criteria. When a plan (or part of one) ships, its file keeps an "Implementation notes" section saying what was built and where it differs from the design.
 
-Written 2026-11-16 against `master` at v2.6.0 (`f77f3e7`); updated after the team-level serving indicator ([#152](https://github.com/pedrorijo91/garmin-padel/pull/152), `ccda76d`), the CI device matrix ([#153](https://github.com/pedrorijo91/garmin-padel/pull/153), `d89c9bb`) and the warm-up lap ([#154](https://github.com/pedrorijo91/garmin-padel/pull/154), `a0e4cef`) were merged, and with plan 1 built in [#155](https://github.com/pedrorijo91/garmin-padel/pull/155). Code references use class and function names, not line numbers. If code has moved, search for the name.
+Written 2026-11-16 against `master` at v2.6.0 (`f77f3e7`); updated after the team-level serving indicator ([#152](https://github.com/pedrorijo91/garmin-padel/pull/152), `ccda76d`), the CI device matrix ([#153](https://github.com/pedrorijo91/garmin-padel/pull/153), `d89c9bb`) the warm-up lap ([#154](https://github.com/pedrorijo91/garmin-padel/pull/154), `a0e4cef`) and the set-format switch ([#155](https://github.com/pedrorijo91/garmin-padel/pull/155), `7a18093`) were merged. None of these is in a release yet (`master` is `2.7.0.beta`). Code references use class and function names, not line numbers. If code has moved, search for the name.
 
 | # | Plan | Size | Depends on | GitHub | Status |
 |---|------|------|------------|--------|--------|
-| 1 | [Switch set format mid-match](01-switch-set-format.md) (final tie-break / super tie / mini set) | S–M | — | [#146](https://github.com/pedrorijo91/garmin-padel/issues/146) | **Built**, in review in [#155](https://github.com/pedrorijo91/garmin-padel/pull/155) (not merged). Switch to tie-break / super tie / mini set at any moment, Friendly and Custom only; a started set is dropped, not recorded. |
+| 1 | [Switch set format mid-match](01-switch-set-format.md) (final tie-break / super tie / mini set) | S–M | — | [#146](https://github.com/pedrorijo91/garmin-padel/issues/146) | **Done**, merged in [#155](https://github.com/pedrorijo91/garmin-padel/pull/155) (`7a18093`, not released yet). Switch to tie-break / super tie / mini set at any moment, Friendly and Custom only; a started set is dropped, not recorded. |
 | 2 | [Training mode](02-training-mode.md) (free play + scored drills) | M | 1 | — | Not started |
 | 3 | [Timed tournament](03-timed-tournament.md) (time-limited sets, breaks) | M–L | 1, 2 (free/break segment) | [#27](https://github.com/pedrorijo91/garmin-padel/issues/27) (closed; "timed tournament" item never built) | Not started |
 | 4 | [Serving indicator](04-serving-indicator.md) (which team serves, then which player) | team S–M, player M | none | [#66](https://github.com/pedrorijo91/garmin-padel/issues/66), [#101](https://github.com/pedrorijo91/garmin-padel/issues/101) (both closed by #152) | **Team level done**, merged in [#152](https://github.com/pedrorijo91/garmin-padel/pull/152) (not released yet; last release v2.6.0). Player level (which of the two partners serves) not started, and no open issue tracks it. |
@@ -20,15 +20,15 @@ Update the **Status** column and the plan's own "Status" section when work start
 [done] 4 Serving indicator (team)
                     └──► 4 (player)
 
-[built] 1 Switch set format ──► 2 Training mode ──► 3 Timed tournament
+[done]  1 Switch set format ──► 2 Training mode ──► 3 Timed tournament
                                ▲
                                └── [done] 5 Warm-up lap (standalone now, folds into FREE segment later)
 ```
 
 1. ~~**Plan 4 (team level)**~~: done in #152.
-2. **Plan 1**: built, in review in #155 (for #146). It introduced the key refactor: the format of the current set lives in `MatchStatus.setFormat` (`MatchConfig.FORMAT_*`) and is no longer derived from the fixed config. Plans 2 and 3 are built on it. The switch already works mid-set (the partial set is dropped, not recorded), which plan 2 needs.
+2. ~~**Plan 1**~~: done in #155 (for #146). It introduced the key refactor: the format of the current set lives in `MatchStatus.setFormat` (`MatchConfig.FORMAT_*`) and is no longer derived from the fixed config. Plans 2 and 3 are built on it. The switch already works mid-set (the partial set is dropped, not recorded), which plan 2 needs.
 3. ~~**Plan 5 (warm-up lap)**~~: done in #154. Its warm-up phase (`MatchStatus.PHASE_WARM_UP`) is meant to be replaced by a `FREE` segment in plan 2.
-4. **Plan 2** adds the unscored "free" segment and "end drill".
+4. **Plan 2 (next)** adds the unscored "free" segment and "end drill".
 5. **Plan 3** reuses the free segment as the break between rounds and adds the timer.
 6. **Plan 4 (player level)**: show which of the serving team's two players serves, not only which team. Partners alternate their service games and may change the order between sets (see the plan's "Design: player level"). It builds directly on the team-level code and can be done at any time.
 
@@ -38,14 +38,14 @@ Today a match is "N sets of one type, plus an optional super-tie decider". All o
 
 > A session is a sequence of **segments**. Each segment has a **format**: normal set, pro set, mini set, tie-break (7), super tie-break (10), timed set, or free play / break / warm-up (no score).
 
-- Plan 1 lets the user switch the **current** segment to another format at any moment (built; the unfinished segment is dropped, not recorded).
+- Plan 1 lets the user switch the **current** segment to another format at any moment (done in #155; the unfinished segment is dropped, not recorded).
 - Plan 2 adds the `FREE` format and makes "choose next format" the main way to use the app.
 - Plan 3 adds the `TIMED` format and uses `FREE` for breaks.
 - Plan 5 starts every match with a warm-up, which is a `FREE` segment once plan 2 exists.
 - **Laps:** each segment should be its own FIT lap. Today a lap is added when a set is won, when the warm-up ends (plan 5) and when a started set is dropped by switching format (plan 1).
 - **Serving:** the serving indicator (plan 4) counts `gamesPlayed` across the whole session. Segments that are a new "match" (a training drill, a tournament round) need to decide whether to reset it and ask who serves first again (see plans 2 and 3).
 
-Keep this in mind when implementing plan 1. Name things so that adding formats later does not need another refactor. For example, use a `SetFormat` constant set in `MatchConfig` (or a new `SetFormats` class), not a boolean like `forceSuperTie`.
+Plan 1 laid the base for this: the current format is `MatchStatus.setFormat`, with `MatchConfig.FORMAT_*` constants and `MatchEngine.engineForFormat(format)`. Plans 2 and 3 add `FORMAT_FREE` and `FORMAT_TIMED` there instead of new booleans.
 
 ## How the code works today (needed context)
 

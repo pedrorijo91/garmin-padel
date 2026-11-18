@@ -1,6 +1,6 @@
 # Plan 1: Switch set format mid-match (final tie-break / super tie / mini set)
 
-- **Status:** **Built**, in review in [#155](https://github.com/pedrorijo91/garmin-padel/pull/155) (for [#146](https://github.com/pedrorijo91/garmin-padel/issues/146)), not merged or released yet. Rebased on the warm-up lap (plan 5, #154). The user's decisions below changed the design: the switch works at any moment of the match, not only at the start of a set. See [User decisions](#user-decisions-override-the-design-below) and [Implementation notes](#implementation-notes).
+- **Status:** **Done**, merged to `master` in [#155](https://github.com/pedrorijo91/garmin-padel/pull/155) (`7a18093`, for [#146](https://github.com/pedrorijo91/garmin-padel/issues/146)); not in a release yet. Built on top of the warm-up lap (plan 5, #154). The user's decisions below changed the design: the switch works at any moment of the match, not only at the start of a set. See [User decisions](#user-decisions-override-the-design-below) and [Implementation notes](#implementation-notes).
 - **Size:** Small–medium
 - **Depends on:** nothing
 - **Needed by:** [Plan 2: Training mode](02-training-mode.md), [Plan 3: Timed tournament](03-timed-tournament.md)
