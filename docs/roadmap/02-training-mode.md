@@ -1,6 +1,6 @@
 # Plan 2: Training mode
 
-- **Status:** **Done**, merged in PR_LINK (not released yet). Built as designed, with the proposals taken for every open question; see [Implementation notes](#implementation-notes).
+- **Status:** **Done**, merged in [#156](https://github.com/pedrorijo91/garmin-padel/pull/156) (not released yet). Built as designed, with the proposals taken for every open question; see [Implementation notes](#implementation-notes).
 - **Size:** Medium
 - **Depends on:** [Plan 1: Switch set format](01-switch-set-format.md), **done in #155**. It provides `MatchStatus.setFormat`, `MatchConfig.FORMAT_*`, `MatchEngine.engineForFormat`, `SuperTieSetEngine(7 / 10)`, `SetEngine.formatResult` and `MatchEngine.switchSetFormat`. Read plan 1's [Implementation notes](01-switch-set-format.md#implementation-notes) before starting.
 - **Needed by:** [Plan 3: Timed tournament](03-timed-tournament.md), which reuses the free-play segment as the break between rounds.
