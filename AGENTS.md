@@ -119,10 +119,6 @@ Don't use `-1` or sign checks to mean "unset" for new values. Type them `Number 
 - Gate a feature with a `MatchConfig` flag set by `GameModes` and the custom flow. The UI checks the flag through `PadelMatch`, not a mode name.
 - User-facing text goes in `resources/strings/strings.xml`.
 
-## Product decisions: ask, don't decide silently
-
-When a choice is the maintainer's to make (a default value, what happens on undo, whether to store a field), build the most reasonable option and list it under **"Questions for you"** in the PR description. Give the option you built, the alternative, and the exact place to flip it (e.g. `MenuWarmUpDelegate.WARM_UP_DEFAULT`). Don't block on the answer when the maintainer is away. Once answered, record the decision in the PR description. PRs #154 and #156 are good examples.
-
 ## Git and PR workflow
 
 - **Rebase on the latest `origin/master` before opening a PR and before every push.** Re-run the strict build and the tests after the rebase, and push with `--force-with-lease`. State the base commit in the PR body ("Based on `master` at `abc1234`").
