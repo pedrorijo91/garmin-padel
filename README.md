@@ -44,9 +44,10 @@ When you open the app, the initial screen appears. Press `Enter` / `Start`, or t
 
 You’ll see the **Game Mode** menu first:
 
-* **Tournament**, **Tournament (super)**, **Pro Set Tournament**, **Friendly** or **Training** — pick one, review the summary, then choose **Start match**. The summary has a **Warm-up: Yes / No** line; select it to switch the warm-up on or off.
+* **Tournament**, **Tournament (super)**, **Pro Set Tournament**, or **Friendly** — pick one, review the summary, then choose **Start match**. The summary has a **Warm-up: Yes / No** line; select it to switch the warm-up on or off.
 * **Custom** — walk through **Sets** (1 / 3 / 5 / Unlimited) → **Set type** (Normal / Pro set / Mini) → **Super tie** (only for 3 or 5 sets) → **Score** rule (Golden / Star / Advantages / Silver) → **Warm-up** (Yes / No).
 * Both end with **First serve**: pick **Us** or **Them** for the team serving the first game, or **Skip** if you don't want the serving indicator. The match starts right after.
+* **Training** — starts right away (see [Training](#training)).
 
 Use `Up` / `Down` to move in menus and `Enter` to select. For exact scoring mechanics (set lengths, tie-breaks, deuce rules), see [Match rules reference](#match-rules-reference).
 

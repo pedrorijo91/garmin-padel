@@ -90,9 +90,6 @@ class GameModes {
         if (modeId == MODE_FRIENDLY) {
             return ["Sets: Unlimited", "Set type: Normal", "Super tie: No", "Score: Golden Point"];
         }
-        if (modeId == MODE_TRAINING) {
-            return ["Free play + drills", "Drills: TB, ST, mini, set", "Serve marker: off", "Score: Golden Point"];
-        }
         return ["", "", "", ""];
     }
 }

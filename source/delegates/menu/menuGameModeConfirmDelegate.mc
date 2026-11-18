@@ -18,10 +18,6 @@ class MenuGameModeConfirmDelegate extends WatchUi.Menu2InputDelegate {
             return;
         }
         // MatchConfig was already populated in MenuGameModeDelegate. Last step: who serves first (starts the match).
-        if (Application.getApp().getMatchConfig().getTraining()) {
-            MenuFirstServeDelegate.startMatch(-1);
-            return;
-        }
         MenuFirstServeDelegate.pushMenu();
     }
 }
