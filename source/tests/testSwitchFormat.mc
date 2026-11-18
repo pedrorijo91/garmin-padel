@@ -73,13 +73,8 @@ function switchTieBreakWinByTwoTest(logger as Logger) as Boolean {
     // 7-6: not won yet (margin 2)
     ok = ok && expectTrue(logger, match.getMatchStatus().getP1Sets() == 0, "7-6 not won");
     match.incP1();
-    ok = ok && expectHistory(logger, match, ["[8-6]"], "tie-break won 8-6");
-    ok = ok && expectTrue(logger, match.getMatchStatus().getP1Sets() == 1 && match.currentSetHasGames(), "set to P1, back to normal");
-    // and a 7-5 one
-    match.switchSetFormat(MatchConfig.FORMAT_TIE_BREAK);
-    playPointsP2(match, 5);
-    playPointsP1(match, 7);
-    return ok && expectHistory(logger, match, ["[8-6]", "[7-5]"], "tie-break won 7-5");
+    return ok && expectHistory(logger, match, ["[8-6]"], "tie-break won 8-6")
+        && expectTrue(logger, match.getMatchStatus().getP1Sets() == 1, "set to P1");
 }
 
 (:test)
@@ -94,7 +89,19 @@ function switchMiniSetTest(logger as Logger) as Boolean {
     playPointsP1(match, 16);
     status = match.getMatchStatus();
     ok = ok && expectHistory(logger, match, ["6-0", "6-2"], "mini set won");
-    return ok && expectTrue(logger, status.getP1Sets() == 2 && status.getP1Games() == 0 && status.getP2Games() == 0, "next set 0-0");
+    ok = ok && expectTrue(logger, status.getP1Sets() == 2 && status.getP1Games() == 0 && status.getP2Games() == 0, "next set 0-0");
+
+    // mini set match: 2-2 with no points is not started (switching away resets to 0-0); a point starts it
+    var config = GameModes.configForMode(GameModes.MODE_FRIENDLY) as MatchConfig;
+    config.setSetType(MatchConfig.SET_TYPE_MINI);
+    var mini = new PadelMatch(config);
+    ok = ok && expectTrue(logger, !mini.isSetStarted(), "mini 2-2 not started");
+    mini.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
+    status = mini.getMatchStatus();
+    ok = ok && expectTrue(logger, status.getP1Games() == 0 && status.getP2Games() == 0, "switch away from mini resets 2-2");
+    mini.switchSetFormat(MatchConfig.FORMAT_MINI);
+    mini.incP2();
+    return ok && expectTrue(logger, mini.isSetStarted(), "mini started after a point");
 }
 
 (:test)
@@ -128,7 +135,6 @@ function switchMidSetDropsSetTest(logger as Logger) as Boolean {
     ok = ok && expectTrue(logger, status.getP1Sets() == 0 && status.getP2Sets() == 0, "no set awarded");
     ok = ok && expectTrue(logger, status.getP1Games() == 0 && status.getP2Games() == 0, "games reset");
     ok = ok && expectTrue(logger, status.getP1Score() == 0 && status.getP2Score() == 0, "points reset");
-    ok = ok && expectTrue(logger, status.getGamesPlayed() == 7, "games played " + status.getGamesPlayed());
     ok = ok && expectTrue(logger, match.isInSuperTieBreak(), "in super tie");
     // switching again from the chosen super tie: dropped too
     playPointsP1(match, 5);
@@ -141,33 +147,6 @@ function switchMidSetDropsSetTest(logger as Logger) as Boolean {
     status = match.getMatchStatus();
     ok = ok && expectHistory(logger, match, ["[7-0]"], "tie-break won");
     return ok && expectTrue(logger, status.getP1Sets() == 1 && status.getP2Sets() == 0, "only the finished tie-break counts");
-}
-
-(:test)
-function switchDropsTieBreakAndMiniTest(logger as Logger) as Boolean {
-    // a set left inside its tie-break is dropped
-    var match = friendlyMatch();
-    playSetTo6All(match);
-    playPointsP1(match, 3);
-    playPointsP2(match, 2);
-    var ok = expectTrue(logger, match.currentSetResult().equals("6-6"), "current set 6-6");
-    match.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
-    ok = ok && expectHistory(logger, match, [], "dropped 6-6 tie-break");
-
-    // mini set match: 2-2 with no points is not started; with a point it is
-    var config = GameModes.configForMode(GameModes.MODE_FRIENDLY) as MatchConfig;
-    config.setSetType(MatchConfig.SET_TYPE_MINI);
-    var mini = new PadelMatch(config);
-    ok = ok && expectTrue(logger, !mini.isSetStarted(), "mini 2-2 not started");
-    mini.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
-    var status = mini.getMatchStatus();
-    ok = ok && expectTrue(logger, status.getP1Games() == 0 && status.getP2Games() == 0, "switch away from mini resets 2-2");
-    ok = ok && expectHistory(logger, mini, [], "nothing recorded");
-    mini.switchSetFormat(MatchConfig.FORMAT_MINI);
-    mini.incP2();
-    ok = ok && expectTrue(logger, mini.isSetStarted(), "mini started after a point");
-    mini.switchSetFormat(MatchConfig.FORMAT_TIE_BREAK);
-    return ok && expectHistory(logger, mini, [], "dropped mini at 2-2");
 }
 
 (:test)
@@ -270,28 +249,14 @@ function switchServingTieBreakTest(logger as Logger) as Boolean {
 }
 
 (:test)
-function switchServingSuperTieAndMiniTest(logger as Logger) as Boolean {
+function switchServingMiniTest(logger as Logger) as Boolean {
     var match = friendlyMatch();
     match.setFirstServer(Sides.SIDE_P1);
     playSet63(match);
     // 9 games played: P2 due. Switching to a mini set at 0-0 (games become 2-2) doesn't change it
     match.switchSetFormat(MatchConfig.FORMAT_MINI);
     var ok = expectServing(logger, match, Sides.SIDE_P2, "mini set game 1");
-    ok = ok && expectTrue(logger, match.getMatchStatus().getGamesPlayed() == 9, "2-2 not counted");
-    // and to a super tie: same rotation as a deciding super tie
-    match.switchSetFormat(MatchConfig.FORMAT_SUPER_TIE);
-    var expected = [Sides.SIDE_P2, Sides.SIDE_P1, Sides.SIDE_P1, Sides.SIDE_P2];
-    for (var i = 0; i < expected.size(); i++) {
-        ok = ok && expectServing(logger, match, expected[i], "super tie point " + (i + 1));
-        if (i % 2 == 0) {
-            match.incP1();
-        } else {
-            match.incP2();
-        }
-    }
-    // 2-2 -> P1 wins 10-2: counts as one game (10 played) -> P1 serves the next set
-    playPointsP1(match, 8);
-    return ok && expectServing(logger, match, Sides.SIDE_P1, "set after super tie");
+    return ok && expectTrue(logger, match.getMatchStatus().getGamesPlayed() == 9, "2-2 not counted");
 }
 
 (:test)

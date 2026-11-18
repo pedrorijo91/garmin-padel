@@ -15,9 +15,10 @@ function testAbsPositive(logger as Logger) as Boolean {
 function testAbsNegative(logger as Logger) as Boolean {
   return (abs(-1) == 1);
 }
+
 (:test)
 function testFitStringShortUnchanged(logger as Logger) as Boolean {
-  return fitString("6-3 / 4-3* / [10-8]", FIT_STRING_MAX).equals("6-3 / 4-3* / [10-8]");
+  return fitString("6-3 / 7-6 (5) / [10-8]", FIT_STRING_MAX).equals("6-3 / 7-6 (5) / [10-8]");
 }
 
 (:test)
